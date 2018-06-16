@@ -17,7 +17,7 @@ if False:  # pragma: nocover
 
 
 @pytest.fixture
-def mock_template_context(mock_request, user_create):
+def mock_template_context(request_get, user_create):
     """Creates mock Template context.
 
     To be used with `render_template_tag` fixture.
@@ -43,7 +43,7 @@ def mock_template_context(mock_request, user_create):
             user = user_create(anonymous=True)
 
         if not request or isinstance(request, string_types):
-            request = mock_request(path=request, user=user)
+            request = request_get(request, user=user)
 
         context_updater = {
             'request': request,

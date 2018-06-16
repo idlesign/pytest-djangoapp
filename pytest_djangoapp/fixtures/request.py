@@ -1,33 +1,54 @@
 import pytest
 
-from django.http import HttpRequest
+from django.test import RequestFactory
+
+if False:  # pragma: nocover
+    from django.contrib.auth.base_user import AbstractBaseUser
+    from django.http import HttpRequest
 
 
 @pytest.fixture
-def mock_request():
-    """Fixture allowing mocked request object generation.
+def request_factory():
+    """Fixture allowing request object generation.
 
     Example::
 
-        def test_this(mock_request):
-            referer = 'some'
-            request = mock_request(path=referer, meta={
-                'HTTP_REFERER': referer
-            })
+        def test_this(request_factory):
+            factory = request_factory()
 
 
     """
-    def mock_request_(**kwargs):
-        return MockRequest(**kwargs)
+    def request_factory_(**kwargs):
+        """
+        :param kwargs:
+        :rtype: RequestFactory
+        """
+        return RequestFactory(**kwargs)
 
-    return mock_request_
+    return request_factory_
 
 
-class MockRequest(HttpRequest):
+@pytest.fixture
+def request_get(request_factory):
+    """Fixture allowing GET request object generation.
 
-    def __init__(self, path=None, user=None, meta=None):
-        super(MockRequest, self).__init__()
+    Example::
 
-        self.path = path or '/'
-        self.user = user
-        self.META = meta
+        def test_this(request_get):
+            request = request_get('/some')
+
+
+    """
+    def request_get_(path='/', user=None, **kwargs):
+        """
+        :param str|unicode path:
+        :param AbstractBaseUser user:
+        :param kwargs:
+        :rtype: HttpRequest
+        """
+        request = request_factory().get(path, **kwargs)
+        if user:
+            request.user = user
+        return request
+
+    return request_get_
