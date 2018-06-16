@@ -17,18 +17,18 @@ if False:  # pragma: nocover
 
 
 @pytest.fixture
-def mock_template_context(request_get, user_create):
+def template_context(request_get, user_create):
     """Creates mock Template context.
 
-    To be used with `render_template_tag` fixture.
+    To be used with `template_render_tag` fixture.
 
     Example::
 
-        def test_this(mock_template_context):
-            context = mock_template_context({'somevar': 'someval'})
+        def test_this(template_context):
+            context = template_context({'somevar': 'someval'})
 
     """
-    def mock_template_context_(context_dict=None, request=None, current_app='', user='anonymous'):
+    def template_context_(context_dict=None, request=None, current_app='', user='anonymous'):
         """
         :param dict context_dict:
         :param str|unicode|HttpRequest request:
@@ -59,23 +59,23 @@ def mock_template_context(request_get, user_create):
 
         return context
 
-    return mock_template_context_
+    return template_context_
 
 
 @pytest.fixture
-def render_template_tag():
+def template_render_tag():
     """Renders a template tag from a given library by its name.
 
     Example::
 
-        def test_this(render_template_tag):
-            rendered = render_template_tag('library_name', 'mytag arg1 arg2')
+        def test_this(template_render_tag):
+            rendered = template_render_tag('library_name', 'mytag arg1 arg2')
 
 
     """
-    def render_template_tag_(tag_library, tag_str, context=None):
+    def template_render_tag(library, tag_str, context=None):
         """
-        :param str|unicode tag_library:
+        :param str|unicode library:
         :param str|unicode tag_str:
         :param Context context:
 
@@ -87,7 +87,7 @@ def render_template_tag():
             context = Context(context)
 
         contribute_to_context(context)
-        string = '{%% load %s %%}{%% %s %%}' % (tag_library, tag_str)
+        string = '{%% load %s %%}{%% %s %%}' % (library, tag_str)
         template = Template(string)
 
         if VERSION >= (1, 11):
@@ -96,7 +96,7 @@ def render_template_tag():
 
         return template.render(context)
 
-    return render_template_tag_
+    return template_render_tag
 
 
 def contribute_to_context(context, current_app=''):
