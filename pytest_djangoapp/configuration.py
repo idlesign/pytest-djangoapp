@@ -11,6 +11,17 @@ class Configuration(object):
 
     _KEY_APP = 'DJANGOAPP_APP_NAME'
 
+    DIR_TESTAPP = 'testapp'
+    """Name of test application directory.
+    
+    Test application directory should be placed inside `tests` directory 
+    and needs to be a Python package (contain __init__.py).
+     
+    Test application is useful to place there modules like `urls.py`,
+    `models.py` (e.g. with custom models), etc.
+    
+    """
+
     @classmethod
     def get(cls):
         return _THREAD_LOCAL.configuration
@@ -103,17 +114,69 @@ class Configuration(object):
                 installed_apps.append(app_name)
 
         else:
-            app_name = pytest_config.invocation_dir.basename
+            dir_current = pytest_config.invocation_dir
+            dir_tests = None
+
+            app_name = dir_current.basename
 
             if app_name == 'tests':
                 # Support certain module or function invocation tests dir as base (e.g. PyCharm behaviour).
-                app_name = pytest_config.invocation_dir.parts()[-2].basename
+                app_name = dir_current.parts()[-2].basename
+                dir_tests = dir_current
 
-            # todo tests dir + urlconf
-            installed_apps.extend([
-                app_name,
-                '%s.tests' % app_name,
-            ])
-            defaults['ROOT_URLCONF'] = '%s.tests.urls' % app_name
+            try:
+                dir_tests = dir_current.listdir('tests')[0]
+
+            except IndexError:
+                pass
+
+            if not dir_tests:
+                # No `tests` subdir found. Let's to try to deduce.
+
+                app_name = None
+
+                from setuptools import find_packages
+                import py
+
+                candidate_latest = ''
+                candidates = []
+
+                for package in find_packages('%s' % dir_current):
+                    # Consider only top level packages.
+                    if not candidate_latest or not package.startswith(candidate_latest):
+                        candidates.append(package)
+                        candidate_latest = package
+
+                for candidate in candidates:
+                    dirs = py.path.local(candidate).listdir('tests')
+
+                    if dirs:
+                        app_name = candidate
+                        dir_tests = dirs[0]
+                        break
+
+            if not app_name:
+                raise Exception(
+                    'Unable to deduce application name. '
+                    'Check application package and `tests` directory exists. '
+                    'Current dir: %s' % dir_current)
+
+            installed_apps.append(app_name)
+
+            if dir_tests:
+                # Try to find and add an additional test app.
+                dir_testapp_name = cls.DIR_TESTAPP
+                dir_testapp = dir_tests.listdir(dir_testapp_name)
+
+                if dir_testapp:
+                    dir_testapp = dir_testapp[0]
+
+                    testapp_name = '%s.tests.%s' % (app_name, dir_testapp_name)
+
+                    installed_apps.append(testapp_name)
+
+                    if dir_testapp.listdir('urls.py'):
+                        # Set customized `urls.py`.
+                        defaults['ROOT_URLCONF'] = '%s.urls' % testapp_name
 
         return defaults

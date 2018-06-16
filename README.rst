@@ -29,8 +29,8 @@ This exposes some useful tools for Django applications developers to facilitate 
 
 * Settings overriding
 * Template tags testing
-* Users creation
-* Request object mocking
+* User creation
+* Request object creation
 * etc.
 
 Suitable for Django 1.7+.
