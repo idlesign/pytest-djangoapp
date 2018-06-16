@@ -20,9 +20,6 @@ https://github.com/idlesign/pytest-djangoapp
     :target: https://landscape.io/github/idlesign/pytest-djangoapp/master
 
 
-**Work in progress. Stay tuned.**
-
-
 Description
 -----------
 
