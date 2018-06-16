@@ -5,6 +5,7 @@ pytest-djangoapp changelog
 Unreleased
 ----------
 + Improved test discovery.
++ Introduced 'template_strip_tags' fixture.
 
 
 v0.1.0

@@ -1,6 +1,8 @@
 # -*- encoding: utf-8 -*-
 from __future__ import unicode_literals
 
+import re
+
 try:
     from unittest import mock
 except ImportError:
@@ -16,6 +18,35 @@ from six import string_types
 if False:  # pragma: nocover
     from django.contrib.auth.base_user import AbstractBaseUser
     from django.http import HttpRequest
+
+
+RE_TAG_VALUES = re.compile('>([^<]+)<')
+
+
+@pytest.fixture
+def template_strip_tags():
+    """Allows HTML tags strip.
+
+    To be used with `template_render_tag` fixture to easy result assertions.
+
+    Example::
+
+        def test_this(template_strip_tags):
+            stripped = template_strip_tags('<b>some</b>')
+
+    """
+
+    def template_strip_tags_(src, joiner='|'):
+
+        result = []
+        for match in RE_TAG_VALUES.findall(src):
+            match = match.strip()
+            if match:
+                result.append(match)
+
+        return '|'.join(result)
+
+    return template_strip_tags_
 
 
 @pytest.fixture
@@ -75,7 +106,7 @@ def template_render_tag():
 
 
     """
-    def template_render_tag(library, tag_str, context=None):
+    def template_render_tag_(library, tag_str, context=None):
         """
         :param str|unicode library:
         :param str|unicode tag_str:
@@ -98,7 +129,7 @@ def template_render_tag():
 
         return template.render(context)
 
-    return template_render_tag
+    return template_render_tag_
 
 
 def contribute_to_context(context, current_app=''):

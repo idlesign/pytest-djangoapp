@@ -4,4 +4,10 @@ def test_template_context(template_context):
 
 
 def test_template_render_tag(template_render_tag):
-    assert template_render_tag('static', 'static "some.jpg"')
+    rendered = template_render_tag('static', 'static "some.jpg"')
+    assert rendered == 'some.jpg'
+
+
+def test_this_template_strip_tags(template_strip_tags):
+    stripped = template_strip_tags('<b>some</b>')
+    assert stripped == 'some'
