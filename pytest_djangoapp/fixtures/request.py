@@ -39,13 +39,14 @@ def request_get(request_factory):
 
 
     """
-    def request_get_(path='/', user=None, **kwargs):
+    def request_get_(path=None, user=None, **kwargs):
         """
         :param str|unicode path:
         :param AbstractBaseUser user:
         :param kwargs:
         :rtype: HttpRequest
         """
+        path = path or '/'
         request = request_factory().get(path, **kwargs)
         if user:
             request.user = user

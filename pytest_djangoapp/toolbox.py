@@ -19,7 +19,7 @@ def configure_djangoapp_plugin(settings=None, app_name=None):
     try:
         import django
 
-    except ImportError:
+    except ImportError:  # pragma: nocover
         raise Exception('Django is no available in test environment.')
 
     Configuration.set(settings_dict=settings, app_name=app_name)

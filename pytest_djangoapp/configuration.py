@@ -43,12 +43,16 @@ class Configuration(object):
         else:
             middleware = global_settings.MIDDLEWARE_CLASSES
 
+        installed_apps = list(global_settings.INSTALLED_APPS[:])
+        installed_apps.extend([
+            'django.contrib.auth',
+            'django.contrib.contenttypes',
+        ])
+        installed_apps = list(set(installed_apps))
+
         settings_dict = dict(
 
-            INSTALLED_APPS=[
-                'django.contrib.auth',
-                'django.contrib.contenttypes',
-            ],
+            INSTALLED_APPS=installed_apps,
 
             DATABASES={
                 'default': {

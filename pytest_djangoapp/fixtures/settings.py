@@ -49,8 +49,14 @@ class SettingsProxy(object):
 
     def _set(self, name, value):
         settings = self._settings
+        overridden = self._overridden
+
         current_val = getattr(settings, name, _UNSET)
-        self._overridden[name] = current_val
+
+        if name not in overridden:
+            # Handle subsequent changes.
+            overridden[name] = current_val
+
         setattr(settings, name, value)
 
     def update(self, settings):
