@@ -101,7 +101,11 @@ class Configuration(object):
         else:
             app_name = pytest_config.invocation_dir.basename
 
-            # todo tests
+            if app_name == 'tests':
+                # Support certain module or function invocation tests dir as base (e.g. PyCharm behaviour).
+                app_name = pytest_config.invocation_dir.parts()[-2].basename
+
+            # todo tests dir + urlconf
             installed_apps.extend([
                 app_name,
                 '%s.tests' % app_name,
