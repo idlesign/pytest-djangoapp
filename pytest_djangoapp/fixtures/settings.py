@@ -10,13 +10,15 @@ _UNSET = set()
 
 @pytest.fixture()
 def settings():
-    """Function wide fixture allowing to temorarily override project settings.
+    """Fixture allowing to temporarily override project settings.
 
     Example::
 
         def test_this(settings):
+            # By one.
             settings.DEBUG = True
 
+            # Batch.
             settings.update({
                 'DEBUG': True,
                 'ROOT_URLCONF': 'module.urls',

@@ -19,6 +19,8 @@ def request_factory():
         def test_this(request_factory):
             factory = request_factory()
 
+    :param kwargs:
+    :rtype: RequestFactory
 
     """
     def request_factory_(**kwargs):
@@ -41,12 +43,19 @@ def request_get(request_factory):
             request = request_get('/some')
 
 
+    :param str|unicode path:
+    :param AbstractBaseUser user: User making this request.
+    :param kwargs:
+
+    :rtype: HttpRequest
+
     """
     def request_get_(path=None, user=None, **kwargs):
         """
         :param str|unicode path:
-        :param AbstractBaseUser user:
+        :param AbstractBaseUser user: User making this request.
         :param kwargs:
+
         :rtype: HttpRequest
         """
         path = path or '/'

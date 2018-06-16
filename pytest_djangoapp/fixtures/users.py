@@ -26,22 +26,25 @@ def user_model():
 
 @pytest.fixture()
 def user_create(user_model):
-    """Returns function allowing creation of Django user.
+    """Allows Django user object generation.
 
     Example::
 
         def test_this(user_create):
             user = user_create()
 
+    :param bool superuser: Whether to create a superuser.
+    :param bool anonymous: Whether to create an anonymous user.
+    :param dict attributes: Additional user object attributes to initialize.
+
     """
     from django.contrib.auth.models import AnonymousUser
 
     def user_create_(superuser=False, anonymous=False, attributes=None):
-        """Create user.
-
-        :param bool superuser: Whether to create superuser.
-        :param bool anonymous: Whether to create anonymous user.
-        :param dict attributes: Additional user attributes to initialize.
+        """
+        :param bool superuser: Whether to create a superuser.
+        :param bool anonymous: Whether to create an anonymous user.
+        :param dict attributes: Additional user object attributes to initialize.
 
         :rtype: AbstractBaseUser
 

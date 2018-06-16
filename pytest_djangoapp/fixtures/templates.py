@@ -25,7 +25,7 @@ RE_TAG_VALUES = re.compile('>([^<]+)<')
 
 @pytest.fixture
 def template_strip_tags():
-    """Allows HTML tags strip.
+    """Allows HTML tags strip from string.
 
     To be used with `template_render_tag` fixture to easy result assertions.
 
@@ -34,24 +34,35 @@ def template_strip_tags():
         def test_this(template_strip_tags):
             stripped = template_strip_tags('<b>some</b>')
 
+    :param str|unicode html: HTML to strin tags from
+    :param str|unicode joiner: String to join tags contents. Default: |
+
+    :rtype: str|unicode
+
     """
 
-    def template_strip_tags_(src, joiner='|'):
+    def template_strip_tags_(html, joiner='|'):
+        """
+        :param str|unicode html: HTML to strin tags from
+        :param str|unicode joiner: String to join tags contents. Default: |
 
+        :rtype: str|unicode
+
+        """
         result = []
-        for match in RE_TAG_VALUES.findall(src):
+        for match in RE_TAG_VALUES.findall(html):
             match = match.strip()
             if match:
                 result.append(match)
 
-        return '|'.join(result)
+        return joiner.join(result)
 
     return template_strip_tags_
 
 
 @pytest.fixture
 def template_context(request_get, user_create):
-    """Creates mock Template context.
+    """Creates template context object.
 
     To be used with `template_render_tag` fixture.
 
@@ -60,13 +71,31 @@ def template_context(request_get, user_create):
         def test_this(template_context):
             context = template_context({'somevar': 'someval'})
 
+
+    :param dict context_dict: Template context. If not set empty context is used.
+
+    :param str|unicode|HttpRequest request: Expects HttpRequest or string.
+        String is used as a path for GET-request.
+
+    :param str|unicode current_app:
+
+    :param AbstractBaseUser user: User to associate request with.
+        Defaults to anonymous user.
+
+    :rtype: Context
+
     """
     def template_context_(context_dict=None, request=None, current_app='', user='anonymous'):
         """
-        :param dict context_dict:
-        :param str|unicode|HttpRequest request:
+        :param dict context_dict: Template context. If not set empty context is used.
+
+        :param str|unicode|HttpRequest request: Expects HttpRequest or string.
+            String is used as a path for GET-request.
+
         :param str|unicode current_app:
-        :param AbstractBaseUser user: Defaults to anonymous user will be used.
+
+        :param AbstractBaseUser user: User to associate request with.
+            Defaults to anonymous user.
 
         :rtype: Context
         """
@@ -104,13 +133,24 @@ def template_render_tag():
         def test_this(template_render_tag):
             rendered = template_render_tag('library_name', 'mytag arg1 arg2')
 
+    :param str|unicode library: Template tags library name to load tag from.
+
+    :param str|unicode tag_str: Tag string itself. As used in templates, but without {% %}.
+
+    :param Context context: Template context object. If not set,
+        empty context object is used.
+
+    :rtype: str|unicode
 
     """
     def template_render_tag_(library, tag_str, context=None):
         """
-        :param str|unicode library:
-        :param str|unicode tag_str:
-        :param Context context:
+        :param str|unicode library: Template tags library name to load tag from.
+
+        :param str|unicode tag_str: Tag string itself. As used in templates, but without {% %}.
+
+        :param Context context: Template context object. If not set,
+            empty context object is used.
 
         :rtype: str|unicode
         """
