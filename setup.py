@@ -42,7 +42,7 @@ setup(
 
     install_requires=[
         'six',
-        'pytest>=3.6.0',
+        'pytest',
     ],
     setup_requires=[] + PYTEST_RUNNER,
     tests_require=['pytest'],
