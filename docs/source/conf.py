@@ -30,7 +30,6 @@ MODULES_TO_MOCK = [
     'django.conf',
     'django.template.base',
     'django.template.context',
-    'six',
 ]
 
 
