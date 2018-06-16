@@ -1,0 +1,3 @@
+[run]
+source = pytest_djangoapp/
+omit = pytest_djangoapp/tests/*
