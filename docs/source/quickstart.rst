@@ -5,9 +5,7 @@ Quickstart
 Application structuring
 -----------------------
 
-Let's say you have classical tests placing (inside application directory):
-
-.. code-block::
+Let's say you have classical tests placing (inside application directory)::
 
     package_dir
     |__ myapp
