@@ -70,6 +70,7 @@ class Configuration(object):
             ),
 
             INSTALLED_APPS=installed_apps,
+            STATIC_URL = '/static/',
 
             DATABASES={
                 'default': {

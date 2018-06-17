@@ -2,6 +2,11 @@ pytest-djangoapp changelog
 ==========================
 
 
+Unreleased
+----------
+* Added STATIC_URL default.
+
+
 v0.3.1
 ------
 * Fixed test client work on Django < 2.0.

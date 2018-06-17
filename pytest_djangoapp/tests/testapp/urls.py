@@ -5,7 +5,8 @@ from django.http import HttpResponse
 
 
 def index(request):
-    return HttpResponse('fine')
+    from django.contrib.staticfiles.templatetags.staticfiles import static
+    return HttpResponse('fine %s' % static('blank.png'))
 
 
 def get_urls():
