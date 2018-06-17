@@ -2,8 +2,8 @@ pytest-djangoapp changelog
 ==========================
 
 
-Unreleased
-----------
+v0.3.2
+------
 * Added STATIC_URL default.
 
 
