@@ -65,3 +65,39 @@ def request_get(request_factory):
         return request
 
     return request_get_
+
+
+@pytest.fixture
+def request_post(request_factory):
+    """Fixture allowing POST request object generation.
+
+    Example::
+
+        def test_this(request_post):
+            request = request_post('/some', {'a': 'b'})
+
+
+    :param str|unicode path:
+    :param dict data: Data to post.
+    :param AbstractBaseUser user: User making this request.
+    :param kwargs:
+
+    :rtype: HttpRequest
+
+    """
+    def request_post_(path=None, data=None, user=None, **kwargs):
+        """
+        :param str|unicode path:
+        :param dict data: Data to post.
+        :param AbstractBaseUser user: User making this request.
+        :param kwargs:
+
+        :rtype: HttpRequest
+        """
+        path = path or '/'
+        request = request_factory().post(path, data, **kwargs)
+        if user:
+            request.user = user
+        return request
+
+    return request_post_
