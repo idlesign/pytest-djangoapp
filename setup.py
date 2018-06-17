@@ -41,7 +41,6 @@ setup(
     zip_safe=False,
 
     install_requires=[
-        'six',
         'pytest',
     ],
     setup_requires=[] + PYTEST_RUNNER,

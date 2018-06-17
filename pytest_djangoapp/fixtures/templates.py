@@ -13,7 +13,9 @@ import pytest
 from django import VERSION
 from django.template.base import Template
 from django.template.context import Context, RenderContext
-from six import string_types
+
+from .utils import string_types
+
 
 if False:  # pragma: nocover
     from django.contrib.auth.base_user import AbstractBaseUser
