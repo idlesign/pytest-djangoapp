@@ -1,4 +1,8 @@
-from django.urls import reverse
+try:
+    from django.urls import reverse
+
+except ImportError:  # Django<2.0
+    from django.core.urlresolvers import reverse
 
 
 def test_request_factory(request_factory):
