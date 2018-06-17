@@ -1,3 +1,5 @@
+from django.urls import reverse
+
 
 def test_request_factory(request_factory):
     assert request_factory()
@@ -12,4 +14,9 @@ def test_request_post(request_post, user_create):
 
 
 def test_request_client(request_client):
-    assert request_client()
+    client = request_client()
+    assert client
+
+    response = client.get(reverse('index'))
+
+    assert response.status_code == 200

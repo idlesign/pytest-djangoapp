@@ -48,11 +48,11 @@ class Configuration(object):
         """
         from django.conf import global_settings
 
-        if hasattr(global_settings, 'MIDDLEWARE'):
-            middleware = global_settings.MIDDLEWARE
+        if hasattr(global_settings, 'MIDDLEWARE_CLASSES'):
+            middleware = global_settings.MIDDLEWARE_CLASSES
 
         else:
-            middleware = global_settings.MIDDLEWARE_CLASSES
+            middleware = global_settings.MIDDLEWARE
 
         installed_apps = list(global_settings.INSTALLED_APPS[:])
         installed_apps.extend([
@@ -62,6 +62,12 @@ class Configuration(object):
         installed_apps = list(set(installed_apps))
 
         settings_dict = dict(
+
+            ALLOWED_HOSTS=(
+                global_settings.ALLOWED_HOSTS +
+                # Satisfy Django test client need in Django < 2.0
+                ['testserver']
+            ),
 
             INSTALLED_APPS=installed_apps,
 

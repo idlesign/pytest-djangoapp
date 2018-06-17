@@ -2,6 +2,11 @@ pytest-djangoapp changelog
 ==========================
 
 
+Unreleased
+----------
+* Fixed test client work on Django < 2.0.
+
+
 v0.3.0
 ------
 + Introduced 'request_client' fixture.
