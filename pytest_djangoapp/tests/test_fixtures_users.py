@@ -9,3 +9,8 @@ def test_user_create(user_create):
 def test_user_model(user_model):
 
     assert user_model
+
+
+def test_user(user):
+
+    assert user
