@@ -6,6 +6,7 @@ Unreleased
 ----------
 + Introduced 'request_client' fixture.
 + Introduced 'request_post' fixture.
++ Introduced 'user' shortcut fixture.
 
 
 v0.2.0

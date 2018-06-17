@@ -74,3 +74,17 @@ def user_create(user_model):
 
     return user_create_
 
+
+@pytest.fixture()
+def user(user_create):
+    """Exposes Django user object.
+
+    Shortcut for `user_create` fixture.
+
+    Example::
+
+        def test_this(user):
+            username = user.username
+
+    """
+    return user_create()
