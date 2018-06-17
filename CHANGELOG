@@ -4,6 +4,7 @@ pytest-djangoapp changelog
 
 Unreleased
 ----------
++ Introduced 'request_client' fixture.
 + Introduced 'request_post' fixture.
 
 

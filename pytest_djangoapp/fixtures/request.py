@@ -3,7 +3,7 @@ from __future__ import unicode_literals
 
 import pytest
 
-from django.test import RequestFactory
+from django.test import RequestFactory, Client
 
 if False:  # pragma: nocover
     from django.contrib.auth.base_user import AbstractBaseUser
@@ -101,3 +101,26 @@ def request_post(request_factory):
         return request
 
     return request_post_
+
+
+@pytest.fixture
+def request_client():
+    """Fixture allowing test client object generation.
+
+    Example::
+
+        def test_this(request_client):
+            client = request_client()
+
+    :param kwargs:
+    :rtype: Client
+
+    """
+    def request_factory_(**kwargs):
+        """
+        :param kwargs:
+        :rtype: Client
+        """
+        return Client(**kwargs)
+
+    return request_factory_
