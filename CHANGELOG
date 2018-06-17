@@ -2,8 +2,8 @@ pytest-djangoapp changelog
 ==========================
 
 
-Unreleased
-----------
+v0.3.0
+------
 + Introduced 'request_client' fixture.
 + Introduced 'request_post' fixture.
 + Introduced 'user' shortcut fixture.
