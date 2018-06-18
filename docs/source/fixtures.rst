@@ -8,6 +8,7 @@ Fixtures
 .. toctree::
     :maxdepth: 4
 
+    fixtures_commands
     fixtures_settings
     fixtures_request
     fixtures_templates

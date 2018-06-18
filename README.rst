@@ -31,6 +31,7 @@ This exposes some useful tools for Django applications developers to facilitate 
 * Template tags testing
 * User creation
 * Request object creation
+* Command calls
 * etc.
 
 Suitable for Django 1.7+.

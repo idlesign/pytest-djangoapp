@@ -4,6 +4,7 @@ pytest-djangoapp changelog
 
 Unreleased
 ----------
++ Introduced 'command_run' fixture.
 * Removed six dependency.
 
 
