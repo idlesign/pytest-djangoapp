@@ -2,8 +2,8 @@ pytest-djangoapp changelog
 ==========================
 
 
-Unreleased
-----------
+v0.4.1
+------
 * Added mock package adaptive autoinstall.
 
 
