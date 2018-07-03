@@ -6,8 +6,10 @@ import sys
 from setuptools import setup, find_packages
 
 
+PY2 = sys.version_info[0] == 2
 PATH_BASE = os.path.dirname(__file__)
 PYTEST_RUNNER = ['pytest-runner'] if 'test' in sys.argv else []
+
 
 def read_file(fpath):
     """Reads a file within package directories."""
@@ -22,6 +24,15 @@ def get_version():
     version = re.search('VERSION = \(([^)]+)\)', contents)
     version = version.group(1).replace(', ', '.').strip()
     return version
+
+
+install_requires = [
+    'pytest',
+]
+
+
+if PY2:
+    install_requires.append('mock')  # unittest.mock only since Python 3.3
 
 
 setup(
@@ -40,9 +51,7 @@ setup(
     include_package_data=True,
     zip_safe=False,
 
-    install_requires=[
-        'pytest',
-    ],
+    install_requires=install_requires,
     setup_requires=[] + PYTEST_RUNNER,
     tests_require=['pytest'],
 

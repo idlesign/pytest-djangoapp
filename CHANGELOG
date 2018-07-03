@@ -2,6 +2,11 @@ pytest-djangoapp changelog
 ==========================
 
 
+Unreleased
+----------
+* Added mock package adaptive autoinstall.
+
+
 v0.4.0
 ------
 + Introduced 'command_run' fixture.
