@@ -161,9 +161,10 @@ def template_render_tag():
         if not isinstance(context, Context):
             context = Context(context)
 
-        contribute_to_context(context)
         string = '{%% load %s %%}{%% %s %%}' % (library, tag_str)
+
         template = Template(string)
+        contribute_to_context(context, template=template)
 
         if VERSION >= (1, 11):
             # Prevent "TypeError: 'NoneType' object is not iterable" in  get_exception_info
@@ -174,9 +175,11 @@ def template_render_tag():
     return template_render_tag_
 
 
-def contribute_to_context(context, current_app=''):
-    template = mock.MagicMock()
-    template.engine.string_if_invalid = ''
+def contribute_to_context(context, current_app='', template=None):
+    template = template or mock.MagicMock()
+
+    if VERSION >= (1, 8):
+        template.engine.string_if_invalid = ''
 
     context.template = template
 
