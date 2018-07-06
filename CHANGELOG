@@ -2,8 +2,8 @@ pytest-djangoapp changelog
 ==========================
 
 
-Unreleased
-----------
+v0.4.2
+------
 * Improved templatetags compatibility for 1.8, 1.9.
 
 
