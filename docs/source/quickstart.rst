@@ -32,6 +32,16 @@ Add the following lines into `conftest.py` to configure `djangoapp` and start us
     pytest_plugins = configure_djangoapp_plugin()
 
 
+You can override default settings:
+
+.. code-block:: python
+
+    pytest_plugins = configure_djangoapp_plugin({
+        'DEBUG': False,
+        'SOMETHING': 'else,
+    })
+
+
 Using fixtures
 --------------
 
@@ -70,7 +80,8 @@ added to ``INSTALLED_APPS`` and treated by Django just as any application packag
     |  |  |__ __init__.py
     |  |  |__ testapp  <- Thirdparty app simulation package.
     |  |  |  |__ __init__.py
-    |  |  |  |__ urls.py  <- Let's say this module uses urlpatterns provided by your app.
+    |  |  |  |__ models.py  <- This module uses base models provided by your app.
+    |  |  |  |__ urls.py  <- And this module uses urlpatterns provided by your app.
     |  |  |__ conftest.py
     |
     |__ setup.py
