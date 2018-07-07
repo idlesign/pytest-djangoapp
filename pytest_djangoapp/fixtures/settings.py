@@ -24,6 +24,10 @@ def settings():
                 'ROOT_URLCONF': 'module.urls',
             })
 
+            # Context manager.
+            with settings(DEBUG=True):
+                ...
+
 
     :rtype: SettingsProxy
     """
@@ -48,6 +52,21 @@ class SettingsProxy(object):
             return super(SettingsProxy, self).__setattr__(name, value)
 
         self._set(name, value)
+
+    def __call__(self, **kwargs):
+        # Aid context manager mode.
+        do_set = self._set
+
+        for key, val in kwargs.items():
+            do_set(key, val)
+
+        return self
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        self.restore_initial()
 
     def _set(self, name, value):
         settings = self._settings
