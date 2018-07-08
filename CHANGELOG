@@ -2,8 +2,8 @@ pytest-djangoapp changelog
 ==========================
 
 
-Unreleased
-----------
+v0.6.0
+------
 + 'request_client' and 'request_factory' and co fixtures now accept 'ajax' argument.
 
 
