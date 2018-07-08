@@ -73,8 +73,8 @@ What about pytest-django
 There is a couple of design decisions in `pytest-django` that might make it uncomfortable to work with.
 
 1. It uses `setuptools` entrypoints feature for `pytest` plugin discovery. It's not a problem by itself,
-   but alongside with all kinds of bootstrapping with side effects made by `pytest-django` just on startup,
-   makes the plugin a poor choice for cases of system-wide (i.e. not venv) installations.
+   but all kinds of bootstrapping with side effects made by `pytest-django` just on startup,
+   make the plugin a poor choice for cases of system-wide (i.e. not venv) installations.
 
 2. Philosophy that next to no unit test should require DB access may be quite annoying.
 
