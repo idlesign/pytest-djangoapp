@@ -55,7 +55,7 @@ Use them just as you usually do with `pytest`:
 
         # We use `settings` fixture to temporarily override
         # project settings.
-        with settings(DEBUG=True, MYVAR: 'someval'):
+        with settings(DEBUG=True, MYVAR='someval'):
             # Now do some testing, with settings overridden.
             ...
 
