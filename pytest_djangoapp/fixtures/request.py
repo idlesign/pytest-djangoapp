@@ -10,6 +10,25 @@ if False:  # pragma: nocover
     from django.http import HttpRequest
 
 
+def _contribute_ajax(headers, flag):
+    if flag:
+        headers['HTTP_X_REQUESTED_WITH'] = 'XMLHttpRequest'
+
+
+class DjangoappRequestFactory(RequestFactory):
+
+    def __init__(self, ajax=False, **defaults):
+        _contribute_ajax(defaults, ajax)
+        super(DjangoappRequestFactory, self).__init__(**defaults)
+
+
+class DjagoappClient(Client):
+
+    def __init__(self, ajax=False, enforce_csrf_checks=False, **defaults):
+        _contribute_ajax(defaults, ajax)
+        super(DjagoappClient, self).__init__(enforce_csrf_checks, **defaults)
+
+
 @pytest.fixture
 def request_factory():
     """Fixture allowing request object generation.
@@ -28,7 +47,7 @@ def request_factory():
         :param kwargs:
         :rtype: RequestFactory
         """
-        return RequestFactory(**kwargs)
+        return DjangoappRequestFactory(**kwargs)
 
     return request_factory_
 
@@ -44,22 +63,30 @@ def request_get(request_factory):
 
 
     :param str|unicode path:
+
     :param AbstractBaseUser user: User making this request.
-    :param kwargs:
+
+    :param bool ajax: Make AJAX (XMLHttpRequest) request.
+
+    :param kwargs: Additional arguments for .get() method.
 
     :rtype: HttpRequest
 
     """
-    def request_get_(path=None, user=None, **kwargs):
+    def request_get_(path=None, user=None, ajax=False, **kwargs):
         """
         :param str|unicode path:
+
         :param AbstractBaseUser user: User making this request.
-        :param kwargs:
+
+        :param bool ajax: Make AJAX (XMLHttpRequest) request.
+
+        :param kwargs: Additional arguments for .get() method.
 
         :rtype: HttpRequest
         """
         path = path or '/'
-        request = request_factory().get(path, **kwargs)
+        request = request_factory(ajax=ajax).get(path, **kwargs)
         if user:
             request.user = user
         return request
@@ -78,24 +105,34 @@ def request_post(request_factory):
 
 
     :param str|unicode path:
+
     :param dict data: Data to post.
+
     :param AbstractBaseUser user: User making this request.
-    :param kwargs:
+
+    :param bool ajax: Make AJAX (XMLHttpRequest) request.
+
+    :param kwargs: Additional arguments for .post() method.
 
     :rtype: HttpRequest
 
     """
-    def request_post_(path=None, data=None, user=None, **kwargs):
+    def request_post_(path=None, data=None, user=None, ajax=False, **kwargs):
         """
         :param str|unicode path:
+
         :param dict data: Data to post.
+
         :param AbstractBaseUser user: User making this request.
-        :param kwargs:
+
+        :param bool ajax: Make AJAX (XMLHttpRequest) request.
+
+        :param kwargs: Additional arguments for .post() method.
 
         :rtype: HttpRequest
         """
         path = path or '/'
-        request = request_factory().post(path, data, **kwargs)
+        request = request_factory(ajax=ajax).post(path, data, **kwargs)
         if user:
             request.user = user
         return request
@@ -111,16 +148,27 @@ def request_client():
 
         def test_this(request_client):
             client = request_client()
+            ...
 
-    :param kwargs:
-    :rtype: Client
+            ajax_client = request_client(ajax=True)
+            ...
+
+
+    :param bool ajax: Make AJAX (XMLHttpRequest) requests.
+
+    :param kwargs: Additional arguments for test client initialization.
+
+    :rtype: DjagoappClient
 
     """
-    def request_factory_(**kwargs):
+    def request_client_(ajax=False, **kwargs):
         """
-        :param kwargs:
-        :rtype: Client
-        """
-        return Client(**kwargs)
+        :param bool ajax: Make AJAX (XMLHttpRequest) requests.
 
-    return request_factory_
+        :param kwargs: Additional arguments for test client initialization.
+
+        :rtype: DjagoappClient
+        """
+        return DjagoappClient(ajax=ajax, **kwargs)
+
+    return request_client_

@@ -51,16 +51,21 @@ Use them just as you usually do with `pytest`:
 
     # test_some.py
 
-    def test_this(settings):
+    def test_this(settings, request_client):
 
         # We use `settings` fixture to temporarily override
         # project settings.
-        settings.update({
-            'DEBUG': True,
-            'MYVAR': 'someval',
-        })
+        with settings(DEBUG=True, MYVAR: 'someval'):
+            # Now do some testing, with settings overridden.
+            ...
 
-        # Now do some testing, with settings overridden.
+        # And we use `request_client` fixture
+        # to test our [AJAX] view.
+        client = request_client(ajax=True)
+        response = client.get('/that')
+        ...
+
+        # See fixtures documentation for more fixtures.
 
 
 Additional app for testing

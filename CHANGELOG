@@ -2,6 +2,11 @@ pytest-djangoapp changelog
 ==========================
 
 
+Unreleased
+----------
++ 'request_client' and 'request_factory' and co fixtures now accept 'ajax' argument.
+
+
 v0.5.0
 ------
 + 'settings' fixture now can be used as a context manager.
