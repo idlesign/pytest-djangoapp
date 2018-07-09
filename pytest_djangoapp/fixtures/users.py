@@ -33,6 +33,8 @@ def user_create(user_model):
         def test_this(user_create):
             user = user_create()
 
+    .. note:: User password is `password`.
+
     :param bool superuser: Whether to create a superuser.
     :param bool anonymous: Whether to create an anonymous user.
     :param dict attributes: Additional user object attributes to initialize.

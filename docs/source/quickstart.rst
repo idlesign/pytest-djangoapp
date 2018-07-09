@@ -42,6 +42,27 @@ You can override default settings:
     })
 
 
+Sometimes you may want to extend default settings, such as `INSTALLED_APPS` or `DATABASES`.
+To do this you can pass `extend_`-prefixed arguments:
+
+.. code-block:: python
+
+    pytest_plugins = configure_djangoapp_plugin(
+        extend_INSTALLED_APPS=[
+            'django.contrib.sites',
+        ],
+        extend_MIDDLEWARE=[
+            'django.contrib.sessions.middleware.SessionMiddleware',
+        ],
+        extend_DATABASES={
+            'dummy': {
+                'ENGINE': 'django.db.backends.sqlite3',
+                'NAME': ':memory:',
+            },
+        },
+    )
+
+
 Using fixtures
 --------------
 

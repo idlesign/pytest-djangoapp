@@ -25,3 +25,7 @@ def test_context_manager(settings):
 
     assert not hasattr(_actual_settings, 'SOME')
     assert not _actual_settings.DEBUG
+
+    assert 'django.contrib.sites' in _actual_settings.INSTALLED_APPS
+    assert 'django.contrib.sessions.middleware.SessionMiddleware' in _actual_settings.MIDDLEWARE
+    assert 'dummy' in _actual_settings.DATABASES

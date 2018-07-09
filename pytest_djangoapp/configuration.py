@@ -9,7 +9,9 @@ setattr(_THREAD_LOCAL, 'configuration', {})
 
 class Configuration(object):
 
-    _KEY_APP = 'DJANGOAPP_APP_NAME'
+    _prefix = 'DJANGOAPP_'
+    _KEY_APP = _prefix +'APP_NAME'
+    _KEY_EXTEND = _prefix + 'DJANGOAPP_EXTEND'
 
     DIR_TESTAPP = 'testapp'
     """Name of test application directory.
@@ -27,15 +29,31 @@ class Configuration(object):
         return _THREAD_LOCAL.configuration
 
     @classmethod
-    def set(cls, settings_dict=None, app_name=None):
+    def set(cls, settings_dict=None, app_name=None, **kwargs):
         """
         :param dict settings_dict:
+
         :param str|unicode app_name:
+
+        :param kwargs: Additional arguments.
+
+            Use `extend_` prefix to extend default configuration.
+            E.g.: extend_INSTALLED_APPS=['a']
+
         """
         settings_dict = settings_dict or {}
 
+        extend = {}
+
+        for key, val in kwargs.items():
+            _, _, extend_key = key.partition('extend_')
+
+            if extend_key and extend_key == extend_key.upper():
+                extend[extend_key] = val
+
         base_settings = {
             cls._KEY_APP: app_name,
+            cls._KEY_EXTEND: extend,
         }
         base_settings.update(settings_dict)
 
@@ -65,12 +83,12 @@ class Configuration(object):
 
             ALLOWED_HOSTS=(
                 global_settings.ALLOWED_HOSTS +
-                # Satisfy Django test client need in Django < 2.0
+                # Satisfy Django test client needed in Django < 2.0
                 ['testserver']
             ),
 
             INSTALLED_APPS=installed_apps,
-            STATIC_URL = '/static/',
+            STATIC_URL='/static/',
 
             DATABASES={
                 'default': {
@@ -79,6 +97,7 @@ class Configuration(object):
                 },
             },
 
+            MIDDLEWARE=middleware,
             MIDDLEWARE_CLASSES=middleware,  # Prevents Django 1.7 warning.
 
             TEMPLATES=[
@@ -112,6 +131,27 @@ class Configuration(object):
         defaults.update(settings)
 
         app_name = defaults[cls._KEY_APP]
+
+        for key, value in defaults[cls._KEY_EXTEND].items():
+            default_value = defaults.get(key, [])
+
+            if isinstance(default_value, (list, tuple)):
+                extended = default_value
+
+                if not isinstance(default_value, list):
+                    # We don't need list copying, since
+                    # we want to MIDDLEWARE/MIDDLEWARE_CLASSES
+                    # and similar lists to be extended inplace.
+                    extended = list(default_value)
+
+                extended.extend(value)
+                defaults[key] = extended
+
+            elif isinstance(default_value, dict):
+                defaults[key].update(value)
+
+            else:  # pragma: nocover
+                raise ValueError('Unable to extend `%s` option.' % key)
 
         installed_apps = defaults['INSTALLED_APPS']
 
