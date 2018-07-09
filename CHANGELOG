@@ -2,8 +2,8 @@ pytest-djangoapp changelog
 ==========================
 
 
-Unreleased
-----------
+v0.7.0
+------
 + 'configure_djangoapp_plugin()' now accepts 'extend_' prefixed args.
 
 
