@@ -2,8 +2,8 @@ pytest-djangoapp changelog
 ==========================
 
 
-Unreleased
-----------
+v0.7.1
+------
 * Fixed 'extend_' prefixed args handling in old Django versions.
 
 
