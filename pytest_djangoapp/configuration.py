@@ -136,16 +136,17 @@ class Configuration(object):
             default_value = defaults.get(key, [])
 
             if isinstance(default_value, (list, tuple)):
-                extended = default_value
+                extended = list(default_value)
 
-                if not isinstance(default_value, list):
-                    # We don't need list copying, since
-                    # we want to MIDDLEWARE/MIDDLEWARE_CLASSES
-                    # and similar lists to be extended inplace.
-                    extended = list(default_value)
+                for item in value:
+                    if item not in extended:
+                        extended.append(item)
 
-                extended.extend(value)
                 defaults[key] = extended
+
+                if key == 'MIDDLEWARE':
+                    # Special case for renamed.
+                    defaults['MIDDLEWARE_CLASSES'] = extended
 
             elif isinstance(default_value, dict):
                 defaults[key].update(value)

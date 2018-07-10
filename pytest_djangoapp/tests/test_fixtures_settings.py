@@ -28,4 +28,5 @@ def test_context_manager(settings):
 
     assert 'django.contrib.sites' in _actual_settings.INSTALLED_APPS
     assert 'django.contrib.sessions.middleware.SessionMiddleware' in _actual_settings.MIDDLEWARE
+    assert 'django.contrib.sessions.middleware.SessionMiddleware' in _actual_settings.MIDDLEWARE_CLASSES
     assert 'dummy' in _actual_settings.DATABASES
