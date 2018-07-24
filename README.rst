@@ -35,7 +35,7 @@ This exposes some useful tools for Django applications developers to facilitate 
 * Mailing
 * etc.
 
-Suitable for Django 1.7+.
+Suitable for testing apps for Django 1.7+.
 
 
 How to use
