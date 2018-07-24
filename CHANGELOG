@@ -2,8 +2,8 @@ pytest-djangoapp changelog
 ==========================
 
 
-Unreleased
-----------
+v0.8.0
+------
 + Added 'mail_outbox' fixture.
 
 
