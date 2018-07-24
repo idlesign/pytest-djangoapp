@@ -100,6 +100,8 @@ class Configuration(object):
             MIDDLEWARE=middleware,
             MIDDLEWARE_CLASSES=middleware,  # Prevents Django 1.7 warning.
 
+            EMAIL_BACKEND='django.core.mail.backends.locmem.EmailBackend',
+
             TEMPLATES=[
                 {
                     'BACKEND': 'django.template.backends.django.DjangoTemplates',

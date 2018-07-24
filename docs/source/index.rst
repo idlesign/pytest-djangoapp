@@ -15,7 +15,8 @@ This exposes some useful tools for Django applications developers to facilitate 
 * Template tags testing
 * User creation
 * Request object creation
-* Command calls
+* Management command calls
+* Mailing
 * etc.
 
 Suitable for Django 1.7+.
