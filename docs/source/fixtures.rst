@@ -13,3 +13,4 @@ Fixtures
     fixtures_request
     fixtures_templates
     fixtures_users
+    fixtures_mail
