@@ -19,9 +19,11 @@ def test_request_post(request_post, user_create):
     assert request_post(ajax=True, data={'a': 'b'})
 
 
-def test_request_client(request_client):
+def test_request_client(request_client, user_create):
     client = request_client()
     assert client
+    assert client.user is None
+    assert not client.user_logged_in
 
     response = client.get(reverse('index'))
 
@@ -35,3 +37,9 @@ def test_request_client(request_client):
 
     assert response.status_code == 200
     assert b'ajaxed' in response.content
+
+    new_user = user_create()
+    client = request_client(user=new_user)
+
+    assert client.user is new_user
+    assert client.user_logged_in

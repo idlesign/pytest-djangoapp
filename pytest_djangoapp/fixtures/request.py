@@ -24,9 +24,22 @@ class DjangoappRequestFactory(RequestFactory):
 
 class DjagoappClient(Client):
 
-    def __init__(self, ajax=False, enforce_csrf_checks=False, **defaults):
+    def __init__(self, ajax=False, user=None, enforce_csrf_checks=False, **defaults):
         _contribute_ajax(defaults, ajax)
+
         super(DjagoappClient, self).__init__(enforce_csrf_checks, **defaults)
+
+        if user:
+            assert hasattr(user, 'password_plain'), (
+                'Request client expects a user created with `user` or `user_create` fixtures.')
+
+            logged_in = self.login(username=user.username, password=user.password_plain)
+
+        else:
+            logged_in = None
+
+        self.user = user
+        self.user_logged_in = logged_in
 
 
 @pytest.fixture
@@ -156,19 +169,23 @@ def request_client():
 
     :param bool ajax: Make AJAX (XMLHttpRequest) requests.
 
+    :param AbstractBaseUser user: User to perform queries from.
+
     :param kwargs: Additional arguments for test client initialization.
 
     :rtype: DjagoappClient
 
     """
-    def request_client_(ajax=False, **kwargs):
+    def request_client_(ajax=False, user=None, **kwargs):
         """
         :param bool ajax: Make AJAX (XMLHttpRequest) requests.
+
+        :param AbstractBaseUser user: User to perform queries from.
 
         :param kwargs: Additional arguments for test client initialization.
 
         :rtype: DjagoappClient
         """
-        return DjagoappClient(ajax=ajax, **kwargs)
+        return DjagoappClient(ajax=ajax, user=user, **kwargs)
 
     return request_client_
