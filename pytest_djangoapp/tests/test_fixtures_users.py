@@ -14,3 +14,4 @@ def test_user_model(user_model):
 def test_user(user):
 
     assert user
+    assert user.password_plain == 'password'

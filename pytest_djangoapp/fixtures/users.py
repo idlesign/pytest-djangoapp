@@ -33,7 +33,7 @@ def user_create(user_model):
         def test_this(user_create):
             user = user_create()
 
-    .. note:: User password is `password`.
+    .. note:: User password is accessible via `password_plain` attribute.
 
     :param bool superuser: Whether to create a superuser.
     :param bool anonymous: Whether to create an anonymous user.
@@ -72,6 +72,9 @@ def user_create(user_model):
         else:
             user = manager.create_user(**kwargs)
 
+        # Keep plain password for test purposes.
+        user.password_plain = kwargs['password']
+
         return user
 
     return user_create_
@@ -87,6 +90,8 @@ def user(user_create):
 
         def test_this(user):
             username = user.username
+
+    .. note:: User password is accessible via `password_plain` attribute.
 
     """
     return user_create()
