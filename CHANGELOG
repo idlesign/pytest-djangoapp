@@ -2,6 +2,11 @@ pytest-djangoapp changelog
 ==========================
 
 
+Unreleased
+----------
++ 'configure_djangoapp_plugin()' now accepts 'admin_contrib' argument.
+
+
 v0.8.0
 ------
 + Added 'mail_outbox' fixture.

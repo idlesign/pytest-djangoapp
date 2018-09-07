@@ -4,13 +4,15 @@ from __future__ import unicode_literals
 from .configuration import Configuration
 
 
-def configure_djangoapp_plugin(settings=None, app_name=None, **kwargs):
+def configure_djangoapp_plugin(settings=None, app_name=None, admin_contrib=False, **kwargs):
     """Configurates djangoapp pytest plugin.
 
     :param dict settings: Django project settings to override defaults.
 
     :param str|unicode app_name: Name of your application you write tests for.
         If not set ``djangoapp`` will try to guess (``tests`` dir needs to be inside application directory).
+
+    :param bool admin_contrib: Setup Django to test Admin contrib related parts.
 
     :param kwargs: Additional arguments.
 
@@ -44,6 +46,10 @@ def configure_djangoapp_plugin(settings=None, app_name=None, **kwargs):
     except ImportError:  # pragma: nocover
         raise Exception('Django is no available in test environment.')
 
-    Configuration.set(settings_dict=settings, app_name=app_name, **kwargs)
+    Configuration.set(
+        settings_dict=settings,
+        app_name=app_name,
+        admin_contrib=admin_contrib,
+        **kwargs)
 
     return str('pytest_djangoapp.plugin')

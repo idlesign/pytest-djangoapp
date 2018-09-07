@@ -63,6 +63,15 @@ To do this you can pass `extend_`-prefixed arguments:
     )
 
 
+If you test an application providing some integration with Django Admin contrib,
+there is a convenient `admin` argument you can pass to activate this contrib:
+
+.. code-block:: python
+
+    pytest_plugins = configure_djangoapp_plugin(admin=True)
+
+
+
 Using fixtures
 --------------
 
@@ -106,6 +115,7 @@ added to ``INSTALLED_APPS`` and treated by Django just as any application packag
     |  |  |__ __init__.py
     |  |  |__ testapp  <- Thirdparty app simulation package.
     |  |  |  |__ __init__.py
+    |  |  |  |__ admin.py  <- This module uses primitives provided by your app.
     |  |  |  |__ models.py  <- This module uses base models provided by your app.
     |  |  |  |__ urls.py  <- And this module uses urlpatterns provided by your app.
     |  |  |__ conftest.py

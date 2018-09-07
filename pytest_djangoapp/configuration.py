@@ -10,7 +10,8 @@ setattr(_THREAD_LOCAL, 'configuration', {})
 class Configuration(object):
 
     _prefix = 'DJANGOAPP_'
-    _KEY_APP = _prefix +'APP_NAME'
+    _KEY_ADMIN = _prefix + 'ADMIN'
+    _KEY_APP = _prefix + 'APP_NAME'
     _KEY_EXTEND = _prefix + 'DJANGOAPP_EXTEND'
 
     DIR_TESTAPP = 'testapp'
@@ -29,11 +30,13 @@ class Configuration(object):
         return _THREAD_LOCAL.configuration
 
     @classmethod
-    def set(cls, settings_dict=None, app_name=None, **kwargs):
+    def set(cls, settings_dict=None, app_name=None, admin_contrib=False, **kwargs):
         """
         :param dict settings_dict:
 
         :param str|unicode app_name:
+
+        :param bool admin_contrib: Setup Django to test Admin contrib related parts.
 
         :param kwargs: Additional arguments.
 
@@ -54,6 +57,7 @@ class Configuration(object):
         base_settings = {
             cls._KEY_APP: app_name,
             cls._KEY_EXTEND: extend,
+            cls._KEY_ADMIN: admin_contrib,
         }
         base_settings.update(settings_dict)
 
@@ -133,8 +137,22 @@ class Configuration(object):
         defaults.update(settings)
 
         app_name = defaults[cls._KEY_APP]
+        extensions = defaults[cls._KEY_EXTEND]
+        admin = defaults[cls._KEY_ADMIN]
 
-        for key, value in defaults[cls._KEY_EXTEND].items():
+        if admin:
+            middleware = extensions.setdefault('MIDDLEWARE', [])
+            middleware.extend([
+                'django.contrib.sessions.middleware.SessionMiddleware',
+                'django.contrib.auth.middleware.AuthenticationMiddleware',
+            ])
+            apps = extensions.setdefault('INSTALLED_APPS', [])
+            apps.extend([
+                'django.contrib.admin',
+                'django.contrib.sessions',
+            ])
+
+        for key, value in extensions.items():
             default_value = defaults.get(key, [])
 
             if isinstance(default_value, (list, tuple)):
