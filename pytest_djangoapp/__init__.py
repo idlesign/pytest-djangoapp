@@ -4,7 +4,7 @@ from __future__ import unicode_literals
 from .toolbox import configure_djangoapp_plugin
 
 
-VERSION = (0, 8, 0)
+VERSION = (0, 9, 0)
 """Application version number tuple."""
 
 VERSION_STR = '.'.join(map(str, VERSION))

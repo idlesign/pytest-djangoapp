@@ -2,8 +2,8 @@ pytest-djangoapp changelog
 ==========================
 
 
-Unreleased
-----------
+v0.9.0
+------
 + 'configure_djangoapp_plugin()' now accepts 'admin_contrib' argument.
 + 'request_client' fixture now accepts 'user' argument for easy auth.
 + Added 'compat' module with 'get_urlpatterns()' helper.
