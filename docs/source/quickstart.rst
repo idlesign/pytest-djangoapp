@@ -64,11 +64,11 @@ To do this you can pass `extend_`-prefixed arguments:
 
 
 If you test an application providing some integration with Django Admin contrib,
-there is a convenient `admin` argument you can pass to activate this contrib:
+there is a convenient `admin_contrib` argument you can pass to activate this contrib:
 
 .. code-block:: python
 
-    pytest_plugins = configure_djangoapp_plugin(admin=True)
+    pytest_plugins = configure_djangoapp_plugin(admin_contrib=True)
 
 
 
