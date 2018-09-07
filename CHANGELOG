@@ -6,6 +6,7 @@ Unreleased
 ----------
 + 'configure_djangoapp_plugin()' now accepts 'admin_contrib' argument.
 + 'request_client' fixture now accepts 'user' argument for easy auth.
++ Added 'compat' module with 'get_urlpatterns()' helper.
 + User password is now accessible via 'password_plain' attribute of user objects created with fixtures.
 
 
