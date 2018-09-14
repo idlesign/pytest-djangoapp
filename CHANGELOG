@@ -5,6 +5,7 @@ pytest-djangoapp changelog
 Unreleased
 ----------
 + 'configure_djangoapp_plugin()' now accepts 'settings_hook' argument.
++ Added 'messages' fixture.
 
 
 v0.9.0

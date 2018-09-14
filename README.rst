@@ -33,6 +33,7 @@ This exposes some useful tools for Django applications developers to facilitate 
 * Request object creation
 * Management command calls
 * Mailing
+* Messages
 * etc.
 
 Suitable for testing apps for Django 1.7+.

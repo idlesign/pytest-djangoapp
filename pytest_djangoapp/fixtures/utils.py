@@ -11,8 +11,10 @@ PY3 = version_info[0] == 3
 
 if PY3:
     string_types = (str,)
+    text_type = str
 else:
     string_types = (str, unicode)
+    text_type = unicode
 
 
 def get_stamp():
