@@ -4,7 +4,7 @@ from __future__ import unicode_literals
 from .configuration import Configuration
 
 
-def configure_djangoapp_plugin(settings=None, app_name=None, admin_contrib=False, **kwargs):
+def configure_djangoapp_plugin(settings=None, app_name=None, admin_contrib=False, settings_hook=None, **kwargs):
     """Configurates djangoapp pytest plugin.
 
     :param dict settings: Django project settings to override defaults.
@@ -13,6 +13,15 @@ def configure_djangoapp_plugin(settings=None, app_name=None, admin_contrib=False
         If not set ``djangoapp`` will try to guess (``tests`` dir needs to be inside application directory).
 
     :param bool admin_contrib: Setup Django to test Admin contrib related parts.
+
+    :param callable settings_hook: Allows setting a function to get resulting settings.
+
+        Function must accept settings dictionary, and return resulting settings dictionary.
+
+        .. code-block:: python
+
+            def hook_func(settings):
+                return settings
 
     :param kwargs: Additional arguments.
 
@@ -50,6 +59,7 @@ def configure_djangoapp_plugin(settings=None, app_name=None, admin_contrib=False
         settings_dict=settings,
         app_name=app_name,
         admin_contrib=admin_contrib,
+        settings_hook=settings_hook,
         **kwargs)
 
     return str('pytest_djangoapp.plugin')

@@ -1,6 +1,11 @@
 from pytest_djangoapp import configure_djangoapp_plugin
 
 
+def hook(settings):
+    settings['HOOKED'] = True
+    return settings
+
+
 pytest_plugins = configure_djangoapp_plugin(
 
     admin_contrib=True,
@@ -21,4 +26,5 @@ pytest_plugins = configure_djangoapp_plugin(
         },
     },
 
+    settings_hook=hook,
 )

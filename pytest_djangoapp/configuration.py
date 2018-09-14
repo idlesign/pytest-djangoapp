@@ -13,6 +13,7 @@ class Configuration(object):
     _KEY_ADMIN = _prefix + 'ADMIN'
     _KEY_APP = _prefix + 'APP_NAME'
     _KEY_EXTEND = _prefix + 'DJANGOAPP_EXTEND'
+    _KEY_HOOK = _prefix + 'HOOK'
 
     DIR_TESTAPP = 'testapp'
     """Name of test application directory.
@@ -30,13 +31,23 @@ class Configuration(object):
         return _THREAD_LOCAL.configuration
 
     @classmethod
-    def set(cls, settings_dict=None, app_name=None, admin_contrib=False, **kwargs):
+    def set(cls, settings_dict=None, app_name=None, admin_contrib=False, settings_hook=None, **kwargs):
         """
         :param dict settings_dict:
 
         :param str|unicode app_name:
 
         :param bool admin_contrib: Setup Django to test Admin contrib related parts.
+
+        :param callable settings_hook: Allows setting a function to get resulting settings.
+
+            Function must accept settings dictionary, and return resulting settings dictionary.
+
+            .. code-block:: python
+
+                def hook_func(settings):
+                    return settings
+
 
         :param kwargs: Additional arguments.
 
@@ -58,6 +69,7 @@ class Configuration(object):
             cls._KEY_APP: app_name,
             cls._KEY_EXTEND: extend,
             cls._KEY_ADMIN: admin_contrib,
+            cls._KEY_HOOK: settings_hook,
         }
         base_settings.update(settings_dict)
 
@@ -110,6 +122,7 @@ class Configuration(object):
                 {
                     'BACKEND': 'django.template.backends.django.DjangoTemplates',
                     'APP_DIRS': True,
+                    'OPTIONS': {'context_processors': ['django.contrib.messages.context_processors.messages']}
                 },
             ],
 
@@ -139,6 +152,7 @@ class Configuration(object):
         app_name = defaults[cls._KEY_APP]
         extensions = defaults[cls._KEY_EXTEND]
         admin = defaults[cls._KEY_ADMIN]
+        hook = defaults.pop(cls._KEY_HOOK, None) or (lambda settings_dict: settings_dict)
 
         if admin:
             middleware = extensions.setdefault('MIDDLEWARE', [])
@@ -246,5 +260,7 @@ class Configuration(object):
                     if dir_testapp.listdir('urls.py'):
                         # Set customized `urls.py`.
                         defaults['ROOT_URLCONF'] = '%s.urls' % testapp_name
+
+        defaults = hook(defaults)
 
         return defaults

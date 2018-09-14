@@ -71,6 +71,19 @@ there is a convenient `admin_contrib` argument you can pass to activate this con
     pytest_plugins = configure_djangoapp_plugin(admin_contrib=True)
 
 
+You can further change or altogether replace generated settings using `settings_hook` argument:
+
+.. code-block:: python
+
+    def hook(settings):
+        # Do something with settings.
+        return settings
+
+    pytest_plugins = configure_djangoapp_plugin(
+        settings_hook=hook,
+    )
+
+
 
 Using fixtures
 --------------

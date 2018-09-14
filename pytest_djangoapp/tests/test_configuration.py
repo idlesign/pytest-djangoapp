@@ -27,3 +27,8 @@ def test_configration(pytestconfig):
     with pytest.raises(Exception):
         # Unable to deduce app name.
         swap_dir(-2)
+
+
+def test_settings_hook():
+    from django.conf import settings
+    assert settings.HOOKED

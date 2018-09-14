@@ -2,6 +2,11 @@ pytest-djangoapp changelog
 ==========================
 
 
+Unreleased
+----------
++ 'configure_djangoapp_plugin()' now accepts 'settings_hook' argument.
+
+
 v0.9.0
 ------
 + 'configure_djangoapp_plugin()' now accepts 'admin_contrib' argument.
