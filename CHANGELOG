@@ -2,6 +2,11 @@ pytest-djangoapp changelog
 ==========================
 
 
+Unreleased
+----------
+* Fixed 'pytest_runtest_teardown' failure in case of makr.skipif or similar.
+
+
 v0.10.0
 -------
 + 'configure_djangoapp_plugin()' now accepts 'settings_hook' argument.

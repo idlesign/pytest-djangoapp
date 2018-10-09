@@ -21,8 +21,17 @@ def pytest_runtest_setup(item):
 
 
 def pytest_runtest_teardown(item, nextitem):
+    unset = {}
+
+    old_config = getattr(item, 'old_config', unset)
+
+    if old_config is unset:
+        # _teardown will suddenly work even if no _setup has occured
+        # e.g. in case of mark.skipif
+        return
+
     call_command('flush', interactive=False)
-    teardown_databases(item.old_config)
+    teardown_databases(old_config)
 
 
 def pytest_configure(config):
