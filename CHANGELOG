@@ -2,8 +2,8 @@ pytest-djangoapp changelog
 ==========================
 
 
-Unreleased
-----------
+v0.10.1
+-------
 * Fixed 'pytest_runtest_teardown' failure in case of makr.skipif or similar.
 
 
