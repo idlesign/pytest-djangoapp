@@ -4,8 +4,9 @@ from __future__ import unicode_literals
 from .configuration import Configuration
 
 
-def configure_djangoapp_plugin(settings=None, app_name=None, admin_contrib=False, settings_hook=None, **kwargs):
-    """Configurates djangoapp pytest plugin.
+def configure_djangoapp_plugin(
+        settings=None, app_name=None, admin_contrib=False, settings_hook=None, migrate=True, **kwargs):
+    """Configures djangoapp pytest plugin.
 
     :param dict settings: Django project settings to override defaults.
 
@@ -22,6 +23,9 @@ def configure_djangoapp_plugin(settings=None, app_name=None, admin_contrib=False
 
             def hook_func(settings):
                 return settings
+
+    :param bool migrate: Allows applying or skipping migration applying process. 
+        Skipping could be useful for testing applications with many migrations.
 
     :param kwargs: Additional arguments.
 
@@ -60,6 +64,7 @@ def configure_djangoapp_plugin(settings=None, app_name=None, admin_contrib=False
         app_name=app_name,
         admin_contrib=admin_contrib,
         settings_hook=settings_hook,
+        migrate=migrate,
         **kwargs)
 
     return str('pytest_djangoapp.plugin')

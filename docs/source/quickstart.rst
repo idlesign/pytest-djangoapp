@@ -71,6 +71,14 @@ there is a convenient `admin_contrib` argument you can pass to activate this con
     pytest_plugins = configure_djangoapp_plugin(admin_contrib=True)
 
 
+By default all DB migrations are applied on test runs. Since that can be unnecessary and take a long time,
+there is a `migrate` argument that you can always set to ``False``:
+
+.. code-block:: python
+
+    pytest_plugins = configure_djangoapp_plugin(migrate=False)
+
+
 You can further change or altogether replace generated settings using `settings_hook` argument:
 
 .. code-block:: python

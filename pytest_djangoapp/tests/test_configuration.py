@@ -26,7 +26,7 @@ def test_configration(pytestconfig):
 
     with pytest.raises(Exception):
         # Unable to deduce app name.
-        swap_dir(-2)
+        swap_dir(-4)
 
 
 def test_settings_hook():

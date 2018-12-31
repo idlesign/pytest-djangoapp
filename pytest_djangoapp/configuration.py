@@ -7,6 +7,19 @@ _THREAD_LOCAL = local()
 setattr(_THREAD_LOCAL, 'configuration', {})
 
 
+class FakeMigrationModules(object):
+    """Allows skipping migration applying process."""
+
+    def __init__(self, module_name):
+        self.module_name = module_name
+
+    def __getitem__(self, item):
+        return self.module_name
+
+    def __contains__(self, item):
+        return True
+
+
 class Configuration(object):
 
     _prefix = 'DJANGOAPP_'
@@ -14,6 +27,7 @@ class Configuration(object):
     _KEY_APP = _prefix + 'APP_NAME'
     _KEY_EXTEND = _prefix + 'DJANGOAPP_EXTEND'
     _KEY_HOOK = _prefix + 'HOOK'
+    _KEY_MIGRATE = _prefix + 'MIGRATIONS'
 
     DIR_TESTAPP = 'testapp'
     """Name of test application directory.
@@ -31,7 +45,9 @@ class Configuration(object):
         return _THREAD_LOCAL.configuration
 
     @classmethod
-    def set(cls, settings_dict=None, app_name=None, admin_contrib=False, settings_hook=None, **kwargs):
+    def set(cls,
+            settings_dict=None, app_name=None, admin_contrib=False, settings_hook=None, migrate=True,
+            **kwargs):
         """
         :param dict settings_dict:
 
@@ -48,6 +64,8 @@ class Configuration(object):
                 def hook_func(settings):
                     return settings
 
+        :param bool migrate: Allows applying or skipping migration applying process.
+            Skipping could be useful for testing applications with many migrations.
 
         :param kwargs: Additional arguments.
 
@@ -70,6 +88,7 @@ class Configuration(object):
             cls._KEY_EXTEND: extend,
             cls._KEY_ADMIN: admin_contrib,
             cls._KEY_HOOK: settings_hook,
+            cls._KEY_MIGRATE: migrate,
         }
         base_settings.update(settings_dict)
 
@@ -144,6 +163,8 @@ class Configuration(object):
         """
         :rtype: dict
         """
+        from django import VERSION
+
         settings = cls.get()
 
         defaults = cls.get_defaults()
@@ -153,6 +174,16 @@ class Configuration(object):
         extensions = defaults[cls._KEY_EXTEND]
         admin = defaults[cls._KEY_ADMIN]
         hook = defaults.pop(cls._KEY_HOOK, None) or (lambda settings_dict: settings_dict)
+
+        if not defaults[cls._KEY_MIGRATE]:
+            module_name = None
+
+            if VERSION <= (1, 10):
+                module_name = 'dummy_migrations'
+                defaults['MIGRATIONS_MODULE_NAME'] = module_name
+
+            defaults['MIGRATION_MODULES'] = FakeMigrationModules(module_name)
+
 
         if admin:
             middleware = extensions.setdefault('MIDDLEWARE', [])
