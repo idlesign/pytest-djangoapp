@@ -2,8 +2,8 @@ pytest-djangoapp changelog
 ==========================
 
 
-Unreleased
-----------
+v0.11.0
+-------
 + 'configure_djangoapp_plugin()' now accepts 'migrate' argument.
 * Silenced DB creation/teardown messages.
 
