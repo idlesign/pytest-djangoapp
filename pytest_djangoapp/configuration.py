@@ -22,12 +22,12 @@ class FakeMigrationModules(object):
 
 class Configuration(object):
 
-    _prefix = 'DJANGOAPP_'
-    _KEY_ADMIN = _prefix + 'ADMIN'
-    _KEY_APP = _prefix + 'APP_NAME'
-    _KEY_EXTEND = _prefix + 'DJANGOAPP_EXTEND'
-    _KEY_HOOK = _prefix + 'HOOK'
-    _KEY_MIGRATE = _prefix + 'MIGRATIONS'
+    _prefix = 'DJANGOAPP_OPTIONS'
+    _KEY_ADMIN = 'admin'
+    _KEY_APP = 'app_name'
+    _KEY_EXTEND = 'extend'
+    _KEY_HOOK = 'hook'
+    _KEY_MIGRATE = 'migrate'
 
     DIR_TESTAPP = 'testapp'
     """Name of test application directory.
@@ -84,12 +84,15 @@ class Configuration(object):
                 extend[extend_key] = val
 
         base_settings = {
-            cls._KEY_APP: app_name,
-            cls._KEY_EXTEND: extend,
-            cls._KEY_ADMIN: admin_contrib,
-            cls._KEY_HOOK: settings_hook,
-            cls._KEY_MIGRATE: migrate,
+            cls._prefix: {
+                cls._KEY_APP: app_name,
+                cls._KEY_EXTEND: extend,
+                cls._KEY_ADMIN: admin_contrib,
+                cls._KEY_HOOK: settings_hook,
+                cls._KEY_MIGRATE: migrate,
+            }
         }
+
         base_settings.update(settings_dict)
 
         _THREAD_LOCAL.configuration = base_settings
@@ -170,12 +173,14 @@ class Configuration(object):
         defaults = cls.get_defaults()
         defaults.update(settings)
 
-        app_name = defaults[cls._KEY_APP]
-        extensions = defaults[cls._KEY_EXTEND]
-        admin = defaults[cls._KEY_ADMIN]
-        hook = defaults.pop(cls._KEY_HOOK, None) or (lambda settings_dict: settings_dict)
+        djapp_options = defaults[cls._prefix]
 
-        if not defaults[cls._KEY_MIGRATE]:
+        app_name = djapp_options[cls._KEY_APP]
+        extensions = djapp_options[cls._KEY_EXTEND]
+        admin = djapp_options[cls._KEY_ADMIN]
+        hook = djapp_options.pop(cls._KEY_HOOK, None) or (lambda settings_dict: settings_dict)
+
+        if not djapp_options[cls._KEY_MIGRATE]:
             module_name = None
 
             if VERSION <= (1, 10):
