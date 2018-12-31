@@ -10,7 +10,7 @@ from .toolbox import Configuration
 
 assert fixtures_registered  # Just to prevent IDE from import removal on optimization.
 
-runner = DiscoverRunner(interactive=False, verbosity=1)
+runner = DiscoverRunner(interactive=False, verbosity=0)
 setup_databases = runner.setup_databases
 teardown_databases = runner.teardown_databases
 
