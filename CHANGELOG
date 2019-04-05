@@ -2,6 +2,12 @@ pytest-djangoapp changelog
 ==========================
 
 
+Unreleased
+----------
+* Added QA for py3.7 and Django 2.2.
+* Dropped QA for py3.4.
+
+
 v0.11.0
 -------
 + 'configure_djangoapp_plugin()' now accepts 'migrate' argument.
