@@ -61,6 +61,8 @@ setup(
         # As in https://pypi.python.org/pypi?:action=list_classifiers
         'Development Status :: 4 - Beta',
         'Framework :: Pytest',
+        'Framework :: Django',
+        'Environment :: Web Environment',
         'Intended Audience :: Developers',
         'Topic :: Software Development :: Testing',
         'Operating System :: OS Independent',
