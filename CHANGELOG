@@ -4,6 +4,7 @@ pytest-djangoapp changelog
 
 Unreleased
 ----------
++ Added 'db_queries' fixture.
 + Fixture 'request_client' now accepts 'raise_exceptions' argument to tech technical error views.
 * Added QA for py3.7 and Django 2.2.
 * Dropped QA for py3.4.

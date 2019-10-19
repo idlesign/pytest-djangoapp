@@ -9,6 +9,7 @@ Fixtures
     :maxdepth: 4
 
     fixtures_commands
+    fixtures_db
     fixtures_settings
     fixtures_request
     fixtures_templates
