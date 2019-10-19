@@ -26,7 +26,7 @@ Suitable for testing apps for Django 1.7+.
 Requirements
 ------------
 
-1. Python 2.7+, 3.4+
+1. Python 2.7+, 3.5+
 
 
 Table of Contents
