@@ -43,3 +43,8 @@ def test_request_client(request_client, user_create):
 
     assert client.user is new_user
     assert client.user_logged_in
+
+    # now technical 500 view
+    client = request_client(raise_exceptions=False)
+    response = client.get('/raiser/')
+    assert b'<h1>Server Error (500)</h1>' in response.content

@@ -8,6 +8,7 @@ from django.test import RequestFactory, Client
 if False:  # pragma: nocover
     from django.contrib.auth.base_user import AbstractBaseUser
     from django.http import HttpRequest
+    from typing import Callable
 
 
 def _contribute_ajax(headers, flag):
@@ -24,7 +25,7 @@ class DjangoappRequestFactory(RequestFactory):
 
 class DjagoappClient(Client):
 
-    def __init__(self, ajax=False, user=None, enforce_csrf_checks=False, **defaults):
+    def __init__(self, ajax=False, user=None, enforce_csrf_checks=False, raise_exceptions=True, **defaults):
         _contribute_ajax(defaults, ajax)
 
         super(DjagoappClient, self).__init__(enforce_csrf_checks, **defaults)
@@ -40,6 +41,11 @@ class DjagoappClient(Client):
 
         self.user = user
         self.user_logged_in = logged_in
+        self._raise_exc = raise_exceptions
+
+    def store_exc_info(self, **kwargs):
+        if self._raise_exc:
+            super(DjagoappClient, self).store_exc_info(**kwargs)
 
 
 @pytest.fixture
@@ -169,23 +175,17 @@ def request_client():
 
     :param bool ajax: Make AJAX (XMLHttpRequest) requests.
 
+    :param bool raise_exceptions: Do not allow Django technical exception handlers
+        to catch exceptions issued by views, propagate them instead.
+
     :param AbstractBaseUser user: User to perform queries from.
 
     :param kwargs: Additional arguments for test client initialization.
 
-    :rtype: DjagoappClient
+    :rtype: Callable[DjagoappClient]
 
     """
-    def request_client_(ajax=False, user=None, **kwargs):
-        """
-        :param bool ajax: Make AJAX (XMLHttpRequest) requests.
-
-        :param AbstractBaseUser user: User to perform queries from.
-
-        :param kwargs: Additional arguments for test client initialization.
-
-        :rtype: DjagoappClient
-        """
-        return DjagoappClient(ajax=ajax, user=user, **kwargs)
+    def request_client_(ajax=False, user=None, raise_exceptions=True, **kwargs):
+        return DjagoappClient(ajax=ajax, user=user, raise_exceptions=raise_exceptions, **kwargs)
 
     return request_client_
