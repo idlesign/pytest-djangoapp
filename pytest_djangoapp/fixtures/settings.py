@@ -40,15 +40,13 @@ def settings():
 
 class SettingsProxy(object):
 
-    __slots__ = ['_settings', '_overridden']
-
     def __init__(self):
         self._settings = django_settings
         self._overridden = {}
 
     def __setattr__(self, name, value):
 
-        if name in self.__slots__:
+        if name in {'_settings', '_overridden'}:
             return super(SettingsProxy, self).__setattr__(name, value)
 
         self._set(name, value)

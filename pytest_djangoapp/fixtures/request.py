@@ -8,7 +8,6 @@ from django.test import RequestFactory, Client
 if False:  # pragma: nocover
     from django.contrib.auth.base_user import AbstractBaseUser
     from django.http import HttpRequest
-    from typing import Callable
 
 
 def _contribute_ajax(headers, flag):
@@ -58,12 +57,10 @@ def request_factory():
             factory = request_factory()
 
     :param kwargs:
-    :rtype: RequestFactory
 
     """
     def request_factory_(**kwargs):
         """
-        :param kwargs:
         :rtype: RequestFactory
         """
         return DjangoappRequestFactory(**kwargs)
@@ -89,19 +86,9 @@ def request_get(request_factory):
 
     :param kwargs: Additional arguments for .get() method.
 
-    :rtype: HttpRequest
-
     """
     def request_get_(path=None, user=None, ajax=False, **kwargs):
         """
-        :param str|unicode path:
-
-        :param AbstractBaseUser user: User making this request.
-
-        :param bool ajax: Make AJAX (XMLHttpRequest) request.
-
-        :param kwargs: Additional arguments for .get() method.
-
         :rtype: HttpRequest
         """
         path = path or '/'
@@ -133,21 +120,9 @@ def request_post(request_factory):
 
     :param kwargs: Additional arguments for .post() method.
 
-    :rtype: HttpRequest
-
     """
     def request_post_(path=None, data=None, user=None, ajax=False, **kwargs):
         """
-        :param str|unicode path:
-
-        :param dict data: Data to post.
-
-        :param AbstractBaseUser user: User making this request.
-
-        :param bool ajax: Make AJAX (XMLHttpRequest) request.
-
-        :param kwargs: Additional arguments for .post() method.
-
         :rtype: HttpRequest
         """
         path = path or '/'
@@ -182,10 +157,11 @@ def request_client():
 
     :param kwargs: Additional arguments for test client initialization.
 
-    :rtype: Callable[DjagoappClient]
-
     """
     def request_client_(ajax=False, user=None, raise_exceptions=True, **kwargs):
+        """
+        :rtype: DjagoappClient
+        """
         return DjagoappClient(ajax=ajax, user=user, raise_exceptions=raise_exceptions, **kwargs)
 
     return request_client_

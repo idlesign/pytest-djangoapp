@@ -27,14 +27,6 @@ def command_run():
 
     """
     def command_run_(command_name, args=None, options=None):
-        """
-        :param str|unicode command_name: Command name to run.
-        :param list args: Required arguments to pass to a command.
-        :param dict options: Optional arguments to pass to a command.
-
-        :returns: Command output.
-
-        """
         args = args or []
         options = options or {}
         return call_command(command_name, *args, **options)

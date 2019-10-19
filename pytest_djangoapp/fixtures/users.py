@@ -44,12 +44,7 @@ def user_create(user_model):
 
     def user_create_(superuser=False, anonymous=False, attributes=None):
         """
-        :param bool superuser: Whether to create a superuser.
-        :param bool anonymous: Whether to create an anonymous user.
-        :param dict attributes: Additional user object attributes to initialize.
-
         :rtype: AbstractBaseUser
-
         """
         if anonymous:
             return AnonymousUser()
