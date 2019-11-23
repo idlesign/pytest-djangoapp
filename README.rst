@@ -31,6 +31,7 @@ This exposes some useful tools for Django applications developers to facilitate 
 * Management command calls
 * Mailing
 * Messages
+* DB queries audit
 * etc.
 
 Suitable for testing apps for Django 1.7+.
