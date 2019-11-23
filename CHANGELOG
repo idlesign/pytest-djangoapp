@@ -2,6 +2,11 @@ pytest-djangoapp changelog
 ==========================
 
 
+Unreleased
+----------
++ 'request_client' HTTP methods now can accept a tuple of view name with params instead of actual URL path.
+
+
 v0.12.0 [2019-10-19]
 --------------------
 + Added 'db_queries' fixture.

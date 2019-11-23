@@ -113,7 +113,10 @@ Use them just as you usually do with `pytest`:
         # And we use `request_client` fixture
         # to test our [AJAX] view.
         client = request_client(ajax=True)
-        response = client.get('/that')
+
+        # We pass a tuple with a view name with arguments to not to bother with URL.
+        response = client.get(('someview', {'somearg': 'one', 'otherarg': 33}))
+
         ...
 
         # See fixtures documentation for more fixtures.

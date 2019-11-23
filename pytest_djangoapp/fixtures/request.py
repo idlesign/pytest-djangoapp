@@ -5,6 +5,13 @@ import pytest
 
 from django.test import RequestFactory, Client
 
+try:
+    from django.urls import reverse
+
+except ImportError:  # Django < 2.0
+    from django.core.urlresolvers import reverse
+
+
 if False:  # pragma: nocover
     from django.contrib.auth.base_user import AbstractBaseUser
     from django.http import HttpRequest
@@ -21,8 +28,15 @@ class DjangoappRequestFactory(RequestFactory):
         _contribute_ajax(defaults, ajax)
         super(DjangoappRequestFactory, self).__init__(**defaults)
 
+    def generic(self, method, path, *args, **kwargs):
 
-class DjagoappClient(Client):
+        if isinstance(path, tuple):
+            path = reverse(path[0], kwargs=path[1])
+
+        return super(DjangoappRequestFactory, self).generic(method, path, *args, **kwargs)
+
+
+class DjagoappClient(Client, DjangoappRequestFactory):
 
     def __init__(self, ajax=False, user=None, enforce_csrf_checks=False, raise_exceptions=True, **defaults):
         _contribute_ajax(defaults, ajax)
@@ -141,7 +155,13 @@ def request_client():
     Example::
 
         def test_this(request_client):
+
             client = request_client()
+
+            response = client.get(
+                ('someview', {'somearg': 'one', 'otherarg': 33})
+            ).content
+
             ...
 
             ajax_client = request_client(ajax=True)

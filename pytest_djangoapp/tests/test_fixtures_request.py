@@ -1,10 +1,3 @@
-try:
-    from django.urls import reverse
-
-except ImportError:  # Django<2.0
-    from django.core.urlresolvers import reverse
-
-
 def test_request_factory(request_factory):
     assert request_factory()
 
@@ -25,15 +18,15 @@ def test_request_client(request_client, user_create):
     assert client.user is None
     assert not client.user_logged_in
 
-    response = client.get(reverse('index'))
+    response = client.get(('index', {'some_id': 10}))
 
     assert response.status_code == 200
-    assert b'fine' in response.content
+    assert response.content == b'10 | fine /static/blank.png'
 
     # Now AJAX client.
     client = request_client(ajax=True)
 
-    response = client.get(reverse('index'))
+    response = client.get(('index', {'some_id': 22}))
 
     assert response.status_code == 200
     assert b'ajaxed' in response.content

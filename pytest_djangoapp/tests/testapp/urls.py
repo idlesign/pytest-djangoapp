@@ -9,16 +9,16 @@ def raise_exception(request):
     raise Exception('This one should be handled by 500 technical view')
 
 
-def index(request):
+def index(request, some_id):
 
     if request.is_ajax():
         return HttpResponse('ajaxed')
 
     from django.contrib.staticfiles.templatetags.staticfiles import static
-    return HttpResponse('fine %s' % static('blank.png'))
+    return HttpResponse('%s | fine %s' % (some_id, static('blank.png')))
 
 
 urlpatterns = get_urlpatterns([
-    url(r'^index/$', index, name='index'),
+    url(r'^index/(?P<some_id>\d+)/$', index, name='index'),
     url(r'^raiser/$', raise_exception, name='raiser'),
 ])
