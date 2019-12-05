@@ -14,7 +14,7 @@ def index(request, some_id):
     if request.is_ajax():
         return HttpResponse('ajaxed')
 
-    from django.contrib.staticfiles.templatetags.staticfiles import static
+    from django.templatetags.static import static
     return HttpResponse('%s | fine %s' % (some_id, static('blank.png')))
 
 

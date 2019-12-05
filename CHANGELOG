@@ -2,6 +2,11 @@ pytest-djangoapp changelog
 ==========================
 
 
+Unreleased
+----------
+* Added QA for Py3.8 and Django 3.0.
+
+
 v0.13.0 [2019-11-23]
 --------------------
 + 'request_client' HTTP methods now can accept a tuple of view name with params instead of actual URL path.
