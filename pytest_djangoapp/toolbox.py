@@ -57,7 +57,7 @@ def configure_djangoapp_plugin(
         import django
 
     except ImportError:  # pragma: nocover
-        raise Exception('Django is no available in test environment.')
+        raise Exception('Django is not available in test environment. Please install it.')
 
     Configuration.set(
         settings_dict=settings,
