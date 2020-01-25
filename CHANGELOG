@@ -2,8 +2,8 @@ pytest-djangoapp changelog
 ==========================
 
 
-Unreleased
-----------
+v0.14.0 [2020-01-25]
+--------------------
 + Added support for testing entire Django projects (requires Py 3).
 * Added QA for Py3.8 and Django 3.0.
 
