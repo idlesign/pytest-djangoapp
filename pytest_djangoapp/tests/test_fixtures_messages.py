@@ -17,3 +17,4 @@ def test_messages(messages):
     assert len(messages.tags['info']) == 1
 
     assert 'ещё ошибка' in messages
+    assert 'other' not in messages

@@ -23,3 +23,5 @@ def test_db_queries(db_queries):
 
     assert len(db_queries.sql()) == 1  # auxiliary sql filtered
     assert db_queries.time() < 1
+
+    db_queries.clear()
