@@ -180,6 +180,10 @@ class Configuration(object):
         admin = djapp_options[cls._KEY_ADMIN]
         hook = djapp_options.pop(cls._KEY_HOOK, None) or (lambda settings_dict: settings_dict)
 
+        # djangoapp is considered testing a whole project (a set of apps)
+        # if hook function is a `partial` for function with a certain name.
+        project_mode = getattr(getattr(hook, 'func', None), '__name__', '') == 'update_settings_from_module'
+
         if not djapp_options[cls._KEY_MIGRATE]:
             module_name = None
 
@@ -188,7 +192,6 @@ class Configuration(object):
                 defaults['MIGRATIONS_MODULE_NAME'] = module_name
 
             defaults['MIGRATION_MODULES'] = FakeMigrationModules(module_name)
-
 
         if admin:
             middleware = extensions.setdefault('MIDDLEWARE', [])
@@ -273,13 +276,14 @@ class Configuration(object):
                         dir_tests = dirs[0]
                         break
 
-            if not app_name:
+            if not app_name and not project_mode:
                 raise Exception(
                     'Unable to deduce application name. '
                     'Check application package and `tests` directory exists. '
                     'Current dir: %s' % dir_current)
 
-            installed_apps.append(app_name)
+            if app_name:
+                installed_apps.append(app_name)
 
             if dir_tests:
                 # Try to find and add an additional test app.

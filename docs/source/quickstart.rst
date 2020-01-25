@@ -93,6 +93,24 @@ You can further change or altogether replace generated settings using `settings_
 
 
 
+Testing an entire project
+-------------------------
+
+.. note:: Requires Python 3.
+
+Despite the fact that `djangoapp` is primarily aimed to reusable
+Django applications testing one can use it also to test a project (a set of apps).
+
+For that, pass a dotted settings module path into `settings` argument:
+
+
+.. code-block:: python
+
+    pytest_plugins = configure_djangoapp_plugin(
+        settings='myproject.settings.settings_testing',
+    )
+
+
 Using fixtures
 --------------
 

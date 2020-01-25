@@ -67,6 +67,23 @@ Add the following lines into `conftest.py` to configure `djangoapp` and start us
 Fixtures usage examples can be found in the documentation and the source code.
 
 
+Testing an entire project
+-------------------------
+
+Despite the fact that `djangoapp` is primarily aimed to reusable
+Django applications testing one can use it also to test a project (a set of apps).
+
+For that, pass a dotted settings module path into `settings` argument:
+
+
+.. code-block:: python
+
+    pytest_plugins = configure_djangoapp_plugin(
+        settings='myproject.settings.settings_testing',
+    )
+
+
+
 What about pytest-django
 ------------------------
 
