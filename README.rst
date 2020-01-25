@@ -72,7 +72,6 @@ Testing an entire project
 
 Despite the fact that `djangoapp` is primarily aimed to reusable
 Django applications testing one can use it also to test a project (a set of apps).
-
 For that, pass a dotted settings module path into `settings` argument:
 
 
