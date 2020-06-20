@@ -66,20 +66,6 @@ Add the following lines into `conftest.py` to configure `djangoapp` and start us
 
 Fixtures usage examples can be found in the documentation and the source code.
 
-pytest-djangoapp does not depend on pytest-django, and the pytest-djangoapp
-fixtures allow the use of Django without marking all relevant tests as needing
-a database, as is required by pytest-django which provides the "django_db" mark
-and db fixtures.
-
-If you have pytest-django already installed, it can be disabled for projects
-using pytest-djangoapp by adding the following lines into `pytest.ini`:
-
-.. code-block:: ini
-
-    # pytest.ini
-    [pytest]
-    addopts = -p no:django
-
 
 Testing an entire project
 -------------------------
@@ -100,6 +86,8 @@ For that, pass a dotted settings module path into `settings` argument:
 What about pytest-django
 ------------------------
 
+`pytest-djangoapp` does not depend on `pytest-django`.
+
 There are design decisions in `pytest-django` that might make it uncomfortable to work with.
 
 1. It uses `setuptools` entrypoints feature for `pytest` plugin discovery. It's not a problem by itself,
@@ -111,6 +99,19 @@ There are design decisions in `pytest-django` that might make it uncomfortable t
 3. Some fixtures (e.g. `django_assert_num_queries`) usability arouse questions.
 
 Despite that `pytest-django` is nice, of course.
+
+
+`pytest-djangoapp` fixtures allow the use of Django without marking all relevant tests as needing
+a database, as is required by pytest-django which provides the ``django_db`` mark and db fixtures.
+
+If you have `pytest-django` already installed, it can be disabled for projects
+using `pytest-djangoapp` by adding the following lines into ``pytest.ini``:
+
+.. code-block:: ini
+
+    # pytest.ini
+    [pytest]
+    addopts = -p no:django
 
 
 Documentation
