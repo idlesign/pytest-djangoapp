@@ -4,8 +4,19 @@ from __future__ import unicode_literals
 import pytest
 from django.conf import settings as django_settings
 
+from pytest_djangoapp.configuration import Configuration
 
 _UNSET = set()
+
+
+@pytest.fixture(scope="session")
+def djapp_options():
+    yield Configuration.get()[Configuration._prefix]
+
+
+@pytest.fixture(scope="session")
+def app_name(djapp_options):
+    yield djapp_options[Configuration._KEY_APP]
 
 
 @pytest.fixture()
