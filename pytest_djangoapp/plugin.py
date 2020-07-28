@@ -30,7 +30,7 @@ def pytest_runtest_teardown(item, nextitem):
         # e.g. in case of mark.skipif
         return
 
-    call_command('flush', interactive=False)
+    call_command('flush', interactive=False, reset_sequences=False)
     teardown_databases(old_config)
 
 
