@@ -9,9 +9,17 @@ def test_settings(settings):
         'SOMENEW': 'value',
     })
 
+    assert settings.DEBUG
+    assert settings.SOMENEW == 'value'
+
     assert _actual_settings.DEBUG
+    assert _actual_settings.SOMENEW == 'value'
 
     settings.SOMENEW = 'other'
+
+    assert settings.SOMENEW == 'other'
+
+    assert _actual_settings.SOMENEW == 'other'
 
 
 def test_context_manager(settings):
@@ -20,6 +28,9 @@ def test_context_manager(settings):
     assert not _actual_settings.DEBUG
 
     with settings(SOME=1, DEBUG=True):
+        assert settings.SOME == 1
+        assert settings.DEBUG
+
         assert _actual_settings.SOME == 1
         assert _actual_settings.DEBUG
 
