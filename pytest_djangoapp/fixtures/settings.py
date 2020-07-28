@@ -4,8 +4,27 @@ from __future__ import unicode_literals
 import pytest
 from django.conf import settings as django_settings
 
+from pytest_djangoapp.configuration import Configuration
 
 _UNSET = set()
+
+
+def _run_settings_hook(djapp_options, settings):
+    hook = djapp_options[Configuration._KEY_HOOK] or (lambda settings_dict: settings_dict)
+    return hook(settings)
+
+
+def _merge(settings):
+    merged = {}
+    for setting in dir(django_settings):
+        if setting.isupper():
+            merged[setting] = getattr(django_settings, setting)
+
+    for setting in dir(settings):
+        if setting.isupper():
+            merged[setting] = getattr(settings, setting)
+
+    return merged
 
 
 @pytest.fixture()
@@ -31,7 +50,8 @@ def settings():
 
     :rtype: SettingsProxy
     """
-    proxy = SettingsProxy()
+    djapp_options = Configuration.get()[Configuration._prefix]
+    proxy = SettingsProxy(djapp_options)
 
     yield proxy
 
@@ -40,13 +60,14 @@ def settings():
 
 class SettingsProxy(object):
 
-    def __init__(self):
+    def __init__(self, djapp_options):
+        self._options = djapp_options
         self._settings = django_settings
         self._overridden = {}
 
     def __setattr__(self, name, value):
 
-        if name in {'_settings', '_overridden'}:
+        if name in {'_options', '_settings', '_overridden'}:
             return super(SettingsProxy, self).__setattr__(name, value)
 
         self._set(name, value)
@@ -58,6 +79,8 @@ class SettingsProxy(object):
         for key, val in kwargs.items():
             do_set(key, val)
 
+        self.update(_run_settings_hook(self._options, _merge(self._settings)))
+
         return self
 
     def __enter__(self):
@@ -65,6 +88,7 @@ class SettingsProxy(object):
 
     def __exit__(self, exc_type, exc_val, exc_tb):
         self.restore_initial()
+        self.update(_run_settings_hook(self._options, _merge(self._settings)))
 
     def _set(self, name, value):
         settings = self._settings

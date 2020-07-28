@@ -178,7 +178,7 @@ class Configuration(object):
         app_name = djapp_options[cls._KEY_APP]
         extensions = djapp_options[cls._KEY_EXTEND]
         admin = djapp_options[cls._KEY_ADMIN]
-        hook = djapp_options.pop(cls._KEY_HOOK, None) or (lambda settings_dict: settings_dict)
+        hook = djapp_options.get(cls._KEY_HOOK, None) or (lambda settings_dict: settings_dict)
 
         # djangoapp is considered testing a whole project (a set of apps)
         # if hook function is a `partial` for function with a certain name.
