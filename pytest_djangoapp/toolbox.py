@@ -7,7 +7,7 @@ from .configuration import Configuration
 
 
 def configure_djangoapp_plugin(
-        settings=None, app_name=None, admin_contrib=False, settings_hook=None, migrate=True, **kwargs):
+        settings=None, app_name=None, admin_contrib=False, settings_hook=None, migrate=True, test_app_name=None, **kwargs):
     """Configures djangoapp pytest plugin.
 
     :param str|dict settings: Django project settings to override defaults.
@@ -72,6 +72,7 @@ def configure_djangoapp_plugin(
         admin_contrib=admin_contrib,
         settings_hook=settings_hook,
         migrate=migrate,
+        test_app_name=test_app_name,
         **kwargs)
 
     return str('pytest_djangoapp.plugin')

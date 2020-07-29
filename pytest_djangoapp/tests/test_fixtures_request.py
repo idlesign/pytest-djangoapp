@@ -12,7 +12,9 @@ def test_request_post(request_post, user_create):
     assert request_post(ajax=True, data={'a': 'b'})
 
 
-def test_request_client(request_client, user_create):
+# Possibly inject_testapp_urls should be an auto session fixtures
+# to avoid backwards incompatibility
+def test_request_client(request_client, user_create, inject_testapp_urls):
     client = request_client()
     assert client
     assert client.user is None

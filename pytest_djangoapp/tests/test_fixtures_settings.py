@@ -92,9 +92,9 @@ def test_context_manager(settings):
     assert settings.OTHER == 1
 
 
-def test_urlconf(settings):
-    assert settings.ROOT_URLCONF == 'pytest_djangoapp.tests.testapp.urls'
+def test_no_urlconf(settings):
+    assert not hasattr(settings, 'ROOT_URLCONF')
 
 
-def test_app_name(app_name):
+def test_no_app_name(app_name):
     assert not app_name
