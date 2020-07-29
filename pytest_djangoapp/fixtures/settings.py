@@ -38,6 +38,9 @@ def settings():
     proxy.restore_initial()
 
 
+_PROXY_SETTING_ATTRS = '_settings', '_overridden'
+
+
 class SettingsProxy(object):
 
     def __init__(self):
@@ -46,10 +49,20 @@ class SettingsProxy(object):
 
     def __setattr__(self, name, value):
 
-        if name in {'_settings', '_overridden'}:
+        if name in _PROXY_SETTING_ATTRS:
             return super(SettingsProxy, self).__setattr__(name, value)
 
         self._set(name, value)
+
+    def __getattr__(self, name):
+
+        if name in _PROXY_SETTING_ATTRS:
+            return super(SettingsProxy, self).__getattr__(name)
+
+        try:
+            return getattr(self._overridden, name)
+        except AttributeError:
+            return getattr(self._settings, name)
 
     def __call__(self, **kwargs):
         # Aid context manager mode.
