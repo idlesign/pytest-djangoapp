@@ -1,6 +1,7 @@
+import json
+
 from django.conf.urls import url
 from django.http import HttpResponse
-
 
 from pytest_djangoapp.compat import get_urlpatterns
 
@@ -12,8 +13,8 @@ def raise_exception(request):
 def index(request, some_id):
 
     if request.method == 'POST':
-        body = request.body
-        return HttpResponse(f'json{body.decode()}')
+        json.loads(request.body)
+        return HttpResponse('json')
 
     if request.is_ajax():
         return HttpResponse('ajaxed')

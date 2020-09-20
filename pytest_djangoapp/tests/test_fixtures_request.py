@@ -47,4 +47,3 @@ def test_request_client(request_client, user_create):
     response = client.post(('index', {'some_id': 10}), {'a': 'b'})
     content = response.content
     assert b'json' in content
-    assert b'b' in content
