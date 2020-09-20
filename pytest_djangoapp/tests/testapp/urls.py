@@ -11,6 +11,10 @@ def raise_exception(request):
 
 def index(request, some_id):
 
+    if request.method == 'POST':
+        body = request.body
+        return HttpResponse(f'json{body.decode()}')
+
     if request.is_ajax():
         return HttpResponse('ajaxed')
 

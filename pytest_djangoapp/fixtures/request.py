@@ -2,7 +2,6 @@
 from __future__ import unicode_literals
 
 import pytest
-
 from django.test import RequestFactory, Client
 
 try:
@@ -13,7 +12,7 @@ except ImportError:  # Django < 2.0
 
 
 if False:  # pragma: nocover
-    from django.contrib.auth.base_user import AbstractBaseUser
+    from django.contrib.auth.base_user import AbstractBaseUser  # noqa
     from django.http import HttpRequest
 
 
@@ -24,9 +23,20 @@ def _contribute_ajax(headers, flag):
 
 class DjangoappRequestFactory(RequestFactory):
 
-    def __init__(self, ajax=False, **defaults):
+    def __init__(self, ajax=False, json=False, **defaults):
         _contribute_ajax(defaults, ajax)
         super(DjangoappRequestFactory, self).__init__(**defaults)
+        self._json = json
+
+    def _encode_json(self, data, content_type):
+        if self._json:
+            content_type = 'application/json'
+        return super(DjangoappRequestFactory, self)._encode_json(data, content_type)
+
+    def _encode_data(self, data, content_type):
+        if self._json:
+            content_type = 'application/json'
+        return super(DjangoappRequestFactory, self)._encode_data(data, content_type)
 
     def generic(self, method, path, *args, **kwargs):
 
@@ -38,10 +48,18 @@ class DjangoappRequestFactory(RequestFactory):
 
 class DjagoappClient(Client, DjangoappRequestFactory):
 
-    def __init__(self, ajax=False, user=None, enforce_csrf_checks=False, raise_exceptions=True, **defaults):
+    def __init__(
+            self,
+            ajax=False,
+            user=None,
+            enforce_csrf_checks=False,
+            raise_exceptions=True,
+            json=False,
+            **defaults
+    ):
         _contribute_ajax(defaults, ajax)
 
-        super(DjagoappClient, self).__init__(enforce_csrf_checks, **defaults)
+        super(DjagoappClient, self).__init__(enforce_csrf_checks, json=json, **defaults)
 
         if user:
             assert hasattr(user, 'password_plain'), (
@@ -170,18 +188,25 @@ def request_client():
 
     :param bool ajax: Make AJAX (XMLHttpRequest) requests.
 
+    :param AbstractBaseUser user: User to perform queries from.
+
     :param bool raise_exceptions: Do not allow Django technical exception handlers
         to catch exceptions issued by views, propagate them instead.
 
-    :param AbstractBaseUser user: User to perform queries from.
+    :param bool json: Encode data as JSON.
 
     :param kwargs: Additional arguments for test client initialization.
 
     """
-    def request_client_(ajax=False, user=None, raise_exceptions=True, **kwargs):
+    def request_client_(ajax=False, user=None, raise_exceptions=True, json=False, **kwargs):
         """
         :rtype: DjagoappClient
         """
-        return DjagoappClient(ajax=ajax, user=user, raise_exceptions=raise_exceptions, **kwargs)
+        return DjagoappClient(
+            ajax=ajax,
+            user=user,
+            raise_exceptions=raise_exceptions,
+            json=json,
+            **kwargs)
 
     return request_client_

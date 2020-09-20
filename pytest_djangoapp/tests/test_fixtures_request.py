@@ -41,3 +41,8 @@ def test_request_client(request_client, user_create):
     client = request_client(raise_exceptions=False)
     response = client.get('/raiser/')
     assert b'<h1>Server Error (500)</h1>' in response.content
+
+    # now json
+    client = request_client(json=True)
+    response = client.post(('index', {'some_id': 10}), {'a': 'b'})
+    assert response.content == b'json{"a": "b"}'

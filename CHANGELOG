@@ -2,6 +2,11 @@ pytest-djangoapp changelog
 ==========================
 
 
+Unreleased
+----------
++ Fixture 'request_client' now accepts 'json' argument to encode post data.
+
+
 v0.14.0 [2020-01-25]
 --------------------
 + Added support for testing entire Django projects (requires Py 3).
