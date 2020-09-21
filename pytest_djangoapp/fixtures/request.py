@@ -195,6 +195,8 @@ def request_client():
 
     :param bool json: Encode data as JSON.
 
+        .. warning:: To be used with Django 2.1+
+
     :param kwargs: Additional arguments for test client initialization.
 
     """

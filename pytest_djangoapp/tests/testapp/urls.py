@@ -1,5 +1,3 @@
-import json
-
 from django.conf.urls import url
 from django.http import HttpResponse
 
@@ -13,7 +11,6 @@ def raise_exception(request):
 def index(request, some_id):
 
     if request.method == 'POST':
-        json.loads(request.body)
         return HttpResponse('json')
 
     if request.is_ajax():
