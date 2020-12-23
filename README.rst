@@ -79,6 +79,7 @@ For that, pass a dotted settings module path into `settings` argument:
 
     pytest_plugins = configure_djangoapp_plugin(
         settings='myproject.settings.settings_testing',
+        migrate=False,  # If you do not want to apply migrations.
     )
 
 
