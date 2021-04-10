@@ -119,6 +119,8 @@ class Configuration(object):
 
         settings_dict = dict(
 
+            SECRET_KEY='djangoapp',
+
             ALLOWED_HOSTS=(
                 global_settings.ALLOWED_HOSTS +
                 # Satisfy Django test client needed in Django < 2.0
