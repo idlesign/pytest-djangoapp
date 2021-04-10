@@ -2,8 +2,8 @@ pytest-djangoapp changelog
 ==========================
 
 
-Unreleased
-----------
+v0.15.1 [2021-04-10]
+--------------------
 * Made Django 3.2 compatible.
 
 
