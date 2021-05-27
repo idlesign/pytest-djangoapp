@@ -41,3 +41,4 @@ def pytest_configure(config):
 
     django_settings.configure(**settings_dict)
     django.setup()
+    runner.verbosity = config.option.verbose
