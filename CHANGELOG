@@ -2,6 +2,11 @@ pytest-djangoapp changelog
 ==========================
 
 
+Unreleased
+----------
+! Dropped QA for Python 2.7 and 3.5.
+
+
 v0.15.1 [2021-04-10]
 --------------------
 * Made Django 3.2 compatible.

@@ -2,16 +2,13 @@ pytest-djangoapp
 ================
 https://github.com/idlesign/pytest-djangoapp
 
-|release| |lic| |ci| |coverage|
+|release| |lic| |coverage|
 
 .. |release| image:: https://img.shields.io/pypi/v/pytest-djangoapp.svg
     :target: https://pypi.python.org/pypi/pytest-djangoapp
 
 .. |lic| image:: https://img.shields.io/pypi/l/pytest-djangoapp.svg
     :target: https://pypi.python.org/pypi/pytest-djangoapp
-
-.. |ci| image:: https://img.shields.io/travis/idlesign/pytest-djangoapp/master.svg
-    :target: https://travis-ci.org/idlesign/pytest-djangoapp
 
 .. |coverage| image:: https://img.shields.io/coveralls/idlesign/pytest-djangoapp/master.svg
     :target: https://coveralls.io/r/idlesign/pytest-djangoapp
