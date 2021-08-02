@@ -88,7 +88,11 @@ def update_settings_from_module(settings, module):
 
     settings_module = import_module(module)
 
-    settings_dict = {k: v for k, v in settings_module.__dict__.items() if k.upper() == k}
+    settings_dict = {
+        key: value
+        for key, value in settings_module.__dict__.items()
+        if key.upper() == key and not key.startswith('_')
+    }
     settings.update(settings_dict)
 
     return settings
