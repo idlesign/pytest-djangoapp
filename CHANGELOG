@@ -5,6 +5,7 @@ pytest-djangoapp changelog
 Unreleased
 ----------
 ! Dropped QA for Python 2.7 and 3.5.
+! This version is the last featuring Python 2 and 3.5 support.
 + Ignore temporary attributes from project settings module (see #21).
 
 
