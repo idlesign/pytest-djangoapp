@@ -1,4 +1,10 @@
-from django.conf.urls import url
+try:
+    from django.urls import re_path
+    
+except ImportError:
+    from django.conf.urls import url as re_path
+
+    
 from django.http import HttpResponse
 
 from pytest_djangoapp.compat import get_urlpatterns
@@ -21,6 +27,6 @@ def index(request, some_id):
 
 
 urlpatterns = get_urlpatterns([
-    url(r'^index/(?P<some_id>\d+)/$', index, name='index'),
-    url(r'^raiser/$', raise_exception, name='raiser'),
+    re_path(r'^index/(?P<some_id>\d+)/$', index, name='index'),
+    re_path(r'^raiser/$', raise_exception, name='raiser'),
 ])
