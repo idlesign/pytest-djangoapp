@@ -19,7 +19,7 @@ def index(request, some_id):
     if request.method == 'POST':
         return HttpResponse('json')
 
-    if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+    if request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest':  # .headers in Django 2.2+
         return HttpResponse('ajaxed')
 
     from django.templatetags.static import static
