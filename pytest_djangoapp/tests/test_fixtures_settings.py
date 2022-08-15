@@ -90,3 +90,11 @@ def test_context_manager(settings):
 
     settings.OTHER = 1
     assert settings.OTHER == 1
+
+
+def test_no_urlconf(settings):
+    assert not hasattr(settings, 'ROOT_URLCONF')
+
+
+def test_no_app_name(app_name):
+    assert not app_name

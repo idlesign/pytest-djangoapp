@@ -2,6 +2,7 @@
 from __future__ import unicode_literals
 
 from threading import local
+import os.path
 
 _THREAD_LOCAL = local()
 setattr(_THREAD_LOCAL, 'configuration', {})
@@ -47,6 +48,7 @@ class Configuration(object):
     @classmethod
     def set(cls,
             settings_dict=None, app_name=None, admin_contrib=False, settings_hook=None, migrate=True,
+            test_app_name=None,
             **kwargs):
         """
         :param dict settings_dict:
@@ -92,6 +94,8 @@ class Configuration(object):
                 cls._KEY_MIGRATE: migrate,
             }
         }
+        if test_app_name:
+            cls.DIR_TESTAPP = test_app_name
 
         base_settings.update(settings_dict)
 
@@ -236,6 +240,14 @@ class Configuration(object):
             if app_name not in installed_apps:
                 installed_apps.append(app_name)
 
+            test_app_name = cls.DIR_TESTAPP
+
+            testappdir = os.path.join(*test_app_name.split('.'))
+
+            if os.path.exists(testappdir):
+                if test_app_name and test_app_name not in installed_apps:
+                    installed_apps.append(test_app_name)
+
         else:
             dir_current = pytest_config.invocation_dir
             dir_tests = None
@@ -284,7 +296,7 @@ class Configuration(object):
                     'Check application package and `tests` directory exists. '
                     'Current dir: %s' % dir_current)
 
-            if app_name:
+            if app_name and app_name not in installed_apps:
                 installed_apps.append(app_name)
 
             if dir_tests:

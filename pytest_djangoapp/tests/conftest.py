@@ -7,7 +7,6 @@ def hook(settings):
 
 
 pytest_plugins = configure_djangoapp_plugin(
-
     admin_contrib=True,
 
     extend_INSTALLED_APPS=[
@@ -29,4 +28,7 @@ pytest_plugins = configure_djangoapp_plugin(
     settings_hook=hook,
     migrate=False,
 
+    app_name='pytest_djangoapp',
+    # The test app name could be easily auto discovered
+    test_app_name='pytest_djangoapp.tests.testapp',
 )
