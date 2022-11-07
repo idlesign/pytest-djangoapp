@@ -27,6 +27,6 @@ pytest_plugins = configure_djangoapp_plugin(
     },
 
     settings_hook=hook,
-    migrate=False,
+    migrate=True,
 
 )

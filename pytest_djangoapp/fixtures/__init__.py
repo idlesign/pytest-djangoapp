@@ -2,6 +2,7 @@
 from __future__ import unicode_literals
 
 from .commands import command_run
+from .migrations import check_migrations
 from .db import db_queries
 from .mail import mail_outbox
 from .messages import messages
