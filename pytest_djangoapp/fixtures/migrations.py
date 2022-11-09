@@ -6,7 +6,7 @@ from django.core.management import call_command
 
 @pytest.fixture()
 def check_migrations():
-    """Check if migrations are up to date.
+    """Check if migrations are up to date (migration files exist for current models' state).
 
     Example::
 
@@ -14,17 +14,20 @@ def check_migrations():
             result = check_migrations()
 
     """
+    if VERSION < (2, 0):
+        raise Exception('Django 2.0+ required for checking migrations')
+
     def check_migrations_run_(app=None):
-        if VERSION < (2, 0):
-            raise Exception('Django 2.0+ required for checking migrations')
 
         try:
             if app:
                 call_command('makemigrations', '--check', '--dry-run', app)
             else:
                 call_command('makemigrations', '--check', '--dry-run')
+
         except SystemExit:
             return False
+
         return True
 
     return check_migrations_run_

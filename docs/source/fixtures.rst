@@ -2,7 +2,7 @@ Fixtures
 ========
 
 
-`djangoapp` offers you various `pytest` fixtures falling into the categories below:
+``djangoapp`` offers you various ``pytest`` fixtures falling into the categories below:
 
 
 .. toctree::
@@ -16,3 +16,4 @@ Fixtures
     fixtures_users
     fixtures_mail
     fixtures_messages
+    fixtures_migrations
