@@ -2,8 +2,8 @@ pytest-djangoapp changelog
 ==========================
 
 
-Unreleased
-----------
+v1.0.0 [2022-11-09]
+-------------------
 ! Dropped support for Django 1.7.
 ! Dropped support for Py2. Py3.6+ specific syntax is introduced. Code update may be required.
 + Introduced new 'check_migrations' fixture.
