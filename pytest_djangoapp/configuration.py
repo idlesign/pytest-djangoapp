@@ -1,5 +1,5 @@
 from threading import local
-from typing import Type, Callable
+from typing import Callable
 
 _THREAD_LOCAL = local()
 setattr(_THREAD_LOCAL, 'configuration', {})
@@ -140,7 +140,6 @@ class Configuration:
             },
 
             MIDDLEWARE=middleware,
-            MIDDLEWARE_CLASSES=middleware,  # Prevents Django 1.7 warning.
 
             EMAIL_BACKEND='django.core.mail.backends.locmem.EmailBackend',
 
@@ -153,15 +152,6 @@ class Configuration:
             ],
 
         )
-
-        try:
-            # Django < 1.8
-            settings_dict['TEMPLATE_CONTEXT_PROCESSORS'] = tuple(global_settings.TEMPLATE_CONTEXT_PROCESSORS) + (
-                'django.core.context_processors.request',
-            )
-
-        except AttributeError:
-            pass
 
         return settings_dict.copy()
 

@@ -17,17 +17,18 @@ This exposes some useful tools for Django applications developers to facilitate 
 * Request object creation
 * Management command calls
 * Mailing
+* Migrations
 * Messages
 * DB queries audit
 * etc.
 
-Suitable for testing apps for Django 1.7+.
+Suitable for testing apps for Django 1.8+.
 
 
 Requirements
 ------------
 
-1. Python 2.7+, 3.5+
+1. Python 3.6+
 
 
 Table of Contents
