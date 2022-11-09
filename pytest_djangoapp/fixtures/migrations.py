@@ -15,10 +15,9 @@ def check_migrations(command_run):
     :param app: Application name to check migrations for.
 
     """
-    if VERSION < (2, 0):
-        raise Exception('Django 2.0+ required for checking migrations')
-
     def check_migrations_run_(app: str = None):
+        if VERSION < (2, 0):
+            raise Exception('Django 2.0+ required for checking migrations')
 
         try:
             args = ['--check', '--dry-run']
