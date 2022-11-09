@@ -23,4 +23,4 @@ class Command(BaseCommand):
 
         two = options.get('two', None)
 
-        return '%s|%s' % (one, two)
+        return f'{one}|{two}'

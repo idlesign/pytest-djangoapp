@@ -1,26 +1,24 @@
-# -*- encoding: utf-8 -*-
-from __future__ import unicode_literals
-
 from threading import local
+from typing import Type, Callable
 
 _THREAD_LOCAL = local()
 setattr(_THREAD_LOCAL, 'configuration', {})
 
 
-class FakeMigrationModules(object):
+class FakeMigrationModules:
     """Allows skipping migration applying process."""
 
-    def __init__(self, module_name):
+    def __init__(self, module_name: str):
         self.module_name = module_name
 
-    def __getitem__(self, item):
+    def __getitem__(self, item: str) -> str:
         return self.module_name
 
-    def __contains__(self, item):
+    def __contains__(self, item: str):
         return True
 
 
-class Configuration(object):
+class Configuration:
 
     _prefix = 'DJANGOAPP_OPTIONS'
     _KEY_ADMIN = 'admin'
@@ -41,21 +39,28 @@ class Configuration(object):
     """
 
     @classmethod
-    def get(cls):
+    def get(cls) -> dict:
         return _THREAD_LOCAL.configuration
 
     @classmethod
-    def set(cls,
-            settings_dict=None, app_name=None, admin_contrib=False, settings_hook=None, migrate=True,
-            **kwargs):
+    def set(
+        cls,
+        settings_dict: dict = None,
+        *,
+        app_name: str = None,
+        admin_contrib: bool = False,
+        settings_hook: Callable = None,
+        migrate: bool = True,
+        **kwargs
+    ):
         """
-        :param dict settings_dict:
+        :param settings_dict:
 
-        :param str|unicode app_name:
+        :param app_name:
 
-        :param bool admin_contrib: Setup Django to test Admin contrib related parts.
+        :param admin_contrib: Setup Django to test Admin contrib related parts.
 
-        :param callable settings_hook: Allows setting a function to get resulting settings.
+        :param settings_hook: Allows setting a function to get resulting settings.
 
             Function must accept settings dictionary, and return resulting settings dictionary.
 
@@ -64,7 +69,7 @@ class Configuration(object):
                 def hook_func(settings):
                     return settings
 
-        :param bool migrate: Allows applying or skipping migration applying process.
+        :param migrate: Allows applying or skipping migration applying process.
             Skipping could be useful for testing applications with many migrations.
 
         :param kwargs: Additional arguments.
@@ -98,10 +103,7 @@ class Configuration(object):
         _THREAD_LOCAL.configuration = base_settings
 
     @classmethod
-    def get_defaults(cls):
-        """
-        :rtype: dict
-        """
+    def get_defaults(cls) -> dict:
         from django.conf import global_settings
 
         if hasattr(global_settings, 'MIDDLEWARE_CLASSES'):
@@ -164,10 +166,7 @@ class Configuration(object):
         return settings_dict.copy()
 
     @classmethod
-    def get_combined(cls, pytest_config):
-        """
-        :rtype: dict
-        """
+    def get_combined(cls, pytest_config) -> dict:
         from django import VERSION
 
         settings = cls.get()
@@ -227,7 +226,7 @@ class Configuration(object):
                 defaults[key].update(value)
 
             else:  # pragma: nocover
-                raise ValueError('Unable to extend `%s` option.' % key)
+                raise ValueError(f'Unable to extend `{key}` option.')
 
         installed_apps = defaults['INSTALLED_APPS']
 
@@ -264,7 +263,7 @@ class Configuration(object):
                 candidate_latest = ''
                 candidates = []
 
-                for package in find_packages('%s' % dir_current):
+                for package in find_packages(f'{dir_current}'):
                     # Consider only top level packages.
                     if not candidate_latest or not package.startswith(candidate_latest):
                         candidates.append(package)
@@ -282,7 +281,7 @@ class Configuration(object):
                 raise Exception(
                     'Unable to deduce application name. '
                     'Check application package and `tests` directory exists. '
-                    'Current dir: %s' % dir_current)
+                    f'Current dir: {dir_current}')
 
             if app_name:
                 installed_apps.append(app_name)
@@ -295,13 +294,13 @@ class Configuration(object):
                 if dir_testapp:
                     dir_testapp = dir_testapp[0]
 
-                    testapp_name = '%s.tests.%s' % (app_name, dir_testapp_name)
+                    testapp_name = f'{app_name}.tests.{dir_testapp_name}'
 
                     installed_apps.append(testapp_name)
 
                     if dir_testapp.listdir('urls.py'):
                         # Set customized `urls.py`.
-                        defaults['ROOT_URLCONF'] = '%s.urls' % testapp_name
+                        defaults['ROOT_URLCONF'] = f'{testapp_name}.urls'
 
         defaults = hook(defaults)
 

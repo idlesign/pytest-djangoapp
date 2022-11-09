@@ -1,5 +1,4 @@
-# -*- encoding: utf-8 -*-
-from __future__ import unicode_literals
+from typing import Iterable, Optional
 
 import pytest
 
@@ -19,14 +18,14 @@ def command_run():
 
     .. warning:: Django < 1.10 will always return `None`, no matter what command returns.
 
-    :param str|unicode command_name: Command name to run.
-    :param list args: Required arguments to pass to a command.
-    :param dict options: Optional arguments to pass to a command.
+    :param command_name: Command name to run.
+    :param args: Required arguments to pass to a command.
+    :param options: Optional arguments to pass to a command.
 
     :returns: Command output.
 
     """
-    def command_run_(command_name, args=None, options=None):
+    def command_run_(command_name: str, args: Iterable[str] = None, options: dict = None) -> Optional[str]:
         args = args or []
         options = options or {}
         return call_command(command_name, *args, **options)

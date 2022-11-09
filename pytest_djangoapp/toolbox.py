@@ -1,23 +1,30 @@
-# -*- encoding: utf-8 -*-
-from __future__ import unicode_literals
-
 from functools import partial
+from typing import Union, Callable
 
 from .configuration import Configuration
 
 
 def configure_djangoapp_plugin(
-        settings=None, app_name=None, admin_contrib=False, settings_hook=None, migrate=True, **kwargs):
+    settings: Union[str, dict] = None,
+    *,
+    app_name: str = None,
+    admin_contrib: bool = False,
+    settings_hook: Callable = None,
+    migrate: bool = True,
+    **kwargs
+) -> str:
     """Configures djangoapp pytest plugin.
 
-    :param str|dict settings: Django project settings to override defaults.
+    :param settings: Django project settings to override defaults.
+        To get settings from a module (for testing an entire project, not just one app)
+        use a string with the module name.
 
-    :param str|unicode app_name: Name of your application you write tests for.
+    :param app_name: Name of your application you write tests for.
         If not set ``djangoapp`` will try to guess (``tests`` dir needs to be inside application directory).
 
-    :param bool admin_contrib: Setup Django to test Admin contrib related parts.
+    :param admin_contrib: Setup Django to test Admin contrib related parts.
 
-    :param callable settings_hook: Allows setting a function to get resulting settings.
+    :param settings_hook: Allows setting a function to get resulting settings.
 
         Function must accept settings dictionary, and return resulting settings dictionary.
 
@@ -52,8 +59,6 @@ def configure_djangoapp_plugin(
 
     :returns: Plugin name to add into ``pytest_plugins`` module attribute of ``conftest.py``.
 
-    :rtype: str
-
     """
     try:
         import django
@@ -72,16 +77,17 @@ def configure_djangoapp_plugin(
         admin_contrib=admin_contrib,
         settings_hook=settings_hook,
         migrate=migrate,
-        **kwargs)
+        **kwargs
+    )
 
-    return str('pytest_djangoapp.plugin')
+    return 'pytest_djangoapp.plugin'
 
 
-def update_settings_from_module(settings, module):
+def update_settings_from_module(settings: dict, *, module: str) -> dict:
     """Updates a given settings dict from a module denoted by a dotted path.
 
-    :param dict settings:
-    :param str module:
+    :param settings:
+    :param module:
 
     """
     from importlib import import_module

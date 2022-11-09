@@ -1,6 +1,3 @@
-# -*- encoding: utf-8 -*-
-from __future__ import unicode_literals
-
 import pytest
 from django.test import RequestFactory, Client
 
@@ -12,7 +9,7 @@ except ImportError:  # Django < 2.0
 
 
 if False:  # pragma: nocover
-    from django.contrib.auth.base_user import AbstractBaseUser  # noqa
+    from django.contrib.auth.models import AbstractUser  # noqa
     from django.http import HttpRequest
 
 
@@ -50,11 +47,12 @@ class DjagoappClient(Client, DjangoappRequestFactory):
 
     def __init__(
             self,
-            ajax=False,
-            user=None,
-            enforce_csrf_checks=False,
-            raise_exceptions=True,
-            json=False,
+            *,
+            ajax: bool = False,
+            user: 'AbstractUser' = None,
+            enforce_csrf_checks: bool = False,
+            raise_exceptions: bool = True,
+            json: bool = False,
             **defaults
     ):
         _contribute_ajax(defaults, ajax)
@@ -91,10 +89,7 @@ def request_factory():
     :param kwargs:
 
     """
-    def request_factory_(**kwargs):
-        """
-        :rtype: RequestFactory
-        """
+    def request_factory_(**kwargs) -> DjangoappRequestFactory:
         return DjangoappRequestFactory(**kwargs)
 
     return request_factory_
@@ -110,19 +105,17 @@ def request_get(request_factory):
             request = request_get('/some')
 
 
-    :param str|unicode path:
+    :param path:
 
-    :param AbstractBaseUser user: User making this request.
+    :param user: User making this request.
 
-    :param bool ajax: Make AJAX (XMLHttpRequest) request.
+    :param ajax: Make AJAX (XMLHttpRequest) request.
 
     :param kwargs: Additional arguments for .get() method.
 
     """
-    def request_get_(path=None, user=None, ajax=False, **kwargs):
-        """
-        :rtype: HttpRequest
-        """
+    def request_get_(path: str = None, *, user: 'AbstractUser' = None, ajax: bool = False, **kwargs) -> 'HttpRequest':
+
         path = path or '/'
         request = request_factory(ajax=ajax).get(path, **kwargs)
         if user:
@@ -142,21 +135,26 @@ def request_post(request_factory):
             request = request_post('/some', {'a': 'b'})
 
 
-    :param str|unicode path:
+    :param path:
 
-    :param dict data: Data to post.
+    :param data: Data to post.
 
-    :param AbstractBaseUser user: User making this request.
+    :param user: User making this request.
 
-    :param bool ajax: Make AJAX (XMLHttpRequest) request.
+    :param ajax: Make AJAX (XMLHttpRequest) request.
 
     :param kwargs: Additional arguments for .post() method.
 
     """
-    def request_post_(path=None, data=None, user=None, ajax=False, **kwargs):
-        """
-        :rtype: HttpRequest
-        """
+    def request_post_(
+        path: str = None,
+        data: dict = None,
+        *,
+        user: 'AbstractUser' = None,
+        ajax: bool = False,
+        **kwargs
+    ) -> 'HttpRequest':
+
         path = path or '/'
         request = request_factory(ajax=ajax).post(path, data, **kwargs)
         if user:
@@ -186,29 +184,35 @@ def request_client():
             ...
 
 
-    :param bool ajax: Make AJAX (XMLHttpRequest) requests.
+    :param ajax: Make AJAX (XMLHttpRequest) requests.
 
-    :param AbstractBaseUser user: User to perform queries from.
+    :param user: User to perform queries from.
 
-    :param bool raise_exceptions: Do not allow Django technical exception handlers
+    :param raise_exceptions: Do not allow Django technical exception handlers
         to catch exceptions issued by views, propagate them instead.
 
-    :param bool json: Encode data as JSON.
+    :param json: Encode data as JSON.
 
         .. warning:: To be used with Django 2.1+
 
     :param kwargs: Additional arguments for test client initialization.
 
     """
-    def request_client_(ajax=False, user=None, raise_exceptions=True, json=False, **kwargs):
-        """
-        :rtype: DjagoappClient
-        """
+    def request_client_(
+        *,
+        ajax: bool = False,
+        user: 'AbstractUser' = None,
+        raise_exceptions: bool = True,
+        json: bool = False,
+        **kwargs
+    ) -> DjagoappClient:
+
         return DjagoappClient(
             ajax=ajax,
             user=user,
             raise_exceptions=raise_exceptions,
             json=json,
-            **kwargs)
+            **kwargs
+        )
 
     return request_client_

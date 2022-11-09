@@ -23,7 +23,7 @@ def index(request, some_id):
         return HttpResponse('ajaxed')
 
     from django.templatetags.static import static
-    return HttpResponse('%s | fine %s' % (some_id, static('blank.png')))
+    return HttpResponse(f"{some_id} | fine {static('blank.png')}")
 
 
 urlpatterns = get_urlpatterns([

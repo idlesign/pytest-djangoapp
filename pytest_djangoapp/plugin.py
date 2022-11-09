@@ -1,14 +1,9 @@
-# -*- encoding: utf-8 -*-
-from __future__ import unicode_literals
-
 from django.conf import settings as django_settings
 from django.core.management import call_command
 from django.test.runner import DiscoverRunner
 
-from .fixtures import *
+from .fixtures import *  # noqa
 from .toolbox import Configuration
-
-assert fixtures_registered  # Just to prevent IDE from import removal on optimization.
 
 runner = DiscoverRunner(interactive=False, verbosity=0)
 setup_databases = runner.setup_databases

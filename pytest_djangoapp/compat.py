@@ -1,7 +1,7 @@
 from django import VERSION
 
 
-def get_urlpatterns(patterns_list):
+def get_urlpatterns(patterns_list: list) -> list:
     """Returns object suitable to use as urlpatterns in `urls.py`.
 
     Example::
@@ -10,9 +10,8 @@ def get_urlpatterns(patterns_list):
         ])
 
     :param patterns_list:
-    :return:
-    """
 
+    """
     if VERSION >= (1, 9):
         return patterns_list
 

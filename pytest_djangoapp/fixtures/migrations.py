@@ -12,13 +12,13 @@ def check_migrations(command_run):
         def test_this(check_migrations):
             result = check_migrations()
 
-    :param str command_name: Command name to run.
+    :param app: Application name to check migrations for.
 
     """
     if VERSION < (2, 0):
         raise Exception('Django 2.0+ required for checking migrations')
 
-    def check_migrations_run_(app=None):
+    def check_migrations_run_(app: str = None):
 
         try:
             args = ['--check', '--dry-run']

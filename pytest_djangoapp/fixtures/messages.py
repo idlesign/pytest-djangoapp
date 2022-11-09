@@ -1,19 +1,22 @@
+from typing import List, Dict
+
 import pytest
 
 from collections import defaultdict
 
-from .utils import text_type
+if False:  # pragma: nocover
+    from django.contrib.messages.storage.base import Message  # noqa
 
 
-class DjangoappMessageStorage(object):
+class DjangoappMessageStorage:
 
     def __init__(self):
-        self.all = []
-        self.tags = defaultdict(list)
+        self.all: List['Message'] = []
+        self.tags: Dict[str, List['Message']] = defaultdict(list)
 
     def __contains__(self, item):
         for msg in self.all:
-            if item in text_type(msg):
+            if item in f'{msg}':
                 return True
 
         return False
@@ -30,7 +33,7 @@ class DjangoappMessageStorage(object):
 
 
 @pytest.fixture
-def messages(monkeypatch):
+def messages(monkeypatch) -> DjangoappMessageStorage:
     """Holds messages sent by Django Messages framework.
 
     Attributes:
@@ -43,8 +46,6 @@ def messages(monkeypatch):
             assert len(messages.all)
             assert len(messages.tags['error'])
             assert 'another error' in messages
-
-    :rtype: DjangoappMessageStorage
 
     """
     messages = DjangoappMessageStorage()

@@ -1,6 +1,3 @@
-# -*- encoding: utf-8 -*-
-from __future__ import unicode_literals
-
 from .commands import command_run
 from .migrations import check_migrations
 from .db import db_queries
@@ -11,4 +8,4 @@ from .settings import settings
 from .templates import template_render_tag, template_context, template_strip_tags
 from .users import user_create, user_model, user
 
-fixtures_registered = True
+fixtures_registered: bool = True

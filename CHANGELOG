@@ -4,6 +4,7 @@ pytest-djangoapp changelog
 
 Unreleased
 ----------
+! Dropped support for Py2. Py3.6+ specific syntax is introduced. Code update may be required.
 + Introduced new 'check_migrations' fixture.
 
 

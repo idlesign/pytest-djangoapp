@@ -1,16 +1,18 @@
-# -*- encoding: utf-8 -*-
-from __future__ import unicode_literals
+from typing import Union
 
 import pytest
 
 from .utils import get_stamp
 
 if False:  # pragma: nocover
-    from django.contrib.auth.base_user import AbstractBaseUser
+    from django.contrib.auth.models import AbstractUser, AnonymousUser  # noqa
+
+
+TypeUser = Union['AbstractUser', 'AnonymousUser']
 
 
 @pytest.fixture()
-def user_model():
+def user_model() -> TypeUser:
     """Returns user model class.
 
     Example::
@@ -35,17 +37,15 @@ def user_create(user_model):
 
     .. note:: User password is accessible via `password_plain` attribute.
 
-    :param bool superuser: Whether to create a superuser.
-    :param bool anonymous: Whether to create an anonymous user.
-    :param dict attributes: Additional user object attributes to initialize.
+    :param superuser: Whether to create a superuser.
+    :param anonymous: Whether to create an anonymous user.
+    :param attributes: Additional user object attributes to initialize.
 
     """
     from django.contrib.auth.models import AnonymousUser
 
-    def user_create_(superuser=False, anonymous=False, attributes=None):
-        """
-        :rtype: AbstractBaseUser
-        """
+    def user_create_(*, superuser: bool = False, anonymous: bool = False, attributes: dict = None) -> TypeUser:
+
         if anonymous:
             return AnonymousUser()
 
@@ -56,7 +56,7 @@ def user_create(user_model):
 
         kwargs = {
             'username': username,
-            'email': '%s@example.com' % username,
+            'email': f'{username}@example.com',
             'password': 'password',
         }
 
@@ -76,7 +76,7 @@ def user_create(user_model):
 
 
 @pytest.fixture()
-def user(user_create):
+def user(user_create) -> TypeUser:
     """Exposes Django user object.
 
     Shortcut for `user_create` fixture.

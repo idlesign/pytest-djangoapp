@@ -1,13 +1,15 @@
+from typing import List
+
 import pytest
 from decimal import Decimal
 from django.db import connections, DEFAULT_DB_ALIAS, reset_queries
 
 if False:  # pragma: nocover
-    from collections import deque
+    from collections import deque  # noqa
 
 
 @pytest.fixture
-def db_queries(settings):
+def db_queries(settings) -> 'Queries':
     """Allows access to executed DB queries.
 
     Example::
@@ -34,9 +36,6 @@ def db_queries(settings):
 
     .. warning:: Requires Django 1.9+ to work.
 
-
-    :rtype: Queries
-
     """
     queries = Queries()
 
@@ -62,7 +61,7 @@ def db_queries(settings):
         queries.clear_all()
 
 
-class Queries(object):
+class Queries:
     """Allows access to executed DB queries."""
 
     sql_drop = {
@@ -71,13 +70,12 @@ class Queries(object):
         'END',
     }
 
-    def __len__(self):
+    def __len__(self) -> int:
         return len(self.get_log())
 
-    def get_log(self, db_alias=None):
+    def get_log(self, db_alias: str = None) -> 'deque':
         """
-        :param str|unicode db_alias:
-        :rtype: deque
+        :param db_alias:
 
         """
         return connections[db_alias or DEFAULT_DB_ALIAS].queries_log
@@ -86,24 +84,23 @@ class Queries(object):
         """Clears all queries logged for all DBs."""
         reset_queries()
 
-    def clear(self, db_alias=None):
+    def clear(self, db_alias: str = None):
         """Clear queries for the given or default DB.
 
-        :param str|unicode db_alias: Database alias. Default is used if not given.
+        :param db_alias: Database alias. Default is used if not given.
 
         """
         self.get_log(db_alias=db_alias).clear()
 
-    def sql(self, db_alias=None, drop_auxiliary=True):
+    def sql(self, db_alias: str = None, *, drop_auxiliary: bool = True) -> List[str]:
         """Returns a list of queries executed using the given or default DB.
 
-        :param str|unicode db_alias: Database alias. Default is used if not given.
-        :param bool drop_auxiliary: Filter out auxiliary SQL like:
+        :param db_alias: Database alias. Default is used if not given.
+
+        :param drop_auxiliary: Filter out auxiliary SQL like:
             * BEGIN
             * COMMIT
             * END
-
-        :rtype: list[str|unicode]
 
         """
         sqls = []
@@ -117,12 +114,10 @@ class Queries(object):
 
         return sqls
 
-    def time(self, db_alias=None):
+    def time(self, db_alias: str = None) -> Decimal:
         """Returns total time executing queries (in seconds) using the given or default DB.
 
-        :param str|unicode db_alias: Database alias. Default is used if not given.
-
-        :rtype: Decimal
+        :param db_alias: Database alias. Default is used if not given.
 
         """
         times = [Decimal(log_entry['time']) for log_entry in self.get_log(db_alias=db_alias)]
