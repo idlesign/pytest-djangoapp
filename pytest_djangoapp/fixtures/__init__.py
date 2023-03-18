@@ -1,5 +1,4 @@
-from .commands import command_run
-from .migrations import check_migrations
+from .commands import command_run, command_makemigrations
 from .db import db_queries
 from .mail import mail_outbox
 from .messages import messages

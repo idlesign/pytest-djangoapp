@@ -4,6 +4,7 @@ pytest-djangoapp changelog
 
 Unreleased
 ----------
++ Added 'command_makemigrations' fixture.
 + Added 'conf_app_name' fixture (see #17).
 + Fixture 'template_context' now accepts a username.
 

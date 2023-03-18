@@ -31,3 +31,36 @@ def command_run():
         return call_command(command_name, *args, **options)
 
     return command_run_
+
+
+@pytest.fixture
+def command_makemigrations(conf_app_name):
+    """Allows to run makemigrations command.
+
+    .. note:: This command can be useful to generate
+        migrations for your application (without a project creation).
+
+    Example::
+
+        def test_makemigrations(command_makemigrations):
+            command_makemigrations()
+
+    :param app: Application name to run 'makemigrations' for.
+        * By default, a name from 'conf_app_name' fixture is used.
+        * If empty string, command is run for any application.
+
+    :param args: Additional arguments to pass to the command.
+
+    """
+    def command_migration_(*, app: str = None, args: Iterable[str] = None) -> Optional[str]:
+        args = args or []
+
+        if app is None:
+            app = conf_app_name
+
+        if app:
+            args.append(app)
+
+        return call_command('makemigrations', *args)
+
+    return command_migration_
