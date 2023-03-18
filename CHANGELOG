@@ -5,6 +5,7 @@ pytest-djangoapp changelog
 Unreleased
 ----------
 + Added 'conf_app_name' fixture (see #17).
++ Fixture 'template_context' now accepts a username.
 
 
 v1.0.0 [2022-11-09]

@@ -61,8 +61,9 @@ def template_context(request_get, user_create):
 
     :param current_app:
 
-    :param user: User to associate request with.
-        Defaults to anonymous user.
+    :param user: User instance to associate request with.
+        Defaults to a new anonymous user.
+        If string is passed, it is considered to be
 
 
     """
@@ -76,8 +77,11 @@ def template_context(request_get, user_create):
 
         context_dict = context_dict or {}
 
-        if user == 'anonymous':
-            user = user_create(anonymous=True)
+        if user and isinstance(user, str):
+            if user == 'anonymous':
+                user = user_create(anonymous=True)
+            else:
+                user = user_create(attributes={'username': user})
 
         if not request or isinstance(request, str):
             request = request_get(request, user=user)

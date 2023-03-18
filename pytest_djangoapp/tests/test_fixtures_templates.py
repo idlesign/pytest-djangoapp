@@ -1,6 +1,13 @@
 
-def test_template_context(template_context):
+def test_template_context(template_context, user_create):
     assert template_context({'somevar': 'someval'})
+
+    context = template_context({'a': 'b'}, user='aname')
+    assert context.get('user').username == 'aname'
+
+    auser = user_create(attributes={'username': 'xx'})
+    context = template_context({'a': 'b'}, user=auser)
+    assert context.get('user').username == 'xx'
 
 
 def test_template_render_tag(template_render_tag):
