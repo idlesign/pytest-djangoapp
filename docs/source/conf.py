@@ -82,7 +82,7 @@ master_doc = 'index'
 
 # General information about the project.
 project = u'pytest-djangoapp'
-copyright = u'2018-2022, Igor `idle sign` Starikov'
+copyright = u'2018-2023, Igor `idle sign` Starikov'
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
