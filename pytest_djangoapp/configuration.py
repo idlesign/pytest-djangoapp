@@ -22,7 +22,7 @@ class Configuration:
 
     _prefix = 'DJANGOAPP_OPTIONS'
     _KEY_ADMIN = 'admin'
-    _KEY_APP = 'app_name'
+    KEY_APP = 'app_name'
     _KEY_EXTEND = 'extend'
     _KEY_HOOK = 'hook'
     _KEY_MIGRATE = 'migrate'
@@ -90,7 +90,7 @@ class Configuration:
 
         base_settings = {
             cls._prefix: {
-                cls._KEY_APP: app_name,
+                cls.KEY_APP: app_name,
                 cls._KEY_EXTEND: extend,
                 cls._KEY_ADMIN: admin_contrib,
                 cls._KEY_HOOK: settings_hook,
@@ -166,7 +166,7 @@ class Configuration:
 
         djapp_options = defaults[cls._prefix]
 
-        app_name = djapp_options[cls._KEY_APP]
+        app_name = djapp_options[cls.KEY_APP]
         extensions = djapp_options[cls._KEY_EXTEND]
         admin = djapp_options[cls._KEY_ADMIN]
         hook = djapp_options.pop(cls._KEY_HOOK, None) or (lambda settings_dict: settings_dict)
@@ -243,7 +243,7 @@ class Configuration:
                 pass
 
             if not dir_tests:
-                # No `tests` subdir found. Let's to try to deduce.
+                # No `tests` subdir found. Let's try to deduce.
 
                 app_name = None
 
@@ -292,6 +292,13 @@ class Configuration:
                         # Set customized `urls.py`.
                         defaults['ROOT_URLCONF'] = f'{testapp_name}.urls'
 
+        djapp_options[cls.KEY_APP] = app_name
+
         defaults = hook(defaults)
 
         return defaults
+
+    @classmethod
+    def get_dict(cls) -> dict:
+        """Returns current configuration as a dict."""
+        return cls.get()[cls._prefix]

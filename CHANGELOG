@@ -2,6 +2,11 @@ pytest-djangoapp changelog
 ==========================
 
 
+Unreleased
+----------
++ Added 'conf_app_name' fixture (see #17).
+
+
 v1.0.0 [2022-11-09]
 -------------------
 ! Dropped support for Django 1.7.

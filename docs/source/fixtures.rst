@@ -17,3 +17,4 @@ Fixtures
     fixtures_mail
     fixtures_messages
     fixtures_migrations
+    fixtures_utils
