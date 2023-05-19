@@ -24,7 +24,9 @@ from pytest_djangoapp import VERSION
 # It helps to build docs in environments where those modules are not available.
 # E.g. it could be useful for http://readthedocs.org/
 MODULES_TO_MOCK = [
-    'django.conf'
+    'django.conf',
+    'django.conf.settings',
+    'django.conf.locale',
 ]
 
 
