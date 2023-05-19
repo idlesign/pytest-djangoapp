@@ -10,6 +10,8 @@ TypeLiveClient = TypeVar('TypeLiveClient', bound='LiveClient')
 def liveserver() -> Type['LiveServer']:
     """Runs a live server. Available as a context manager.
 
+    .. warning:: For Django >= 4.0
+
     Example::
 
         def test_live(liveserver):
