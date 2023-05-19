@@ -30,6 +30,7 @@ This exposes some useful tools for Django applications developers to facilitate 
 * Migrations
 * Messages
 * DB queries audit
+* Live server & client UI testing
 * etc.
 
 Suitable for testing apps for Django 1.8+.

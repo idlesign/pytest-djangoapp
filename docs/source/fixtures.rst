@@ -18,3 +18,4 @@ Fixtures
     fixtures_messages
     fixtures_migrations
     fixtures_utils
+    fixtures_live
