@@ -1,3 +1,0 @@
-# RTD uses py2 to build, so we pindown all those:
-django==2.2.28
-pytest==4.6.6
