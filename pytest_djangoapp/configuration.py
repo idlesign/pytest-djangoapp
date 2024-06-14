@@ -273,7 +273,7 @@ class Configuration:
                     'Check application package and `tests` directory exists. '
                     f'Current dir: {dir_current}')
 
-            if app_name:
+            if app_name and app_name not in installed_apps:
                 installed_apps.append(app_name)
 
             if dir_tests:
