@@ -2,9 +2,12 @@
 .pydevproject
 .idea
 .tox
+.venv
 __pycache__
 *.pyc
 *.pyo
 *.egg-info
-docs/_build/
-
+.mypy_cache
+.ruff_cache
+.pytest_cache
+.env

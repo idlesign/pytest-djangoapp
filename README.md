@@ -1,21 +1,14 @@
-pytest-djangoapp
-================
-https://github.com/idlesign/pytest-djangoapp
+# pytest-djangoapp
 
-|release| |lic| |coverage|
+<https://github.com/idlesign/pytest-djangoapp>
 
-.. |release| image:: https://img.shields.io/pypi/v/pytest-djangoapp.svg
-    :target: https://pypi.python.org/pypi/pytest-djangoapp
-
-.. |lic| image:: https://img.shields.io/pypi/l/pytest-djangoapp.svg
-    :target: https://pypi.python.org/pypi/pytest-djangoapp
-
-.. |coverage| image:: https://img.shields.io/coveralls/idlesign/pytest-djangoapp/master.svg
-    :target: https://coveralls.io/r/idlesign/pytest-djangoapp
+[![PyPI - Version](https://img.shields.io/pypi/v/pytest-djangoapp)](https://pypi.python.org/pypi/pytest-djangoapp)
+[![License](https://img.shields.io/pypi/l/pytest-djangoapp)](https://pypi.python.org/pypi/pytest-djangoapp)
+[![Coverage](https://img.shields.io/coverallsCoverage/github/idlesign/pytest-djangoapp)](https://coveralls.io/r/idlesign/pytest-djangoapp)
+[![Docs](https://img.shields.io/readthedocs/pytest-djangoapp)](https://pytest-djangoapp.readthedocs.io/)
 
 
-Description
------------
+## Description
 
 *Nice pytest plugin to help you with Django pluggable application testing.*
 
@@ -36,55 +29,47 @@ This exposes some useful tools for Django applications developers to facilitate 
 Suitable for testing apps for Django 1.8+.
 
 
-How to use
-----------
+## How to use
 
 Let's say you have classical tests placing (inside application directory):
 
-.. code-block::
-
-    package_dir
-    |__ myapp
-    |  |__ __init__.py
-    |  |__ tests
-    |  |  |__ __init__.py
-    |  |  |__ conftest.py  <- Configure djangoapp here.
-    |
-    |__ setup.py
-
+```
+package_dir
+|__ myapp
+|  |__ __init__.py
+|  |__ tests
+|  |  |__ __init__.py
+|  |  |__ conftest.py  <- Configure djangoapp here.
+|
+|__ setup.py
+```
 
 Add the following lines into `conftest.py` to configure `djangoapp` and start using it:
 
-.. code-block:: python
+```python title="conftest.py"
+from pytest_djangoapp import configure_djangoapp_plugin
 
-    # conftest.py
-    from pytest_djangoapp import configure_djangoapp_plugin
-
-    pytest_plugins = configure_djangoapp_plugin()
-
+pytest_plugins = configure_djangoapp_plugin()
+```
 
 Fixtures usage examples can be found in the documentation and the source code.
 
 
-Testing an entire project
--------------------------
+## Testing an entire project
 
 Despite the fact that `djangoapp` is primarily aimed to reusable
 Django applications testing one can use it also to test a project (a set of apps).
 For that, pass a dotted settings module path into `settings` argument:
 
-
-.. code-block:: python
-
-    pytest_plugins = configure_djangoapp_plugin(
-        settings='myproject.settings.settings_testing',
-        migrate=False,  # If you do not want to apply migrations.
-    )
-
+```python
+pytest_plugins = configure_djangoapp_plugin(
+    settings='myproject.settings.settings_testing',
+    migrate=False,  # If you do not want to apply migrations.
+)
+```
 
 
-What about pytest-django
-------------------------
+## What about pytest-django
 
 `pytest-djangoapp` does not depend on `pytest-django`.
 
@@ -100,21 +85,17 @@ There are design decisions in `pytest-django` that might make it uncomfortable t
 
 Despite that `pytest-django` is nice, of course.
 
-
 `pytest-djangoapp` fixtures allow the use of Django without marking all relevant tests as needing
 a database, as is required by pytest-django which provides the ``django_db`` mark and db fixtures.
 
 If you have `pytest-django` already installed, it can be disabled for projects
 using `pytest-djangoapp` by adding the following lines into ``pytest.ini``:
 
-.. code-block:: ini
+```ini title="pytest.ini"
+[pytest]
+addopts = -p no:django
+```
 
-    # pytest.ini
-    [pytest]
-    addopts = -p no:django
+## Documentation
 
-
-Documentation
--------------
-
-http://pytest-djangoapp.readthedocs.org/
+http://pytest-djangoapp.readthedocs.io/
