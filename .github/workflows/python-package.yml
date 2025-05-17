@@ -33,7 +33,9 @@ jobs:
             django-version: 2.2
           - python-version: 3.13
             django-version: 3.0
-          - python-version: 3.1
+          - python-version: 3.13
+            django-version: 3.1
+          - python-version: 3.13
             django-version: 3.2
             
           - python-version: 3.12
@@ -80,9 +82,15 @@ jobs:
           - python-version: 3.9
             django-version: "1.10"
           - python-version: 3.9
-            django-version: 5.0
-          - python-version: 3.12
+            django-version: 2.0
+          - python-version: 3.9
+            django-version: 2.1
+          - python-version: 3.9
+            django-version: 2.2
+          - python-version: 3.9
             django-version: 3.1
+          - python-version: 3.9
+            django-version: 5.0
 
           - python-version: 3.8
             django-version: 1.8
@@ -90,6 +98,16 @@ jobs:
             django-version: 1.9
           - python-version: 3.8
             django-version: "1.10"
+          - python-version: 3.8
+            django-version: "1.11"
+          - python-version: 3.8
+            django-version: 2.0
+          - python-version: 3.8
+            django-version: 2.1
+          - python-version: 3.8
+            django-version: 2.2
+          - python-version: 3.8
+            django-version: 3.1
           - python-version: 3.8
             django-version: 5.0
 
