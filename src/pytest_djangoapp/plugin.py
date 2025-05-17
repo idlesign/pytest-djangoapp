@@ -21,7 +21,7 @@ def pytest_runtest_teardown(item, nextitem):
     old_config = getattr(item, 'old_config', unset)
 
     if old_config is unset:
-        # _teardown will suddenly work even if no _setup has occured
+        # _teardown will suddenly work even if no _setup has occurred
         # e.g. in case of mark.skipif
         return
 

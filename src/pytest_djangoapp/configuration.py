@@ -244,16 +244,19 @@ class Configuration:
 
             if not dir_tests:
                 # No `tests` subdir found. Let's try to deduce.
-
-                app_name = None
-
-                from setuptools import find_packages
                 import py
 
+                app_name = None
                 candidate_latest = ''
                 candidates = []
 
-                for package in find_packages(f'{dir_current}'):
+                packages_found = [
+                    obj
+                    for obj in dir_current.iterdir()
+                    if obj.is_dir() and (obj / '__init__.py').exists()
+                ]
+
+                for package in packages_found:
                     # Consider only top level packages.
                     if not candidate_latest or not package.startswith(candidate_latest):
                         candidates.append(package)
