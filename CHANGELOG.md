@@ -2,6 +2,7 @@
 
 
 ### Unreleased
+* !! Dropped QA for Python 3.7.
 * ++ Add 'src' package layout.
 
 ### v1.2.0 [2023-05-19]

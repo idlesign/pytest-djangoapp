@@ -24,4 +24,5 @@ Suitable for testing apps for Django 1.8+.
 
 ## Requirements
 
-1. Python 3.6+
+1. Python 3.8+
+2. Django 1.8+
