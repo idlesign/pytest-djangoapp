@@ -82,6 +82,8 @@ jobs:
           - python-version: 3.9
             django-version: "1.10"
           - python-version: 3.9
+            django-version: "1.11"
+          - python-version: 3.9
             django-version: 2.0
           - python-version: 3.9
             django-version: 2.1
