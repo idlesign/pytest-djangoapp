@@ -7,10 +7,10 @@ from django import VERSION
 def check_migrations(command_makemigrations):
     """Check if migrations are up to date (migration files exist for current models' state).
 
-    Example::
-
+    ```py
         def test_this(check_migrations):
             result = check_migrations()
+    ```
 
     :param app: Application name to check migrations for.
 

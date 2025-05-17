@@ -11,22 +11,21 @@ _UNSET = set()
 def settings() -> 'SettingsProxy':
     """Fixture allowing to temporarily override project settings.
 
-    Example::
+    ```py
+    def test_this(settings):
+        # By one.
+        settings.DEBUG = True
 
-        def test_this(settings):
-            # By one.
-            settings.DEBUG = True
+        # Batch.
+        settings.update({
+            'DEBUG': True,
+            'ROOT_URLCONF': 'module.urls',
+        })
 
-            # Batch.
-            settings.update({
-                'DEBUG': True,
-                'ROOT_URLCONF': 'module.urls',
-            })
-
-            # Context manager.
-            with settings(DEBUG=True):
-                ...
-
+        # Context manager.
+        with settings(DEBUG=True):
+            ...
+    ```
     """
     proxy = SettingsProxy()
 

@@ -9,12 +9,11 @@ from django.core.management import call_command
 def command_run():
     """Allows management command run.
 
-    Example::
-
-        def test_this(command_run, capsys):
-            result = command_run('my_command', args=['one'], options={'two': 'three'})
-            out, err = capsys.readouterr()
-
+    ```py
+    def test_this(command_run, capsys):
+        result = command_run('my_command', args=['one'], options={'two': 'three'})
+        out, err = capsys.readouterr()
+    ```
 
     .. warning:: Django < 1.10 will always return `None`, no matter what command returns.
 
@@ -40,10 +39,10 @@ def command_makemigrations(conf_app_name):
     .. note:: This command can be useful to generate
         migrations for your application (without a project creation).
 
-    Example::
-
-        def test_makemigrations(command_makemigrations):
-            command_makemigrations()
+    ```py
+    def test_makemigrations(command_makemigrations):
+        command_makemigrations()
+    ```
 
     :param app: Application name to run 'makemigrations' for.
         * By default, a name from 'conf_app_name' fixture is used.

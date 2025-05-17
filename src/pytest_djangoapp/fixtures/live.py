@@ -12,13 +12,12 @@ def liveserver() -> Type['LiveServer']:
 
     .. warning:: For Django >= 4.0
 
-    Example::
+    ```py
+    def test_live(liveserver):
 
-        def test_live(liveserver):
-
-            with liveserver() as server:
-                print(f'Live server is available at: {server.url}')
-
+        with liveserver() as server:
+            print(f'Live server is available at: {server.url}')
+    ```
     """
     return LiveServer
 
@@ -27,23 +26,21 @@ def liveserver() -> Type['LiveServer']:
 def liveclient():
     """Runs a live client. Available as a context manager.
 
+    ```py
+    def test_live(liveserver, liveclient):
 
-    Example::
+        with liveserver() as server:
 
-        def test_live(liveserver, liveclient):
+            # Let's run Firefox using Selenium.
+            with liveclient('selenium', browser='firefox') as client:
+                selenium = client.handle  # Selenium driver is available in .handle
 
-            with liveserver() as server:
-
-                # Let's run Firefox using Selenium.
-                with liveclient('selenium', browser='firefox') as client:
-                    selenium = client.handle  # Selenium driver is available in .handle
-
-                    # Let's open server's root URL and check heading 1 on that page
-                    selenium.get(server.url)
-                    assert selenium.find_element('tag name', 'h1').text == 'Not Found'
+                # Let's open server's root URL and check heading 1 on that page
+                selenium.get(server.url)
+                assert selenium.find_element('tag name', 'h1').text == 'Not Found'
+    ```
 
     """
-
     def get_client(typename: str, *, browser: str) -> TypeLiveClient:
         return LiveClient.spawn(alias=typename, browser=browser)
 

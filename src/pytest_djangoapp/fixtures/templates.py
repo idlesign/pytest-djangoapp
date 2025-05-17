@@ -21,10 +21,10 @@ def template_strip_tags():
 
     To be used with `template_render_tag` fixture to easy result assertions.
 
-    Example::
-
-        def test_this(template_strip_tags):
-            stripped = template_strip_tags('<b>some</b>')
+    ```py
+    def test_this(template_strip_tags):
+        stripped = template_strip_tags('<b>some</b>')
+    ```
 
     :param html: HTML to strin tags from
     :param joiner: String to join tags contents. Default: |
@@ -49,11 +49,10 @@ def template_context(request_get, user_create):
 
     To be used with `template_render_tag` fixture.
 
-    Example::
-
-        def test_this(template_context):
-            context = template_context({'somevar': 'someval'})
-
+    ```py
+    def test_this(template_context):
+        context = template_context({'somevar': 'someval'})
+    ```
     :param context_dict: Template context. If not set empty context is used.
 
     :param request: Expects HttpRequest or string.
@@ -107,10 +106,10 @@ def template_context(request_get, user_create):
 def template_render_tag():
     """Renders a template tag from a given library by its name.
 
-    Example::
-
-        def test_this(template_render_tag):
-            rendered = template_render_tag('library_name', 'mytag arg1 arg2')
+    ```py
+    def test_this(template_render_tag):
+        rendered = template_render_tag('library_name', 'mytag arg1 arg2')
+    ```
 
     :param library: Template tags library name to load tag from.
 

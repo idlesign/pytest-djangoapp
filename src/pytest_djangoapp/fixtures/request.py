@@ -81,10 +81,10 @@ class DjagoappClient(Client, DjangoappRequestFactory):
 def request_factory():
     """Fixture allowing request object generation.
 
-    Example::
-
-        def test_this(request_factory):
-            factory = request_factory()
+    ```py
+    def test_this(request_factory):
+        factory = request_factory()
+    ```
 
     :param kwargs:
 
@@ -99,11 +99,10 @@ def request_factory():
 def request_get(request_factory):
     """Fixture allowing GET request object generation.
 
-    Example::
-
-        def test_this(request_get):
-            request = request_get('/some')
-
+    ```py
+    def test_this(request_get):
+        request = request_get('/some')
+    ```
 
     :param path:
 
@@ -129,11 +128,10 @@ def request_get(request_factory):
 def request_post(request_factory):
     """Fixture allowing POST request object generation.
 
-    Example::
-
-        def test_this(request_post):
-            request = request_post('/some', {'a': 'b'})
-
+    ```py
+    def test_this(request_post):
+        request = request_post('/some', {'a': 'b'})
+    ```
 
     :param path:
 
@@ -168,21 +166,20 @@ def request_post(request_factory):
 def request_client():
     """Fixture allowing test client object generation.
 
-    Example::
+    ```py
+    def test_this(request_client):
 
-        def test_this(request_client):
+        client = request_client()
 
-            client = request_client()
+        response = client.get(
+            ('someview', {'somearg': 'one', 'otherarg': 33})
+        ).content
 
-            response = client.get(
-                ('someview', {'somearg': 'one', 'otherarg': 33})
-            ).content
+        ...
 
-            ...
-
-            ajax_client = request_client(ajax=True)
-            ...
-
+        ajax_client = request_client(ajax=True)
+        ...
+    ```
 
     :param ajax: Make AJAX (XMLHttpRequest) requests.
 

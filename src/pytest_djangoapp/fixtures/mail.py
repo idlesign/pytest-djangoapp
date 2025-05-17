@@ -12,10 +12,10 @@ mail.outbox = []
 def mail_outbox() -> List[mail.EmailMessage]:
     """Returns mail outbox: list of sent message objects.
 
-    Example::
-
-        def test_this(mail_outbox):
-            first_subject = mail_outbox[0].subject
+    ```py
+    def test_this(mail_outbox):
+        first_subject = mail_outbox[0].subject
+    ```
 
     """
     yield mail.outbox

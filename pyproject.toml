@@ -44,6 +44,7 @@ dev = [
 ]
 docs = [
     "mkdocs-material",
+    "mkdocs-apidescribed-plugin",
     "mkdocs-navsorted-plugin",
 ]
 linters = [

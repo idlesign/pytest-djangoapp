@@ -37,15 +37,15 @@ def messages(monkeypatch) -> DjangoappMessageStorage:
     """Holds messages sent by Django Messages framework.
 
     Attributes:
-        * all -- a list of all messages
-        * tags -- messages dictionary indexed by tags
+      * all -- a list of all messages
+      * tags -- messages dictionary indexed by tags
 
-    Example::
-
-        def test_this(messages):
-            assert len(messages.all)
-            assert len(messages.tags['error'])
-            assert 'another error' in messages
+    ```py
+    def test_this(messages):
+        assert len(messages.all)
+        assert len(messages.tags['error'])
+        assert 'another error' in messages
+    ```
 
     """
     messages = DjangoappMessageStorage()

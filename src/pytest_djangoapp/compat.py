@@ -4,7 +4,7 @@ from django import VERSION
 def get_urlpatterns(patterns_list: list) -> list:
     """Returns object suitable to use as urlpatterns in `urls.py`.
 
-    Example::
+    ```py
         urlpatterns = get_urlpatterns([
             url(r'^index/$', index, name='index'),
         ])

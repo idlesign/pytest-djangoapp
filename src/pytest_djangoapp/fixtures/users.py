@@ -15,10 +15,10 @@ TypeUser = Union['AbstractUser', 'AnonymousUser']
 def user_model() -> TypeUser:
     """Returns user model class.
 
-    Example::
-
-        def test_this(user_model):
-            model_cls = user_model
+    ```py
+    def test_this(user_model):
+        model_cls = user_model
+    ```
 
     """
     from django.contrib.auth import get_user_model
@@ -30,11 +30,10 @@ def user_model() -> TypeUser:
 def user_create(user_model):
     """Allows Django user object generation.
 
-    Example::
-
-        def test_this(user_create):
-            user = user_create()
-
+    ```py
+    def test_this(user_create):
+        user = user_create()
+    ```
     .. note:: User password is accessible via `password_plain` attribute.
 
     :param superuser: Whether to create a superuser.
@@ -81,10 +80,10 @@ def user(user_create) -> TypeUser:
 
     Shortcut for `user_create` fixture.
 
-    Example::
-
-        def test_this(user):
-            username = user.username
+    ```py
+    def test_this(user):
+        username = user.username
+    ```
 
     .. note:: User password is accessible via `password_plain` attribute.
 

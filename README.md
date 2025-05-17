@@ -41,7 +41,7 @@ package_dir
 |  |  |__ __init__.py
 |  |  |__ conftest.py  <- Configure djangoapp here.
 |
-|__ setup.py
+|__ pyproject.toml
 ```
 
 Add the following lines into `conftest.py` to configure `djangoapp` and start using it:

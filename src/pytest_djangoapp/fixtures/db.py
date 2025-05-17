@@ -12,27 +12,26 @@ if False:  # pragma: nocover
 def db_queries(settings) -> 'Queries':
     """Allows access to executed DB queries.
 
-    Example::
+    ```py
+    def test_db(db_queries):
 
-        def test_db(db_queries):
+        # Previous queries cleared at the beginning.
+        assert len(db_queries) == 0
 
-            # Previous queries cleared at the beginning.
-            assert len(db_queries) == 0
+        ...  # Do some DB-related stuff.
 
-            ...  # Do some DB-related stuff.
+        # Assert total queries on all DBs.
+        assert len(db_queries) == 10
 
-            # Assert total queries on all DBs.
-            assert len(db_queries) == 10
+        # Default DBs SQLs with auxiliary commands filtered out by default.
+        sqls = db_queries.sql()
 
-            # Default DBs SQLs with auxiliary commands filtered out by default.
-            sqls = db_queries.sql()
+        # Assert total execution time is less than a second.
+        assert db_queries.time() < 1
 
-            # Assert total execution time is less than a second.
-            assert db_queries.time() < 1
-
-            # Drop SQL gathered so far on default DB.
-            db_queries.clear()
-
+        # Drop SQL gathered so far on default DB.
+        db_queries.clear()
+    ```
 
     .. warning:: Requires Django 1.9+ to work.
 
