@@ -1,3 +1,4 @@
+import sys
 from threading import local
 from typing import Callable
 
@@ -156,6 +157,11 @@ class Configuration:
         return settings_dict.copy()
 
     @classmethod
+    def check_src_dir(cls, dir_parent) -> bool:
+        dir_src = dir_parent / 'src'
+        return dir_src.exists()
+
+    @classmethod
     def get_combined(cls, pytest_config) -> dict:
         from django import VERSION
 
@@ -228,12 +234,23 @@ class Configuration:
         else:
             dir_current = pytest_config.invocation_dir
             dir_tests = None
+            src_layout = cls.check_src_dir(dir_current)
 
-            app_name = dir_current.basename
+            if src_layout:
+                # run from project dir
+                app_name = 'tests'
+            else:
+                # maybe run from tests/ dir
+                app_name = dir_current.basename
 
             if app_name == 'tests':
-                # Support certain module or function invocation tests dir as base (e.g. PyCharm behaviour).
-                app_name = dir_current.parts()[-2].basename
+                # support both `src` layout (e.g. to test djangoapp itself)
+                # and src-less layouts (with tests inside an app).
+                dir_parent = dir_current.parts()[-2]
+                src_layout = src_layout or cls.check_src_dir(dir_parent)
+                if not src_layout:
+                    app_name = dir_parent.basename
+
                 dir_tests = dir_current
 
             try:
@@ -252,8 +269,8 @@ class Configuration:
 
                 packages_found = [
                     obj
-                    for obj in dir_current.iterdir()
-                    if obj.is_dir() and (obj / '__init__.py').exists()
+                    for obj in dir_current.listdir()
+                    if obj.isdir() and (obj / '__init__.py').exists()
                 ]
 
                 for package in packages_found:
@@ -287,7 +304,11 @@ class Configuration:
                 if dir_testapp:
                     dir_testapp = dir_testapp[0]
 
-                    testapp_name = f'{app_name}.tests.{dir_testapp_name}'
+                    prefix = f'{app_name}.'
+                    if app_name != 'tests':
+                        prefix = f'{prefix}tests.'
+
+                    testapp_name = f'{prefix}{dir_testapp_name}'
 
                     installed_apps.append(testapp_name)
 

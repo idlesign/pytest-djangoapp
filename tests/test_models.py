@@ -1,6 +1,6 @@
 import pytest
 
-from pytest_djangoapp.tests.testapp.models import Article
+from tests.testapp.models import Article
 from django import VERSION
 
 

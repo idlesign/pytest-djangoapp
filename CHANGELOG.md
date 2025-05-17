@@ -1,6 +1,9 @@
 # pytest-djangoapp changelog
 
 
+### Unreleased
+* ++ Add 'src' package layout.
+
 ### v1.2.0 [2023-05-19]
 
 * ++ Add 'liveserver' and 'liveclient' fixtures (closes #24).
