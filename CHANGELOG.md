@@ -1,7 +1,7 @@
 # pytest-djangoapp changelog
 
 
-### Unreleased
+### v1.3.0 [2025-06-06]
 * !! Dropped QA for Python 3.7.
 * ++ Add 'src' package layout.
 
