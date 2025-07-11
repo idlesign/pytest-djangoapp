@@ -104,6 +104,12 @@ class Configuration:
         _THREAD_LOCAL.configuration = base_settings
 
     @classmethod
+    def _extend(cls, container: list[str], new: list[str]):
+        for item in new:
+            if item not in container:
+                container.append(item)
+
+    @classmethod
     def get_defaults(cls) -> dict:
         from django.conf import global_settings
 
@@ -114,11 +120,10 @@ class Configuration:
             middleware = global_settings.MIDDLEWARE
 
         installed_apps = list(global_settings.INSTALLED_APPS[:])
-        installed_apps.extend([
+        cls._extend(installed_apps, [
             'django.contrib.auth',
             'django.contrib.contenttypes',
         ])
-        installed_apps = list(set(installed_apps))
 
         settings_dict = dict(
 
@@ -126,8 +131,8 @@ class Configuration:
 
             ALLOWED_HOSTS=(
                 global_settings.ALLOWED_HOSTS +
-                # Satisfy Django test client needed in Django < 2.0
-                ['testserver']
+                # testserver Satisfy Django test client needed in Django < 2.0
+                ['testserver', '127.0.0.1', 'localhost']
             ),
 
             INSTALLED_APPS=installed_apps,
@@ -192,15 +197,26 @@ class Configuration:
 
         if admin:
             middleware = extensions.setdefault('MIDDLEWARE', [])
-            middleware.extend([
+            cls._extend(middleware,[
                 'django.contrib.sessions.middleware.SessionMiddleware',
                 'django.contrib.auth.middleware.AuthenticationMiddleware',
+                'django.contrib.messages.middleware.MessageMiddleware',
             ])
             apps = extensions.setdefault('INSTALLED_APPS', [])
-            apps.extend([
+            cls._extend(apps, [
                 'django.contrib.admin',
+                'django.contrib.auth',
+                'django.contrib.contenttypes',
+                'django.contrib.messages',
                 'django.contrib.sessions',
             ])
+            if templates := defaults.setdefault('TEMPLATES', []):
+                processors = templates[0]['OPTIONS'].setdefault('context_processors', [])
+                cls._extend(processors, [
+                    'django.template.context_processors.request',
+                    'django.contrib.auth.context_processors.auth',
+                    'django.contrib.messages.context_processors.messages',
+                ])
 
         for key, value in extensions.items():
             default_value = defaults.get(key, [])
