@@ -1,7 +1,7 @@
 # pytest-djangoapp changelog
 
 
-### Unreleased
+### v1.4.0 [2025-07-12]
 * ++ Add 'run_app' fixture.
 
 ### v1.3.0 [2025-06-06]
