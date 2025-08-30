@@ -1,7 +1,7 @@
 # pytest-djangoapp changelog
 
 
-### Unreleased
+### v1.4.2 [2025-08-30]
 * ** Improved tests layout type detection.
 
 ### v1.4.1 [2025-08-30]
