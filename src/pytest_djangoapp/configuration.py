@@ -1,6 +1,7 @@
-from pathlib import Path
 from threading import local
-from typing import Callable
+from typing import Callable, List, Optional
+
+from py.path import LocalPath
 
 _THREAD_LOCAL = local()
 setattr(_THREAD_LOCAL, 'configuration', {})
@@ -161,14 +162,26 @@ class Configuration:
         return settings_dict.copy()
 
     @classmethod
-    def check_src_dir(cls, *, dir_parent) -> bool:
-        dir_src = dir_parent / 'src'
-        return dir_src.exists()
+    def _get_src_subdir(cls, dir_target: LocalPath) -> Optional[LocalPath]:
+        dir_src = dir_target / 'src'
+        return dir_src if dir_src.exists() else None
 
     @classmethod
-    def deduce_apps(cls, *, dir_current, project_mode: bool) -> tuple[str, tuple[str, str]]:
-        testapp_name = ''
-        dir_tests = None
+    def _find_package_dirs(cls, target_dir: LocalPath) -> list[LocalPath]:
+        packages_dirs: List[str] = [
+            obj
+            for obj in target_dir.listdir()
+            if obj.isdir() and (obj / '__init__.py').exists() and obj.basename != 'tests'
+        ]
+        return packages_dirs
+
+    @classmethod
+    def deduce_apps(
+            cls,
+            *,
+            dir_current: LocalPath,
+            project_mode: bool = False
+    ) -> tuple[str, tuple[Optional[LocalPath], str]]:
         # We try to support
         #   * classic django tests:
         #     app/
@@ -176,83 +189,57 @@ class Configuration:
         #   * separate tests:
         #     app/
         #     tests/
-        # and both the above with `src` layout and without
+        # and both the above with `src` layout and without it
         # and run from `tests` directory and from `root`.
+        dir_tests = []
+        dir_app = dir_current
+        app_name = dir_current.basename
 
-        src_layout = cls.check_src_dir(dir_parent=dir_current)
+        def get_app(in_dir):
+            nonlocal app_name, dir_app
+            if packages_dirs := cls._find_package_dirs(target_dir=in_dir):
+                dir_app = packages_dirs[-1]
+                app_name = dir_app.basename
 
-        if src_layout:
-            # run from project dir
-            app_name = 'tests'
-        else:
-            # maybe run from tests/ dir
-            app_name = dir_current.basename
+        dir_target = dir_current
 
         if app_name == 'tests':
-            # support both `src` layout (e.g. to test djangoapp itself)
-            # and src-less layouts (with tests inside an app).
+            # Run with `tests` as current working directory (e.g. from IDE).
             dir_parent = dir_current.parts()[-2]
-            src_layout = src_layout or cls.check_src_dir(dir_parent=dir_parent)
-            if not src_layout:
-                app_name = dir_parent.basename
+            dir_tests = [dir_current]
+            app_name = dir_parent.basename
+            if src_subdir := cls._get_src_subdir(dir_parent):
+                dir_target = src_subdir
+            else:
+                dir_target = dir_parent
 
-            dir_tests = dir_current
+        else:
+            # Presumably run from project directory.
+            if (dir_tests_ := (dir_current / 'tests')).exists():
+                dir_tests = [dir_tests_]
 
-        try:
-            dir_tests = dir_current.listdir('tests')[0]
+            if src_subdir := cls._get_src_subdir(dir_target):
+                dir_target = src_subdir
 
-        except IndexError:
-            pass
+        get_app(dir_target)
 
-        if not dir_tests:
-            # No `tests` subdir found. Let's try to deduce.
-            import py
-
-            app_name = ''
-            candidate_latest = ''
-            candidates = []
-
-            packages_found = [
-                f"{obj}"
-                for obj in dir_current.listdir()
-                if obj.isdir() and (obj / '__init__.py').exists()
-            ]
-
-            for package in packages_found:
-                # Consider only top level packages.
-                if not candidate_latest or not package.startswith(candidate_latest):
-                    candidates.append(package)
-                    candidate_latest = package
-
-            for candidate in candidates:
-                dirs = py.path.local(candidate).listdir('tests')
-
-                if dirs:
-                    app_name = candidate
-                    dir_tests = dirs[0]
-                    break
-
-        if not app_name and not project_mode:
+        if not (dir_app / '__init__.py').exists() and not project_mode:
             raise Exception(
                 'Unable to deduce application name. '
                 'Check application package and `tests` directory exists. '
                 f'Current dir: {dir_current}')
 
-        testapp_dir = ''
+        dir_tests = dir_tests or dir_app.listdir('tests')
 
-        if dir_tests:
-            # Try to find and an additional test app.
-            testapp_dir_name = cls.DIR_TESTAPP
-            testapp_dir = dir_tests.listdir(testapp_dir_name)
+        # Try to find and an additional test app.
+        testapp_dir = None
+        testapp_name = ''
 
-            if testapp_dir:
-                testapp_dir = f'{testapp_dir[0]}'
-
-                prefix = f'{app_name}.'
-                if app_name != 'tests':
-                    prefix = f'{prefix}tests.'
-
-                testapp_name = f'{prefix}{testapp_dir_name}'
+        if dir_tests and (testapp_dirs := dir_tests[0].listdir(cls.DIR_TESTAPP)):
+            testapp_dir = testapp_dirs[0]
+            # three levels deep max
+            depth = 3 if f'{testapp_dir}'.startswith(f'{dir_app}') else 2
+            testapp_name = '.'.join(chunk.basename for chunk in testapp_dir.parts()[-depth:])
 
         return app_name, (testapp_dir, testapp_name)
 
@@ -355,7 +342,7 @@ class Configuration:
             if testapp_name:
                 installed_apps.append(testapp_name)
 
-                if (Path(testapp_dir) / 'urls.py').exists():
+                if (testapp_dir / 'urls.py').exists():
                     # Set customized `urls.py`.
                     defaults['ROOT_URLCONF'] = f'{testapp_name}.urls'
 

@@ -3,7 +3,7 @@ from unittest.mock import patch
 
 def test_conf_app_name(conf_app_name):
 
-    assert conf_app_name == 'tests'
+    assert conf_app_name == 'pytest_djangoapp'
 
 
 def test_run_app(run_app, user_model):

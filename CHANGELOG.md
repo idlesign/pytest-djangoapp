@@ -1,6 +1,9 @@
 # pytest-djangoapp changelog
 
 
+### Unreleased
+* ** Improved tests layout type detection.
+
 ### v1.4.1 [2025-08-30]
 * ** Fixed 'LocalPath' related issue (closes #36).
 
