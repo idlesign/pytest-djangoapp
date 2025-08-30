@@ -284,7 +284,7 @@ class Configuration:
                 candidates = []
 
                 packages_found = [
-                    obj
+                    f"{obj}"
                     for obj in dir_current.listdir()
                     if obj.isdir() and (obj / '__init__.py').exists()
                 ]

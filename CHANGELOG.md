@@ -1,6 +1,9 @@
 # pytest-djangoapp changelog
 
 
+### Unreleased
+* ** Fixed 'LocalPath' related issue (closes #36).
+
 ### v1.4.0 [2025-07-12]
 * ++ Add 'run_app' fixture.
 
