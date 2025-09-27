@@ -14,6 +14,12 @@ if TYPE_CHECKING:
 
 class AdminClient:
 
+    @classmethod
+    def _enhance_result(cls, result):
+        result.ok = result.status_code == 200
+        if not hasattr(result, 'text'):
+            result.text = result.content.decode()
+
     def __init__(self, *, user_func: callable, app_name: str):
         self.client = None
         self._app_name = app_name
@@ -46,7 +52,7 @@ class AdminClient:
         :param kwargs: Additional arguments passed client requesting method.
         """
         result = self.client.get(self._url_listing, follow=follow, **kwargs)
-        result.ok = result.status_code == 200
+        self._enhance_result(result)
         return result
 
     def call_listing_action(
@@ -88,7 +94,7 @@ class AdminClient:
             follow=follow,
             **kwargs
         )
-        result.ok = result.status_code == 200
+        self._enhance_result(result)
         return result
 
     def call_change(self, obj: Any, *, follow: bool = True, **kwargs):
@@ -100,7 +106,7 @@ class AdminClient:
         """
         obj_id = obj.pk if isinstance(obj, Model) else obj
         result = self.client.get(reverse(self._url_change, kwargs={'object_id': obj_id}), follow=follow, **kwargs)
-        result.ok = result.status_code == 200
+        self._enhance_result(result)
         return result
 
 
