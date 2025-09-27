@@ -25,7 +25,7 @@ def test_configuration(pytestconfig):
         finally:
             pytestconfig.invocation_dir = old_dir
 
-    with pytest.raises(AttributeError, match='object has no setter|t set attribute'):
+    with pytest.raises(AttributeError, match=r'object has no setter|t set attribute'):
         # Unable to deduce app name.
         swap_dir(-4)
 
