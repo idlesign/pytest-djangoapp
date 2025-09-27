@@ -1,3 +1,4 @@
+from .admin import admin_client
 from .commands import command_makemigrations, command_run
 from .db import db_queries
 from .live import liveclient, liveserver

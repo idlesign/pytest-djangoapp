@@ -2,6 +2,7 @@
 
 
 ### Unreleased
+* ++ Utils. Added 'admin_client' fixture.
 * ++ Utils. Added 'test_registered_urls' fixture.
 
 ### v1.4.2 [2025-08-30]
