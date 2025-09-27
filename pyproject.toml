@@ -48,7 +48,7 @@ docs = [
     "mkdocs-navsorted-plugin",
 ]
 linters = [
-    "ruff",
+    "ruff==0.13.1",
 ]
 tests = [
 ]
