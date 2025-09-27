@@ -120,7 +120,7 @@ def admin_client(user_create, conf_app_name) -> AdminClient:
 
         response = admin_client.call_listing()
         response = admin_client.call_change(my_model_obj.pk)
-        response = client.call_listing_action(action='rename', items=[my_model_obj])
+        response = admin_client.call_listing_action(action='rename', items=[my_model_obj])
 
         assert response.ok
         assert 'some' in response.text
