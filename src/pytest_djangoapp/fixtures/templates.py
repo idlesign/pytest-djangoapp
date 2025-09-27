@@ -1,5 +1,7 @@
+from __future__ import annotations
+
 import re
-from typing import Union
+from typing import TYPE_CHECKING
 from unittest import mock
 
 import pytest
@@ -7,8 +9,8 @@ from django import VERSION
 from django.template.base import Template
 from django.template.context import Context, RenderContext
 
-if False:  # pragma: nocover
-    from django.contrib.auth.models import AbstractUser  # noqa
+if TYPE_CHECKING:
+    from django.contrib.auth.models import AbstractUser
     from django.http import HttpRequest
 
 
@@ -67,11 +69,11 @@ def template_context(request_get, user_create):
 
     """
     def template_context_(
-        context_dict: dict = None,
+        context_dict: dict | None = None,
         *,
-        request: 'HttpRequest' = None,
+        request: HttpRequest = None,
         current_app: str = '',
-        user: Union[str, 'AbstractUser'] = 'anonymous'
+        user: str | AbstractUser = 'anonymous'
     ) -> Context:
 
         context_dict = context_dict or {}
@@ -119,7 +121,7 @@ def template_render_tag():
         empty context object is used.
 
     """
-    def template_render_tag_(library: str, tag_str: str, context: Union[dict, Context] = None) -> str:
+    def template_render_tag_(library: str, tag_str: str, context: dict | Context = None) -> str:
         context = context or {}
 
         if not isinstance(context, Context):

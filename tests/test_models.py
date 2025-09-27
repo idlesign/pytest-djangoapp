@@ -1,7 +1,7 @@
 import pytest
+from django import VERSION
 
 from tests.testapp.models import Article
-from django import VERSION
 
 
 def test_models_basic():

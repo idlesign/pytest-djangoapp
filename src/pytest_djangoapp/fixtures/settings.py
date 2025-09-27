@@ -3,11 +3,10 @@ from typing import Any
 import pytest
 from django.conf import settings as django_settings
 
-
 _UNSET = set()
 
 
-@pytest.fixture()
+@pytest.fixture
 def settings() -> 'SettingsProxy':
     """Fixture allowing to temporarily override project settings.
 
@@ -46,14 +45,14 @@ class SettingsProxy:
     def __setattr__(self, name: str, value: Any):
 
         if name in _PROXY_SETTING_ATTRS:
-            return super(SettingsProxy, self).__setattr__(name, value)
+            return super().__setattr__(name, value)
 
         self._set(name, value)
 
     def __getattr__(self, name: str) -> Any:
 
         if name in _PROXY_SETTING_ATTRS:
-            return super(SettingsProxy, self).__getattr__(name)
+            return super().__getattr__(name)
 
         try:
             return getattr(self._overridden, name)

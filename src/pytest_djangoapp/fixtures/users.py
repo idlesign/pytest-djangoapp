@@ -1,17 +1,17 @@
-from typing import Union
+from __future__ import annotations
+
+from typing import TYPE_CHECKING, Union
 
 import pytest
 
 from .utils import get_stamp
 
-if False:  # pragma: nocover
-    from django.contrib.auth.models import AbstractUser, AnonymousUser  # noqa
+if TYPE_CHECKING:
+    from django.contrib.auth.models import AbstractUser, AnonymousUser
+    TypeUser = Union[AbstractUser, AnonymousUser]
 
 
-TypeUser = Union['AbstractUser', 'AnonymousUser']
-
-
-@pytest.fixture()
+@pytest.fixture
 def user_model() -> TypeUser:
     """Returns user model class.
 
@@ -26,7 +26,7 @@ def user_model() -> TypeUser:
     return get_user_model()
 
 
-@pytest.fixture()
+@pytest.fixture
 def user_create(user_model):
     """Allows Django user object generation.
 
@@ -43,7 +43,7 @@ def user_create(user_model):
     """
     from django.contrib.auth.models import AnonymousUser
 
-    def user_create_(*, superuser: bool = False, anonymous: bool = False, attributes: dict = None) -> TypeUser:
+    def user_create_(*, superuser: bool = False, anonymous: bool = False, attributes: dict | None = None) -> TypeUser:
 
         if anonymous:
             return AnonymousUser()
@@ -74,7 +74,7 @@ def user_create(user_model):
     return user_create_
 
 
-@pytest.fixture()
+@pytest.fixture
 def user(user_create) -> TypeUser:
     """Exposes Django user object.
 

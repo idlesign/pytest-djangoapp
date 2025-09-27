@@ -1,15 +1,17 @@
-from typing import List
+from __future__ import annotations
+
+from decimal import Decimal
+from typing import TYPE_CHECKING, ClassVar
 
 import pytest
-from decimal import Decimal
-from django.db import connections, DEFAULT_DB_ALIAS, reset_queries
+from django.db import DEFAULT_DB_ALIAS, connections, reset_queries
 
-if False:  # pragma: nocover
-    from collections import deque  # noqa
+if TYPE_CHECKING:
+    from collections import deque
 
 
 @pytest.fixture
-def db_queries(settings) -> 'Queries':
+def db_queries(settings) -> Queries:
     """Allows access to executed DB queries.
 
     ```py
@@ -63,7 +65,7 @@ def db_queries(settings) -> 'Queries':
 class Queries:
     """Allows access to executed DB queries."""
 
-    sql_drop = {
+    sql_drop: ClassVar = {
         'BEGIN',
         'COMMIT',
         'END',
@@ -72,7 +74,7 @@ class Queries:
     def __len__(self) -> int:
         return len(self.get_log())
 
-    def get_log(self, db_alias: str = None) -> 'deque':
+    def get_log(self, db_alias: str = '') -> deque:
         """
         :param db_alias:
 
@@ -83,7 +85,7 @@ class Queries:
         """Clears all queries logged for all DBs."""
         reset_queries()
 
-    def clear(self, db_alias: str = None):
+    def clear(self, db_alias: str = ''):
         """Clear queries for the given or default DB.
 
         :param db_alias: Database alias. Default is used if not given.
@@ -91,7 +93,7 @@ class Queries:
         """
         self.get_log(db_alias=db_alias).clear()
 
-    def sql(self, db_alias: str = None, *, drop_auxiliary: bool = True) -> List[str]:
+    def sql(self, db_alias: str = '', *, drop_auxiliary: bool = True) -> list[str]:
         """Returns a list of queries executed using the given or default DB.
 
         :param db_alias: Database alias. Default is used if not given.
@@ -113,11 +115,10 @@ class Queries:
 
         return sqls
 
-    def time(self, db_alias: str = None) -> Decimal:
+    def time(self, db_alias: str = '') -> Decimal:
         """Returns total time executing queries (in seconds) using the given or default DB.
 
         :param db_alias: Database alias. Default is used if not given.
 
         """
-        times = [Decimal(log_entry['time']) for log_entry in self.get_log(db_alias=db_alias)]
-        return sum(times)
+        return sum(Decimal(log_entry['time']) for log_entry in self.get_log(db_alias=db_alias))

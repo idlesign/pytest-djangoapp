@@ -1,18 +1,17 @@
-from typing import List, Dict
+from collections import defaultdict
+from typing import TYPE_CHECKING
 
 import pytest
 
-from collections import defaultdict
-
-if False:  # pragma: nocover
-    from django.contrib.messages.storage.base import Message  # noqa
+if TYPE_CHECKING:
+    from django.contrib.messages.storage.base import Message
 
 
 class DjangoappMessageStorage:
 
     def __init__(self):
-        self.all: List['Message'] = []
-        self.tags: Dict[str, List['Message']] = defaultdict(list)
+        self.all: list[Message] = []
+        self.tags: dict[str, list[Message]] = defaultdict(list)
 
     def __contains__(self, item):
         for msg in self.all:

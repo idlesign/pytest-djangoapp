@@ -1,6 +1,6 @@
 from django.core.management.base import BaseCommand
 
-from .compat import options_getter, CommandOption
+from .compat import CommandOption, options_getter
 
 get_options = options_getter((
     CommandOption('--two', action='store'),

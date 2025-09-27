@@ -1,15 +1,18 @@
+from __future__ import annotations
+
 from functools import partial
-from typing import Union, Callable
+from typing import Callable
 
 from .configuration import Configuration
+from .exceptions import DjangoappException
 
 
 def configure_djangoapp_plugin(
-    settings: Union[str, dict] = None,
+    settings: str | dict | None = None,
     *,
-    app_name: str = None,
+    app_name: str | None = None,
     admin_contrib: bool = False,
-    settings_hook: Callable = None,
+    settings_hook: Callable | None = None,
     migrate: bool = True,
     **kwargs
 ) -> str:
@@ -61,10 +64,10 @@ def configure_djangoapp_plugin(
 
     """
     try:
-        import django
+        import django  # noqa: F401
 
     except ImportError:  # pragma: nocover
-        raise Exception('Django is not available in test environment. Please install it.')
+        raise DjangoappException('Django is not available in test environment. Please install it.') from None
 
     if isinstance(settings, str):
         # Considering a whole project testing mode.

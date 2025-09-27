@@ -1,6 +1,7 @@
 import pytest
 
 from pytest_djangoapp.configuration import Configuration
+from pytest_djangoapp.exceptions import DjangoappException
 
 
 def test_configuration(pytestconfig):
@@ -24,7 +25,7 @@ def test_configuration(pytestconfig):
         finally:
             pytestconfig.invocation_dir = old_dir
 
-    with pytest.raises(Exception):
+    with pytest.raises(AttributeError, match='object has no setter'):
         # Unable to deduce app name.
         swap_dir(-4)
 
@@ -72,7 +73,7 @@ def test_deduce_apps(layout_flat, layout_src, run_in_base_dir, tmpdir, check_ded
     dir_app = (dir_src or dir_base).mkdir('app')
     dir_tests = (dir_base if layout_flat else dir_app).mkdir('tests')
 
-    with pytest.raises(Exception, match='Unable to deduce application name'):
+    with pytest.raises(DjangoappException, match='Unable to deduce application name'):
         Configuration.deduce_apps(dir_current=dir_base)
 
     cwd = dir_base if run_in_base_dir else dir_tests

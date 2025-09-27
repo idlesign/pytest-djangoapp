@@ -1,10 +1,15 @@
-from threading import local
-from typing import Callable, List, Optional
+from __future__ import annotations
 
-from py.path import LocalPath
+from threading import local
+from typing import TYPE_CHECKING, Callable
+
+from pytest_djangoapp.exceptions import DjangoappException
+
+if TYPE_CHECKING:
+    from py.path import LocalPath
 
 _THREAD_LOCAL = local()
-setattr(_THREAD_LOCAL, 'configuration', {})
+_THREAD_LOCAL.configuration = {}
 
 
 class FakeMigrationModules:
@@ -46,11 +51,11 @@ class Configuration:
     @classmethod
     def set(
             cls,
-            settings_dict: dict = None,
+            settings_dict: str | dict | None = None,
             *,
-            app_name: str = None,
+            app_name: str | None = None,
             admin_contrib: bool = False,
-            settings_hook: Callable = None,
+            settings_hook: Callable | None = None,
             migrate: bool = True,
             **kwargs
     ):
@@ -125,31 +130,31 @@ class Configuration:
             'django.contrib.contenttypes',
         ])
 
-        settings_dict = dict(
+        settings_dict = {
 
-            SECRET_KEY='djangoapp',
+            'SECRET_KEY': 'djangoapp',
 
-            ALLOWED_HOSTS=(
-                global_settings.ALLOWED_HOSTS +
+            'ALLOWED_HOSTS': [
+                *global_settings.ALLOWED_HOSTS,
                 # testserver Satisfy Django test client needed in Django < 2.0
-                ['testserver', '127.0.0.1', 'localhost']
-            ),
+                *['testserver', '127.0.0.1', 'localhost']
+            ],
 
-            INSTALLED_APPS=installed_apps,
-            STATIC_URL='/static/',
+            'INSTALLED_APPS': installed_apps,
+            'STATIC_URL': '/static/',
 
-            DATABASES={
+            'DATABASES': {
                 'default': {
                     'ENGINE': 'django.db.backends.sqlite3',
                     'NAME': ':memory:',
                 },
             },
 
-            MIDDLEWARE=middleware,
+            'MIDDLEWARE': middleware,
 
-            EMAIL_BACKEND='django.core.mail.backends.locmem.EmailBackend',
+            'EMAIL_BACKEND': 'django.core.mail.backends.locmem.EmailBackend',
 
-            TEMPLATES=[
+            'TEMPLATES': [
                 {
                     'BACKEND': 'django.template.backends.django.DjangoTemplates',
                     'APP_DIRS': True,
@@ -157,18 +162,18 @@ class Configuration:
                 },
             ],
 
-        )
+        }
 
         return settings_dict.copy()
 
     @classmethod
-    def _get_src_subdir(cls, dir_target: LocalPath) -> Optional[LocalPath]:
+    def _get_src_subdir(cls, dir_target: LocalPath) -> LocalPath | None:
         dir_src = dir_target / 'src'
         return dir_src if dir_src.exists() else None
 
     @classmethod
     def _find_package_dirs(cls, target_dir: LocalPath) -> list[LocalPath]:
-        packages_dirs: List[str] = [
+        packages_dirs: list[str] = [
             obj
             for obj in target_dir.listdir()
             if obj.isdir() and (obj / '__init__.py').exists() and obj.basename != 'tests'
@@ -181,7 +186,7 @@ class Configuration:
             *,
             dir_current: LocalPath,
             project_mode: bool = False
-    ) -> tuple[str, tuple[Optional[LocalPath], str]]:
+    ) -> tuple[str, tuple[LocalPath | None, str]]:
         # We try to support
         #   * classic django tests:
         #     app/
@@ -224,10 +229,10 @@ class Configuration:
         get_app(dir_target)
 
         if not (dir_app / '__init__.py').exists() and not project_mode:
-            raise Exception(
+            raise DjangoappException(
                 'Unable to deduce application name. '
                 'Check application package and `tests` directory exists. '
-                f'Current dir: {dir_current}')
+                f'Current dir: {dir_current}') from None
 
         dir_tests = dir_tests or dir_app.listdir('tests')
 

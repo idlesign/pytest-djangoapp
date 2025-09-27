@@ -1,9 +1,10 @@
 import pytest
-
 from django import VERSION
 
+from ..exceptions import DjangoappException
 
-@pytest.fixture()
+
+@pytest.fixture
 def check_migrations(command_makemigrations):
     """Check if migrations are up to date (migration files exist for current models' state).
 
@@ -17,7 +18,7 @@ def check_migrations(command_makemigrations):
     """
     def check_migrations_(app: str = ''):
         if VERSION < (2, 0):
-            raise Exception('Django 2.0+ required for checking migrations')
+            raise DjangoappException('Django 2.0+ required for checking migrations') from None
 
         try:
             command_makemigrations(app=app, args=['--check', '--dry-run'])

@@ -1,15 +1,13 @@
-from typing import List
+from __future__ import annotations
 
 import pytest
-
 from django.core import mail
-
 
 mail.outbox = []
 
 
-@pytest.fixture()
-def mail_outbox() -> List[mail.EmailMessage]:
+@pytest.fixture
+def mail_outbox() -> list[mail.EmailMessage]:
     """Returns mail outbox: list of sent message objects.
 
     ```py

@@ -12,7 +12,7 @@ def get_stamp() -> str:
     return f'{time()}'
 
 
-@pytest.fixture()
+@pytest.fixture
 def registered_urls() -> dict:
     """Returns mapping from registered urlpatterns to names and args.
 
@@ -56,7 +56,7 @@ def conf_app_name() -> str:
     return Configuration.get_dict()[Configuration.KEY_APP]
 
 
-@pytest.fixture()
+@pytest.fixture
 def run_app(command_run, user_create, capsys, settings):
     """Issues runserver command using current configuration
     (dynamic or defined by user through `configure_djangoapp_plugin()`).

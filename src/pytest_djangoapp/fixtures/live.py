@@ -1,4 +1,6 @@
-from typing import Type, TypeVar, Dict
+from __future__ import annotations
+
+from typing import ClassVar, TypeVar
 
 import pytest
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
@@ -6,8 +8,8 @@ from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 TypeLiveClient = TypeVar('TypeLiveClient', bound='LiveClient')
 
 
-@pytest.fixture()
-def liveserver() -> Type['LiveServer']:
+@pytest.fixture
+def liveserver() -> type[LiveServer]:
     """Runs a live server. Available as a context manager.
 
     .. warning:: For Django >= 4.0
@@ -22,7 +24,7 @@ def liveserver() -> Type['LiveServer']:
     return LiveServer
 
 
-@pytest.fixture()
+@pytest.fixture
 def liveclient():
     """Runs a live client. Available as a context manager.
 
@@ -51,7 +53,7 @@ class LiveServer:
 
     _cls = StaticLiveServerTestCase
 
-    def __init__(self, *, host: str = None, port: int = None):
+    def __init__(self, *, host: str = '', port: int | None = None):
 
         cls = self._cls
 
@@ -79,7 +81,7 @@ class LiveClient:
 
     alias: str = ''
 
-    _registry: Dict[str, TypeLiveClient] = {}
+    _registry: ClassVar[dict[str, TypeLiveClient]] = {}
 
     def __init_subclass__(cls, **kwargs):
         super().__init_subclass__()

@@ -1,7 +1,8 @@
-from typing import Iterable, Optional
+from __future__ import annotations
+
+from typing import Iterable
 
 import pytest
-
 from django.core.management import call_command
 
 
@@ -24,7 +25,7 @@ def command_run():
     :returns: Command output.
 
     """
-    def command_run_(command_name: str, args: Iterable[str] = None, options: dict = None) -> Optional[str]:
+    def command_run_(command_name: str, args: Iterable[str] | None = None, options: dict | None = None) -> str | None:
         args = args or []
         options = options or {}
         return call_command(command_name, *args, **options)
@@ -51,7 +52,7 @@ def command_makemigrations(conf_app_name):
     :param args: Additional arguments to pass to the command.
 
     """
-    def command_migration_(*, app: str = None, args: Iterable[str] = None) -> Optional[str]:
+    def command_migration_(*, app: str | None = None, args: Iterable[str] | None = None) -> str | None:
         args = args or []
 
         if app is None:

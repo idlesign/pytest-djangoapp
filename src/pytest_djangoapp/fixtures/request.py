@@ -1,5 +1,9 @@
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
+
 import pytest
-from django.test import RequestFactory, Client
+from django.test import Client, RequestFactory
 
 try:
     from django.urls import reverse
@@ -8,8 +12,8 @@ except ImportError:  # Django < 2.0
     from django.core.urlresolvers import reverse
 
 
-if False:  # pragma: nocover
-    from django.contrib.auth.models import AbstractUser  # noqa
+if TYPE_CHECKING:
+    from django.contrib.auth.models import AbstractUser
     from django.http import HttpRequest
 
 
@@ -20,27 +24,27 @@ def _contribute_ajax(headers, flag):
 
 class DjangoappRequestFactory(RequestFactory):
 
-    def __init__(self, ajax=False, json=False, **defaults):
+    def __init__(self, *, ajax=False, json=False, **defaults):
         _contribute_ajax(defaults, ajax)
-        super(DjangoappRequestFactory, self).__init__(**defaults)
+        super().__init__(**defaults)
         self._json = json
 
     def _encode_json(self, data, content_type):
         if self._json:
             content_type = 'application/json'
-        return super(DjangoappRequestFactory, self)._encode_json(data, content_type)
+        return super()._encode_json(data, content_type)
 
     def _encode_data(self, data, content_type):
         if self._json:
             content_type = 'application/json'
-        return super(DjangoappRequestFactory, self)._encode_data(data, content_type)
+        return super()._encode_data(data, content_type)
 
     def generic(self, method, path, *args, **kwargs):
 
         if isinstance(path, tuple):
             path = reverse(path[0], kwargs=path[1])
 
-        return super(DjangoappRequestFactory, self).generic(method, path, *args, **kwargs)
+        return super().generic(method, path, *args, **kwargs)
 
 
 class DjagoappClient(Client, DjangoappRequestFactory):
@@ -49,7 +53,7 @@ class DjagoappClient(Client, DjangoappRequestFactory):
             self,
             *,
             ajax: bool = False,
-            user: 'AbstractUser' = None,
+            user: AbstractUser = None,
             enforce_csrf_checks: bool = False,
             raise_exceptions: bool = True,
             json: bool = False,
@@ -57,7 +61,7 @@ class DjagoappClient(Client, DjangoappRequestFactory):
     ):
         _contribute_ajax(defaults, ajax)
 
-        super(DjagoappClient, self).__init__(enforce_csrf_checks, json=json, **defaults)
+        super().__init__(enforce_csrf_checks, json=json, **defaults)
 
         if user:
             assert hasattr(user, 'password_plain'), (
@@ -74,7 +78,7 @@ class DjagoappClient(Client, DjangoappRequestFactory):
 
     def store_exc_info(self, **kwargs):
         if self._raise_exc:
-            super(DjagoappClient, self).store_exc_info(**kwargs)
+            super().store_exc_info(**kwargs)
 
 
 @pytest.fixture
@@ -113,7 +117,7 @@ def request_get(request_factory):
     :param kwargs: Additional arguments for .get() method.
 
     """
-    def request_get_(path: str = None, *, user: 'AbstractUser' = None, ajax: bool = False, **kwargs) -> 'HttpRequest':
+    def request_get_(path: str = '', *, user: AbstractUser | None = None, ajax: bool = False, **kwargs) -> HttpRequest:
 
         path = path or '/'
         request = request_factory(ajax=ajax).get(path, **kwargs)
@@ -145,13 +149,13 @@ def request_post(request_factory):
 
     """
     def request_post_(
-        path: str = None,
-        data: dict = None,
+        path: str | None = None,
+        data: dict | None = None,
         *,
-        user: 'AbstractUser' = None,
+        user: AbstractUser | None = None,
         ajax: bool = False,
         **kwargs
-    ) -> 'HttpRequest':
+    ) -> HttpRequest:
 
         path = path or '/'
         request = request_factory(ajax=ajax).post(path, data, **kwargs)
@@ -198,7 +202,7 @@ def request_client():
     def request_client_(
         *,
         ajax: bool = False,
-        user: 'AbstractUser' = None,
+        user: AbstractUser = None,
         raise_exceptions: bool = True,
         json: bool = False,
         **kwargs

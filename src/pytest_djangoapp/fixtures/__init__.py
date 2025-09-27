@@ -1,13 +1,13 @@
-from .commands import command_run, command_makemigrations
+from .commands import command_makemigrations, command_run
 from .db import db_queries
-from .live import liveserver, liveclient
+from .live import liveclient, liveserver
 from .mail import mail_outbox
 from .messages import messages
 from .migrations import check_migrations
-from .request import request_factory, request_get, request_post, request_client
+from .request import request_client, request_factory, request_get, request_post
 from .settings import settings
-from .templates import template_render_tag, template_context, template_strip_tags
-from .users import user_create, user_model, user
-from .utils import conf_app_name, run_app, registered_urls
+from .templates import template_context, template_render_tag, template_strip_tags
+from .users import user, user_create, user_model
+from .utils import conf_app_name, registered_urls, run_app
 
 fixtures_registered: bool = True
