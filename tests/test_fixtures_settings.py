@@ -1,4 +1,3 @@
-import pytest
 
 def test_settings(settings):
     from django.conf import settings as _actual_settings

@@ -24,6 +24,7 @@ This exposes some useful tools for Django applications developers to facilitate 
 * Messages
 * DB queries audit
 * Live server & client UI testing
+* Registered urlpatterns listing
 * etc.
 
 Suitable for testing apps for Django 1.8+.

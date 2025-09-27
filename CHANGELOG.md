@@ -1,6 +1,9 @@
 # pytest-djangoapp changelog
 
 
+### Unreleased
+* ++ Utils. Added 'test_registered_urls' fixture.
+
 ### v1.4.2 [2025-08-30]
 * ** Improved tests layout type detection.
 

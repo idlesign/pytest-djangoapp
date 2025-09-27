@@ -8,6 +8,6 @@ from .request import request_factory, request_get, request_post, request_client
 from .settings import settings
 from .templates import template_render_tag, template_context, template_strip_tags
 from .users import user_create, user_model, user
-from .utils import conf_app_name, run_app
+from .utils import conf_app_name, run_app, registered_urls
 
 fixtures_registered: bool = True

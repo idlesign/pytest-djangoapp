@@ -4,7 +4,7 @@ try:
 except ImportError:
     from django.conf.urls import url as re_path
 
-    
+from django.contrib import admin
 from django.http import HttpResponse
 
 from pytest_djangoapp.compat import get_urlpatterns
@@ -27,6 +27,7 @@ def index(request, some_id):
 
 
 urlpatterns = get_urlpatterns([
+    re_path("admin/", admin.site.urls),
     re_path(r'^index/(?P<some_id>\d+)/$', index, name='index'),
     re_path(r'^raiser/$', raise_exception, name='raiser'),
 ])

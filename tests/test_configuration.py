@@ -91,11 +91,11 @@ def test_deduce_apps(layout_flat, layout_src, run_in_base_dir, tmpdir, check_ded
         cwd=cwd,
         app_name='app',
         testapp_dir=(
-            f"base/tests/testapp"
+            "base/tests/testapp"
             if layout_flat else
             f"base/{src_marker}app/tests/testapp"
         ),
-        testapp_name="tests.testapp" if layout_flat else f"app.tests.testapp"
+        testapp_name="tests.testapp" if layout_flat else "app.tests.testapp"
     )
 
 
