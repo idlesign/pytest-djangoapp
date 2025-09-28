@@ -1,7 +1,7 @@
 # pytest-djangoapp changelog
 
 
-### Unreleased
+### v1.6.0 [2025-09-28]
 * ++ Added 'signals' fixture.
 
 ### v1.5.0 [2025-09-27]

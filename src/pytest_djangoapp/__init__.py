@@ -1,6 +1,6 @@
 from .toolbox import configure_djangoapp_plugin
 
-VERSION = '1.5.0'
+VERSION = '1.6.0'
 """Application version number tuple."""
 
 
