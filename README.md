@@ -22,6 +22,7 @@ This exposes some useful tools for Django applications developers to facilitate 
 * Mailing
 * Migrations
 * Messages
+* Signals
 * DB queries audit
 * Live server & client UI testing
 * Registered urlpatterns listing
