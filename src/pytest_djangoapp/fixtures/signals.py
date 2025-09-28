@@ -21,13 +21,13 @@ from django.db.models.signals import (
     pre_save,
 )
 from django.test.signals import template_rendered
-from django.utils.autoreload import file_changed
 
 try:
-    from django.utils.autoreload import autoreload_started
+    from django.utils.autoreload import autoreload_started, file_changed
 
-except ImportError:  # 2.1
-    autoreload_started = Signal()  # fake
+except ImportError:  # fake for django <2.2
+    autoreload_started = Signal()
+    file_changed = Signal()
 
 
 @dataclass(slots=True)
