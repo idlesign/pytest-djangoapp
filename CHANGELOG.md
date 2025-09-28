@@ -1,6 +1,9 @@
 # pytest-djangoapp changelog
 
 
+### Unreleased
+* ++ Added 'signals' fixture.
+
 ### v1.5.0 [2025-09-27]
 * ++ Utils. Added 'admin_client' fixture.
 * ++ Utils. Added 'test_registered_urls' fixture.

@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from decimal import Decimal
-from typing import TYPE_CHECKING, ClassVar
+from typing import TYPE_CHECKING, ClassVar, Generator
 
 import pytest
 from django.db import DEFAULT_DB_ALIAS, connections, reset_queries
@@ -11,7 +11,7 @@ if TYPE_CHECKING:
 
 
 @pytest.fixture
-def db_queries(settings) -> Queries:
+def db_queries(settings) -> Generator[Queries, None, None]:
     """Allows access to executed DB queries.
 
     ```py
