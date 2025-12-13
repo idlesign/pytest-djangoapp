@@ -1,4 +1,4 @@
-# pytest-djangoapp contributing
+# Contributing
 
 ## Submit issues
 

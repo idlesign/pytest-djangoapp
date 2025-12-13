@@ -99,6 +99,31 @@ using `pytest-djangoapp` by adding the following lines into ``pytest.ini``:
 addopts = -p no:django
 ```
 
+
+## Development
+
+Use [makeapp](https://pypi.org/project/makeapp/) to streamline the development:
+
+```shell
+$ uv tool install makeapp
+```
+
+Clone the source code the repository and switch into its directory:
+
+```shell
+# bootstrap the utilities
+$ ma tools
+
+# initialize the environment
+$ ma up
+```
+
+Check code style before your pull request:
+
+```shell
+$ ma style
+```
+
 ## Documentation
 
 http://pytest-djangoapp.readthedocs.io/
