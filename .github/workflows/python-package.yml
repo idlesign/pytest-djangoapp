@@ -131,7 +131,7 @@ jobs:
         uv pip install coveralls "Django~=${{ matrix.django-version }}.0"
     - uses: astral-sh/ruff-action@v3
       with:
-        version: 0.13.1
+        version: 0.14.9
         args: check
     - name: Run tests
       env:
