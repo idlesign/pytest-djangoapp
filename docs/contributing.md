@@ -39,5 +39,3 @@ $ ma style
 
 If you have some tips and tricks or any other words that you think might be of interest for the others — publish it
 wherever you find convenient.
-
-See also: https://github.com/idlesign/pytest-djangoapp
