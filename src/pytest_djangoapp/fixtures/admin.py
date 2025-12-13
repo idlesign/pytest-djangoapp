@@ -45,6 +45,17 @@ class AdminClient:
         self.url_add = reverse(f'admin:{app}_{model_name}_add')
         self._url_change = f'admin:{app}_{model_name}_change'
 
+    def call_add(self, data: dict, *, follow: bool = True, **kwargs):
+        """Calls item add page and returns the response.
+
+        :param data: Data to add.
+        :param follow: Follow redirects.
+        :param kwargs: Additional arguments passed client requesting method.
+        """
+        result = self.client.post(self.url_add, data=data, follow=follow, **kwargs)
+        self._enhance_result(result)
+        return result
+
     def call_listing(self, *, follow: bool = True, **kwargs):
         """Calls items listing page and returns the response.
 
@@ -122,9 +133,11 @@ def admin_client(user_create, conf_app_name) -> AdminClient:
         assert admin_client.url_add
 
         response = admin_client.call_listing()
-        response = client.call_listing(query_params={'status__exact': '2'})
-        response = admin_client.call_change(my_model_obj.pk)
+        response = admin_client.call_listing(query_params={'status__exact': '2'})
         response = admin_client.call_listing_action(action='rename', items=[my_model_obj])
+
+        response = admin_client.call_add({'title': 'article created'})
+        response = admin_client.call_change(my_model_obj.pk)
 
         assert response.ok
         assert 'some' in response.text

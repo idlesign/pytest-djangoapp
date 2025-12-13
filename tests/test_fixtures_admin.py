@@ -33,6 +33,11 @@ class TestaAdminClient:
         client, __ = client_env
         assert client.url_add == '/admin/testapp/article/add/'
 
+        response = client.call_add({'title': 'article created'})
+        assert 'article created' in response.text
+
+        assert Article.objects.count() == 4
+
     def test_listing(self, client_env):
         client, __ = client_env
         assert client.url_listing == '/admin/testapp/article/'
