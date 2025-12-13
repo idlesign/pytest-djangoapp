@@ -21,7 +21,7 @@ class AdminClient:
             result.text = result.content.decode()
 
     def __init__(self, *, user_func: callable, app_name: str):
-        self.client = None
+        self.client: DjagoappClient | None = None
         self._app_name = app_name
         self._user_func = user_func
         self.url_listing = None
@@ -122,6 +122,7 @@ def admin_client(user_create, conf_app_name) -> AdminClient:
         assert admin_client.url_add
 
         response = admin_client.call_listing()
+        response = client.call_listing(query_params={'status__exact': '2'})
         response = admin_client.call_change(my_model_obj.pk)
         response = admin_client.call_listing_action(action='rename', items=[my_model_obj])
 

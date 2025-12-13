@@ -1,13 +1,13 @@
 import pytest
 
-from tests.testapp.models import Article
+from tests.testapp.models import STATUS_PUBLISHED, Article
 
 
 @pytest.fixture
 def client_env(admin_client):
     admin_client.configure(app='testapp', model='article')
 
-    article_1 = Article(title='article_1')
+    article_1 = Article(title='article_1', status=STATUS_PUBLISHED)
     article_1.save()
 
     article_2 = Article(title='article_2')
@@ -36,9 +36,10 @@ class TestaAdminClient:
     def test_listing(self, client_env):
         client, __ = client_env
         assert client.url_listing == '/admin/testapp/article/'
-        response = client.call_listing()
+        response = client.call_listing(query_params={'status__exact': f'{STATUS_PUBLISHED}'})
         assert response.ok
         assert 'article_1' in response.text
+        assert 'article_2' not in response.text
 
     def test_listing_action(self, client_env):
         client, articles = client_env

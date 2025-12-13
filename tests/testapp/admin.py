@@ -9,6 +9,7 @@ from .models import Article
 class ArticleAdmin(admin.ModelAdmin):
 
     actions: ClassVar = ['rename']
+    list_filter = ('status',)
 
     def rename(self, request, queryset):
         queryset.update(title="renamedfine")
