@@ -65,6 +65,8 @@ jobs:
             django-version: 1.11
           - python-version: 3.11
             django-version: 2.1
+          - python-version: 3.11
+            django-version: 6.0
 
           - python-version: 3.10
             django-version: 1.8
@@ -74,6 +76,8 @@ jobs:
             django-version: "1.10"
           - python-version: 3.10
             django-version: 1.11
+          - python-version: 3.10
+            django-version: 6.0
 
           - python-version: 3.9
             django-version: 1.8
