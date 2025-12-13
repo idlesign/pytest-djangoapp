@@ -146,7 +146,7 @@ def admin_client(user_create, conf_app_name) -> AdminClient:
         response = admin_client.call_add({'title': 'article created'})
 
         response = admin_client.call_change(my_model_obj.pk)
-        response = admin_client.call_change(article, data={'title': 'article updated'})
+        response = admin_client.call_change(my_model_obj, data={'title': 'article updated'})
 
         assert response.ok
         assert 'some' in response.text
