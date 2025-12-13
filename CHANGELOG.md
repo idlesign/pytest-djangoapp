@@ -1,6 +1,9 @@
 # pytest-djangoapp changelog
 
 
+### Unreleased
+* ++ Admin client. Exposed 'url_listing' and 'url_add' attributes.
+
 ### v1.6.0 [2025-09-28]
 * ++ Added 'signals' fixture.
 

@@ -29,8 +29,13 @@ class TestaAdminClient:
         # by model instance
         admin_client.configure(app='testapp', model=Article())
 
+    def test_add(self, client_env):
+        client, __ = client_env
+        assert client.url_add == '/admin/testapp/article/add/'
+
     def test_listing(self, client_env):
         client, __ = client_env
+        assert client.url_listing == '/admin/testapp/article/'
         response = client.call_listing()
         assert response.ok
         assert 'article_1' in response.text

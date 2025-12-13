@@ -24,8 +24,8 @@ class AdminClient:
         self.client = None
         self._app_name = app_name
         self._user_func = user_func
-        self._url_listing = None
-        self._url_add = None
+        self.url_listing = None
+        self.url_add = None
         self._url_change = None
 
     def configure(self, *, model: str | Model | type[Model], app: str = '', user: TypeUser = None):
@@ -41,8 +41,8 @@ class AdminClient:
             user=user or self._user_func(superuser=True),
         )
         app = app or self._app_name
-        self._url_listing = reverse(f'admin:{app}_{model_name}_changelist')
-        self._url_add = reverse(f'admin:{app}_{model_name}_add')
+        self.url_listing = reverse(f'admin:{app}_{model_name}_changelist')
+        self.url_add = reverse(f'admin:{app}_{model_name}_add')
         self._url_change = f'admin:{app}_{model_name}_change'
 
     def call_listing(self, *, follow: bool = True, **kwargs):
@@ -51,7 +51,7 @@ class AdminClient:
         :param follow: Follow redirects.
         :param kwargs: Additional arguments passed client requesting method.
         """
-        result = self.client.get(self._url_listing, follow=follow, **kwargs)
+        result = self.client.get(self.url_listing, follow=follow, **kwargs)
         self._enhance_result(result)
         return result
 
@@ -84,12 +84,12 @@ class AdminClient:
                 items_.append(item)
 
         result = self.client.post(
-            self._url_listing,
+            self.url_listing,
             {
-                "action": action,
-                "_selected_action": items_,
-                "select_across": select_across,
-                "index": 0,
+                'action': action,
+                '_selected_action': items_,
+                'select_across': select_across,
+                'index': 0,
             },
             follow=follow,
             **kwargs
@@ -116,7 +116,10 @@ def admin_client(user_create, conf_app_name) -> AdminClient:
 
     ```py
     def test_admin(admin_client):
-        admin_client.configure(app='myapp', model=my_model_obj)
+        admin_client.configure(app='myapp', model=my_model)
+
+        assert admin_client.url_listing
+        assert admin_client.url_add
 
         response = admin_client.call_listing()
         response = admin_client.call_change(my_model_obj.pk)
