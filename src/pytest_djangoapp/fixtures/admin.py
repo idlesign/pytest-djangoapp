@@ -108,15 +108,23 @@ class AdminClient:
         self._enhance_result(result)
         return result
 
-    def call_change(self, obj: Any, *, follow: bool = True, **kwargs):
+    def call_change(self, obj: Any, *, data: dict | None = None, follow: bool = True, **kwargs):
         """Calls item details/edit/change page and returns the response.
 
         :param obj: Model instance or id.
+        :param data: Data to update item with.
         :param follow: Follow redirects.
         :param kwargs: Additional arguments passed client requesting method.
         """
         obj_id = obj.pk if isinstance(obj, Model) else obj
-        result = self.client.get(reverse(self._url_change, kwargs={'object_id': obj_id}), follow=follow, **kwargs)
+        url = reverse(self._url_change, kwargs={'object_id': obj_id})
+        client = self.client
+
+        if data is None:
+            result = client.get(url, follow=follow, **kwargs)
+        else:
+            result = client.post(url, data=data, follow=follow, **kwargs)
+
         self._enhance_result(result)
         return result
 
@@ -130,14 +138,15 @@ def admin_client(user_create, conf_app_name) -> AdminClient:
         admin_client.configure(app='myapp', model=my_model)
 
         assert admin_client.url_listing
-        assert admin_client.url_add
-
         response = admin_client.call_listing()
         response = admin_client.call_listing(query_params={'status__exact': '2'})
         response = admin_client.call_listing_action(action='rename', items=[my_model_obj])
 
+        assert admin_client.url_add
         response = admin_client.call_add({'title': 'article created'})
+
         response = admin_client.call_change(my_model_obj.pk)
+        response = admin_client.call_change(article, data={'title': 'article updated'})
 
         assert response.ok
         assert 'some' in response.text

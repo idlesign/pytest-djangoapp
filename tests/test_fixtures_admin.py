@@ -68,13 +68,22 @@ class TestaAdminClient:
 
     def test_change(self, client_env):
         client, articles = client_env
+        article = articles[0]
 
         # by id
-        response = client.call_change(articles[0].pk)
+        response = client.call_change(article.pk)
         assert response.ok
         assert 'value="article_1"' in response.text
 
         # by model
-        response = client.call_change(articles[0])
+        response = client.call_change(article)
         assert response.ok
         assert 'value="article_1"' in response.text
+
+        # data update
+        response = client.call_change(article, data={'title': 'article updated'})
+        assert response.ok
+        assert 'article updated' in response.text
+
+        article.refresh_from_db()
+        assert article.title == 'article updated'

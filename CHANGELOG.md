@@ -3,6 +3,7 @@
 
 ### Unreleased
 * ++ Admin client. Added '.call_add()'.
+* ++ Admin client. Added support for data update in '.call_change()'.
 * ++ Admin client. Exposed 'url_listing' and 'url_add' attributes.
 
 ### v1.6.0 [2025-09-28]
