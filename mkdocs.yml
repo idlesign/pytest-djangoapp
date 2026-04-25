@@ -1,7 +1,7 @@
 site_name: pytest-djangoapp
 site_url: !ENV READTHEDOCS_CANONICAL_URL
 
-copyright: Copyright &copy; 2018-2025, Igor Starikov
+copyright: Copyright &copy; 2018-2026, Igor Starikov
 
 repo_url: https://github.com/idlesign/pytest-djangoapp
 edit_uri: edit/master/docs/
