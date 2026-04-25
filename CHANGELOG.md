@@ -1,6 +1,9 @@
 # pytest-djangoapp changelog
 
 
+### Unreleased
+* ++ Fixture 'db_queries' now supports scopes (closes #37).
+
 ### v1.7.0 [2025-12-13]
 * ++ Admin client. Added '.call_add()'.
 * ++ Admin client. Added support for data update in '.call_change()'.
