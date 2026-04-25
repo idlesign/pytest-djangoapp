@@ -1,7 +1,7 @@
 # pytest-djangoapp changelog
 
 
-### Unreleased
+### v1.8.0 [2026-04-25]
 * ++ Fixture 'db_queries' now supports scopes (closes #37).
 
 ### v1.7.0 [2025-12-13]
