@@ -1,21 +1,29 @@
 # pytest-djangoapp installation
 
-
-Python `pip` package is required to install `pytest-djangoapp`.
-
-## From sources
-
-Use the following command line to install `pytest-djangoapp` from sources directory (containing `pyproject.toml`):
-
-    pip install .
+[uv](https://docs.astral.sh/uv/) is recommended for installation, though plain `pip` works too.
 
 ## From PyPI
 
-Alternatively you can install `pytest-djangoapp` from PyPI:
+Add the package to a project:
 
-    pip install pytest-djangoapp
+```bash
+uv add pytest-djangoapp
+```
 
+or with pip:
 
-Use `-U` flag for upgrade:
+```bash
+pip install pytest-djangoapp
+```
 
-    pip install -U pytest-djangoapp
+## From source
+
+Clone the repository and synchronize its development environment:
+
+```bash
+git clone https://github.com/idlesign/pytest-djangoapp pytest-djangoapp
+cd pytest-djangoapp
+uv sync
+```
+
+Run commands in the project environment with `uv run`.

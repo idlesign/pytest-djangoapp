@@ -100,32 +100,6 @@ addopts = -p no:django
 ```
 
 
-## Development
-
-Use [makeapp](https://pypi.org/project/makeapp/) to streamline the development:
-
-```shell
-$ uv tool install makeapp
-# or
-$ uv tool upgrade makeapp
-```
-
-Clone the source code the repository and switch into its directory:
-
-```shell
-# bootstrap the utilities
-$ ma tools
-# initialize the environment
-$ ma up
-```
-
-Check code style and run tests before your pull request:
-
-```shell
-$ ma style
-$ ma tests
-```
-
 ## Documentation
 
 http://pytest-djangoapp.readthedocs.io/
