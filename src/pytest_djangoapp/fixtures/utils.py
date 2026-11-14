@@ -1,3 +1,5 @@
+import sys
+from importlib import reload
 from time import time
 
 import pytest
@@ -48,6 +50,31 @@ def registered_urls() -> dict:
     gather(get_resolver(), url_prefix='', parent_namespace='', container=patterns)
 
     return patterns
+
+
+@pytest.fixture
+def reload_modules():
+    """Returns a function to reload modules by their fully qualified names.
+
+    ```py
+    def test_something(reload_modules):
+        reload_modules("myapp.settings", "myapp.mymod")
+    ```
+
+    Modules are reloaded in the given order: settings first, consumers after,
+    so that names bound via from-imports are rebound.
+
+    Note: absolute and relative imports resolve to the same ``sys.modules``
+    entry and need no special handling; the caveat is a module registered
+    twice under different names (e.g. path tricks), which should be avoided
+    in the first place.
+
+    """
+    def reload_modules_(*names: str):
+        for name in names:
+            reload(sys.modules[name])
+
+    return reload_modules_
 
 
 @pytest.fixture(scope='session')#

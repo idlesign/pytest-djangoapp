@@ -10,6 +10,6 @@ from .settings import settings
 from .signals import signals
 from .templates import template_context, template_render_tag, template_strip_tags
 from .users import user, user_create, user_model
-from .utils import conf_app_name, registered_urls, run_app
+from .utils import conf_app_name, registered_urls, reload_modules, run_app
 
 fixtures_registered: bool = True
