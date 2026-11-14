@@ -1,6 +1,9 @@
 # pytest-djangoapp changelog
 
 
+### Unreleased
+* ++ Added reload_modules fixture to reload modules (e.g. app settings read once at import) during tests.
+
 ### v1.8.0 [2026-04-25]
 * ++ Fixture 'db_queries' now supports scopes (closes #37).
 
