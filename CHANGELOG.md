@@ -1,7 +1,7 @@
 # pytest-djangoapp changelog
 
 
-### Unreleased
+### v1.9.0 [2026-11-14]
 * ++ Added reload_modules fixture to reload modules (e.g. app settings read once at import) during tests.
 
 ### v1.8.0 [2026-04-25]
